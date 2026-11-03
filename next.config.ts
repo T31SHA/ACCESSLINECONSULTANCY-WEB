@@ -10,7 +10,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self'",
-  "connect-src 'self' https://plausible.io https://*.r2.cloudflarestorage.com https://challenges.cloudflare.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io",
+  "connect-src 'self' https://plausible.io https://challenges.cloudflare.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io",
   "frame-src https://challenges.cloudflare.com https://www.google.com https://cal.com",
   "form-action 'self'",
   "frame-ancestors 'none'",
@@ -46,7 +46,6 @@ const nextConfig: NextConfig = {
   // Pin the workspace root (a stray lockfile in $HOME otherwise confuses tracing).
   outputFileTracingRoot: path.join(__dirname),
   reactStrictMode: true,
-  serverExternalPackages: ["@electric-sql/pglite"],
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
@@ -60,7 +59,6 @@ const nextConfig: NextConfig = {
       { source: "/:path*", headers: securityHeaders },
       // Later entries override earlier ones for the same key.
       { source: "/studio/:path*", headers: [{ key: "Content-Security-Policy", value: studioCsp }] },
-      { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "no-store" }] },
     ];
   },
 };

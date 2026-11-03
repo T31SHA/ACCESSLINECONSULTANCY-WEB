@@ -10,7 +10,7 @@ export const applicationSchema = z.object({
   email: z.email("Enter a valid email").max(254),
   phone: z.string().trim().max(30).optional().or(z.literal("")),
   linkedinUrl: z.url("Enter a full URL, e.g. https://linkedin.com/in/you").max(300).optional().or(z.literal("")),
-  cvObjectKey: z.string().regex(/^cvs\/[a-z0-9-]+\/[0-9a-f-]{36}\.(pdf|docx)$/),
   coverNote: z.string().trim().max(3000).optional(),
   turnstileToken: z.string().optional(),
+  website: z.string().max(500).optional(),
 });

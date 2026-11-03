@@ -1,73 +1,39 @@
-import { createHmac, randomBytes, scryptSync } from "node:crypto";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { toCsv } from "@/lib/admin/leads";
-import { calLinkForLead, verifyCalSignature } from "@/lib/integrations/cal";
-import { verifyAdminPassword } from "@/lib/server/password";
+import { calLinkForLead } from "@/lib/integrations/cal";
 
-describe("toCsv", () => {
-  const row = (o: Record<string, unknown>) => ({ id: "1", createdAt: new Date("2026-01-01T00:00:00Z"), ...o });
-  const body = (csv: string) => csv.replace(/^﻿/, "").trimEnd().split("\r\n");
-
-  it("starts with a BOM and a fixed header", () => {
-    const csv = toCsv([]);
-    expect(csv.startsWith("﻿")).toBe(true);
-    expect(body(csv)[0]!.split(",")[0]).toBe("id");
-  });
-  it("escapes quotes, commas and newlines (RFC 4180)", () => {
-    const line = body(toCsv([row({ organisation: 'A "B", C', message: "x\ny" })]))[1]!;
-    expect(line).toContain('"A ""B"", C"');
-    expect(toCsv([row({ message: "x\ny" })])).toContain('"x\ny"');
-  });
-  it("neutralises spreadsheet formulas", () => {
-    for (const evil of ["=1+1", "+cmd", "-2", "@SUM(A1)"]) expect(toCsv([row({ fullName: evil })])).toContain(`'${evil}`);
-  });
-  it("joins arrays and serialises dates", () => {
-    const line = body(toCsv([row({ serviceInterest: ["sbcc", "events"] })]))[1]!;
-    expect(line).toContain("sbcc; events");
-    expect(line).toContain("2026-01-01T00:00:00.000Z");
-  });
-});
+afterEach(() => { vi.unstubAllEnvs(); vi.resetModules(); });
 
 describe("Cal.com", () => {
-  const secret = "s3cret";
-  const sign = (b: string, s = secret) => createHmac("sha256", s).update(b).digest("hex");
-  it("accepts a valid signature and rejects tampering", () => {
-    const b = JSON.stringify({ triggerEvent: "BOOKING_CREATED" });
-    expect(verifyCalSignature(b, sign(b), secret)).toBe(true);
-    expect(verifyCalSignature(b + " ", sign(b), secret)).toBe(false);
-    expect(verifyCalSignature(b, sign(b, "other"), secret)).toBe(false);
-    expect(verifyCalSignature(b, null, secret)).toBe(false);
-    expect(verifyCalSignature(b, "short", secret)).toBe(false);
-  });
-  it("pre-fills booking links with lead metadata", () => {
-    const u = new URL(calLinkForLead("https://cal.com/acc/intro", { id: "abc", name: "Jane Doe", email: "j@x.co" }));
-    expect(u.searchParams.get("metadata[leadId]")).toBe("abc");
+  it("pre-fills booking links with the visitor's details", () => {
+    const u = new URL(calLinkForLead("https://cal.com/acc/intro", { name: "Jane Doe", email: "j@x.co" }));
     expect(u.searchParams.get("email")).toBe("j@x.co");
     expect(u.searchParams.get("name")).toBe("Jane Doe");
   });
 });
 
-describe("verifyAdminPassword", () => {
-  afterEach(() => vi.unstubAllEnvs());
-  it("verifies scrypt hashes", async () => {
-    const salt = randomBytes(16);
-    vi.stubEnv("ADMIN_PASSWORD_HASH", `scrypt:${salt.toString("hex")}:${scryptSync("correct horse battery", salt, 64).toString("hex")}`);
-    expect(await verifyAdminPassword("correct horse battery")).toBe(true);
-    expect(await verifyAdminPassword("wrong")).toBe(false);
+describe("email", () => {
+  it("renders every non-empty field and escapes HTML", async () => {
+    const { renderFields } = await import("@/lib/server/email");
+    const { html, text } = renderFields("New enquiry", { Name: "<b>Jane</b>", Services: ["sbcc", "events"], Empty: "", Missing: undefined });
+    expect(html).toContain("&lt;b&gt;Jane&lt;/b&gt;");
+    expect(html).not.toContain("<b>Jane</b>");
+    expect(text).toContain("Services: sbcc, events");
+    expect(text).not.toContain("Empty");
   });
-  it("rejects malformed hashes", async () => {
-    vi.stubEnv("ADMIN_PASSWORD_HASH", "bcrypt:nope");
-    expect(await verifyAdminPassword("x")).toBe(false);
-  });
-  it("falls back to plain ADMIN_PASSWORD only without a hash", async () => {
-    vi.stubEnv("ADMIN_PASSWORD_HASH", "");
-    vi.stubEnv("ADMIN_PASSWORD", "dev-only");
-    expect(await verifyAdminPassword("dev-only")).toBe(true);
-    expect(await verifyAdminPassword("dev-onlyx")).toBe(false);
-  });
-  it("denies everything when nothing is configured", async () => {
-    vi.stubEnv("ADMIN_PASSWORD_HASH", "");
-    vi.stubEnv("ADMIN_PASSWORD", "");
-    expect(await verifyAdminPassword("")).toBe(false);
+
+  it("picks the transport from env: none → smtp → resend; dry-run is dev-only", async () => {
+    for (const k of ["RESEND_API_KEY", "SMTP_HOST", "SMTP_USER", "SMTP_PASS", "EMAIL_DRY_RUN", "ALLOW_EMAIL_DRY_RUN"]) vi.stubEnv(k, "");
+    let m = await import("@/lib/server/email");
+    expect(m.emailTransport()).toBeNull();
+    vi.stubEnv("SMTP_HOST", "smtp.gmail.com"); vi.stubEnv("SMTP_USER", "me@gmail.com"); vi.stubEnv("SMTP_PASS", "app-password");
+    expect(m.emailTransport()).toBe("smtp");
+    expect(m.leadsInbox()).toBe("me@gmail.com");
+    vi.stubEnv("LEADS_INBOX", "leads@gmail.com");
+    expect(m.leadsInbox()).toBe("leads@gmail.com");
+    vi.stubEnv("RESEND_API_KEY", "re_test");
+    expect(m.emailTransport()).toBe("resend");
+    vi.stubEnv("NODE_ENV", "production"); vi.stubEnv("EMAIL_DRY_RUN", "1");
+    vi.resetModules(); m = await import("@/lib/server/email");
+    expect(m.emailTransport()).toBe("resend");
   });
 });
