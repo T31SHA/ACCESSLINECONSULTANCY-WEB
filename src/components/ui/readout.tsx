@@ -7,7 +7,7 @@ export function Readout({ code, meta, className }: { code: ReactNode; meta?: Rea
     <p className={cn("readout flex items-center gap-3 text-[var(--fg-muted)]", className)}>
       <span className="text-[var(--fg)]">{code}</span>
       <span aria-hidden className="readout-line" />
-      {meta && <span className="shrink-0">{meta}</span>}
+      {meta && <span className="min-w-0 text-right">{meta}</span>}
     </p>
   );
 }

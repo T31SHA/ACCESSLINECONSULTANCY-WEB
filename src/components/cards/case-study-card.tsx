@@ -28,7 +28,7 @@ export function CaseStudyCard({ cs, industryTitle, index }: { cs: CaseStudy; ind
       <p className="readout mt-6 flex items-center gap-3 text-[var(--fg-muted)]">
         <span className="text-[var(--fg)]">{`CASE_${String((index ?? 0) + 1).padStart(2, "0")}`}</span>
         <span aria-hidden className="readout-line" />
-        <span className="truncate">{cs.client}{industryTitle ? ` · ${industryTitle}` : ""}{cs.year ? ` · ${cs.year}` : ""}</span>
+        <span className="min-w-0 text-right">{cs.client}{industryTitle ? ` · ${industryTitle}` : ""}{cs.year ? ` · ${cs.year}` : ""}</span>
       </p>
       <h3 className="mt-3 text-[1.5rem] leading-tight">
         <Link href={`/work/${cs.slug}`} className="after:absolute after:inset-0 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-4">
