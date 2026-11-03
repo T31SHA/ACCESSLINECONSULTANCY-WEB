@@ -27,3 +27,9 @@ Decisions made autonomously during the build. Each lists the choice and why.
 - CSV export uses the current filters, adds a UTF-8 BOM (Excel), escapes per RFC 4180 and neutralises spreadsheet formulas (`=+-@`). Each export is audit-logged.
 - **PGlite** (in-process Postgres, WASM) is selected with `DATABASE_URL=pglite://<dir>|memory` for local dev and E2E tests and auto-migrates on boot. Production uses Neon via `postgres://`. This lets the tests exercise the real lead → DB → admin → CSV path.
 - The auto-reply is only logged as `email_sent` when Resend actually accepted it.
+
+## Integrations
+- **Cal.com:** HMAC-SHA256 of the raw body (`X-Cal-Signature-256`) is verified with a timing-safe compare. Bookings are linked by `metadata[leadId]`, which the auto-reply email pre-fills in the booking link, else by the newest lead with the attendee's email. A reschedule marks the old booking `rescheduled`. Booking a call moves a lead `new → contacted` (later stages are never downgraded).
+- **Newsletter double opt-in:** one-time base64url token, 14-day TTL, single use. The confirm page needs a button click (POST) instead of confirming on GET, so corporate link-scanners (Outlook Safe Links etc.) can't auto-subscribe people. Re-subscribing an already-confirmed address returns the same response (no enumeration). Without Resend, the confirm link is logged in development.
+- **Retention:** `/api/cron/retention` (Bearer `CRON_SECRET`, daily via `vercel.json`) implements `retention.sql` in Drizzle, because it needs the CV keys to delete R2 objects *before* rows. Runs are audit-logged. An application whose CV deletion fails is kept and retried.
+- **Sentry:** runtime SDK only when `SENTRY_DSN`/`NEXT_PUBLIC_SENTRY_DSN` is set. The client SDK is a lazy, idle-time dynamic import, so it adds 0 KB to the home bundle. The source-map upload plugin (`withSentryConfig`) is enabled only when `SENTRY_AUTH_TOKEN` exists.

@@ -1,5 +1,6 @@
 import path from "node:path";
 import type { NextConfig } from "next";
+import { withSentryConfig } from "@sentry/nextjs/config";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -9,7 +10,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob: https:",
   "font-src 'self'",
-  "connect-src 'self' https://plausible.io https://*.r2.cloudflarestorage.com https://challenges.cloudflare.com",
+  "connect-src 'self' https://plausible.io https://*.r2.cloudflarestorage.com https://challenges.cloudflare.com https://*.ingest.sentry.io https://*.ingest.us.sentry.io https://*.ingest.de.sentry.io",
   "frame-src https://challenges.cloudflare.com https://www.google.com https://cal.com",
   "form-action 'self'",
   "frame-ancestors 'none'",
@@ -79,4 +80,18 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+/**
+ * Sentry build plugin (source-map upload) only when SENTRY_AUTH_TOKEN is present;
+ * runtime error reporting is wired via instrumentation files and needs only the DSN.
+ */
+export default process.env.SENTRY_AUTH_TOKEN
+  ? withSentryConfig(nextConfig, {
+      org: process.env.SENTRY_ORG,
+      project: process.env.SENTRY_PROJECT,
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      silent: true,
+      widenClientFileUpload: true,
+      sourcemaps: { deleteSourcemapsAfterUpload: true },
+      telemetry: false,
+    })
+  : nextConfig;
