@@ -1,8 +1,8 @@
 # Accessline Consultancy Limited · website
 
-Custom-built replacement for the old WordPress/Elementor site. *Lead the Change.*
+Custom-built site, hosted on Hostinger (Node.js). *Lead the Change.* There is **no database**: every form is emailed to `LEADS_INBOX`.
 
-**Stack:** Next.js 15 (App Router, TypeScript strict) · Tailwind v4 (CSS-variable tokens) · Sanity v4 (embedded Studio) · Drizzle + Neon Postgres · Auth.js v5 · React Hook Form + Zod · Resend · Cloudflare Turnstile & R2 · Upstash · Cal.com · Plausible · Sentry · Storybook 10 · Playwright + axe · Vitest · Lighthouse CI.
+**Stack:** Next.js 15 (App Router, TypeScript strict) · Tailwind v4 (CSS-variable tokens) · Sanity v4 (embedded Studio) · React Hook Form + Zod · email delivery via Resend or SMTP (nodemailer) · Cloudflare Turnstile · Upstash · Cal.com links · Plausible · Sentry · Storybook 10 · Playwright + axe · Vitest · Lighthouse CI.
 
 See **DECISIONS.md** for why things are the way they are, **LAUNCH.md** for go-live, and **CONTENT.md** for what the client must supply.
 
@@ -15,12 +15,12 @@ Requirements: Node 22+, npm 10+.
 ```bash
 npm install
 cp .env.example .env.local
-# Optional but recommended: a zero-install local database
-echo 'DATABASE_URL=pglite://.pglite-dev' >> .env.local
+# Forms need an email transport. For local work, write emails to disk instead of sending:
+echo 'EMAIL_TEST_OUTBOX=.email-outbox-dev' >> .env.local
 npm run dev                         # http://localhost:3000
 ```
 
-Want to try the admin locally? Add `AUTH_SECRET=dev-secret-at-least-32-characters-long`, `ADMIN_EMAILS=you@example.com` and `ADMIN_PASSWORD=dev-password` to `.env.local`, then open `/admin`.
+Submissions then appear as JSON files in `.email-outbox-dev/` (git-ignored). To send real mail locally, set the `SMTP_*` or `RESEND_API_KEY` variables instead (see §2).
 
 ### Scripts
 
@@ -28,51 +28,41 @@ Want to try the admin locally? Add `AUTH_SECRET=dev-secret-at-least-32-character
 |---|---|
 | `npm run dev` / `build` / `start` | Develop / production build / serve |
 | `npm run typecheck` · `lint` · `test` | tsc · ESLint · Vitest unit tests |
-| `npm run test:e2e` | Playwright (needs `npm run build` first). Boots a fresh PGlite DB with test secrets: axe WCAG 2.2 AA, SEO, admin auth, CSV, webhooks, newsletter, retention, lead pipeline |
+| `npm run test:e2e` | Playwright (needs `npm run build` first). Email is mocked: the server writes messages to `.email-outbox-e2e/` and specs assert on them. Covers axe WCAG 2.2 AA, SEO, contact/quick forms, job application with CV, newsletter, Sanity webhook |
 | `npm run storybook` / `build-storybook` | Component library on :6006 |
-| `npm run db:generate` / `db:migrate` | Drizzle migrations (`drizzle/`) |
 | `npm run sanity:seed` | Import `src/content` into Sanity (`-- --dry-run` to preview) |
-| `npm run admin:hash -- 'passphrase'` | Generate `ADMIN_PASSWORD_HASH` |
 
 ---
 
 ## 2. Environment variables
 
-Every variable is documented inline in **`.env.example`**. All are optional; this is what works without each:
+Every variable is documented inline in **`.env.example`**. Only email is needed for the forms; everything else is optional. This is what happens without each:
 
 | Service | Without its keys |
 |---|---|
-| `DATABASE_URL` | Pages work; in production lead/newsletter/application endpoints return a clear 503 ("please email info@") instead of losing data (leads still go through if email/Slack is set) |
+| Email (`RESEND_API_KEY` or `SMTP_*`) | Pages work; the contact, application and newsletter endpoints return a clear 503 ("please email info@…") rather than accepting a submission nobody will receive |
 | Sanity | Site serves `src/content`; `/studio` shows a setup notice |
-| Auth (`AUTH_SECRET`, `ADMIN_*`) | `/admin` shows "not configured"; admin APIs 503 |
-| Resend / Slack | No notification/auto-reply emails; auto-reply not logged as sent |
 | Turnstile | Bot check skipped (honeypot + rate limit still apply if configured) |
 | Upstash | No rate limiting |
-| R2 | CV upload returns "temporarily unavailable" |
-| Cal.com | No "Book a call" CTAs ("Call us" shown); webhook 503 |
-| `CRON_SECRET` | Retention endpoint 503 (cron won't run) |
+| Cal.com (`NEXT_PUBLIC_CAL_URL`) | No "Book a call" CTAs ("Call us" shown) |
 | Plausible / Sentry | Scripts/SDK not loaded at all |
 
 ---
 
-## 3. Deploy to Vercel
+## 3. Deploy to Hostinger
 
-1. **Import** the GitHub repo in Vercel (framework preset: Next.js; defaults are fine).
-2. **Database:** create a Neon project (region near Nairobi users, e.g. `aws-eu-central-1`). Copy the *pooled* connection string into `DATABASE_URL` and run migrations once from your machine:
-   ```bash
-   DATABASE_URL='postgres://…' npm run db:migrate
-   ```
-3. **Environment variables:** add everything from `.env.example` for *Production* (and *Preview* with separate secrets). Set **`HIDE_SAMPLE_CONTENT=true`** in Production.
-4. **Admin access:** `AUTH_SECRET` (`openssl rand -base64 32`), `ADMIN_EMAILS`, and `ADMIN_PASSWORD_HASH` (`npm run admin:hash -- '…'`).
-5. **Cron:** `vercel.json` schedules `/api/cron/retention` daily at 00:00 UTC (03:00 EAT). Set `CRON_SECRET` and Vercel authenticates automatically.
-6. **Webhooks** (after the first deploy):
-   - *Sanity* → sanity.io/manage → API → Webhooks: URL `<NEXT_PUBLIC_SITE_URL>/api/revalidate`, trigger on create/update/delete, projection `{_type, "slug": slug.current}`, secret = `SANITY_REVALIDATE_SECRET`.
-   - *Cal.com* → Settings → Developer → Webhooks: URL `<NEXT_PUBLIC_SITE_URL>/api/webhooks/cal`, events Booking Created / Rescheduled / Cancelled / Meeting Ended, secret = `CAL_WEBHOOK_SECRET`.
-7. **R2 CORS** (CV uploads go browser → R2 directly):
-   ```json
-   [{ "AllowedOrigins": ["<NEXT_PUBLIC_SITE_URL>"], "AllowedMethods": ["PUT"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
-   ```
-8. **Domain & DNS:** see LAUNCH.md.
+The site is a standard Next.js server app (`next build` + `next start`), deployed as a **Node.js app** on Hostinger (a plan with Node.js support, e.g. Business/Cloud web hosting or a VPS).
+
+1. **Create the Node.js app** in hPanel and connect this GitHub repo (or upload a build). Node version **22**, build command `npm ci && npm run build`, start command `npm start`. Hostinger sets `PORT`; `next start` honours it.
+2. **Email (required for forms):** create a mailbox in hPanel → Emails (e.g. `forms@yourdomain.com`), then set
+   `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`, `SMTP_USER=forms@yourdomain.com`, `SMTP_PASS=<mailbox password>` and `LEADS_INBOX=<where submissions should land>`.
+   Alternatively set `RESEND_API_KEY` (and verify the domain in Resend); Resend wins when both are set.
+3. **Environment variables:** add the rest of `.env.example` in the app's environment settings. Set **`HIDE_SAMPLE_CONTENT=true`** and `NEXT_PUBLIC_SITE_URL` to the live origin. `NEXT_PUBLIC_*` values are baked in at build time, so rebuild after changing them. Never set `EMAIL_TEST_OUTBOX` in production.
+4. **Smoke test:** submit the contact form, a job application with a PDF CV, and a newsletter sign-up. Each should arrive at `LEADS_INBOX`; hitting *Reply* should address the submitter.
+5. **Sanity webhook** (after the first deploy): sanity.io/manage → API → Webhooks: URL `<NEXT_PUBLIC_SITE_URL>/api/revalidate`, trigger on create/update/delete, projection `{_type, "slug": slug.current}`, secret = `SANITY_REVALIDATE_SECRET`.
+6. **Domain & DNS:** see LAUNCH.md.
+
+**Data retention** now lives in the inbox, not the app: delete enquiries after 24 months and applications (with CVs) after 12 months, as promised on /privacy.
 
 CI (`.github/workflows/ci.yml`) runs typecheck → lint → unit → build → Playwright/axe → Lighthouse CI on every push and PR.
 
@@ -97,14 +87,12 @@ CI (`.github/workflows/ci.yml`) runs typecheck → lint → unit → build → P
 
 ```
 src/app/(site)/          public pages (header/footer chrome)
-src/app/admin/           lead dashboard (Auth.js-protected via middleware)
 src/app/studio/          embedded Sanity Studio
-src/app/api/             leads · newsletter · careers · revalidate · webhooks/cal · cron/retention · admin export · auth
+src/app/api/             leads · newsletter · careers/apply · revalidate  (forms → src/lib/server/email.ts)
 src/components/          ui · layout · cards · blocks · forms  (+ *.stories in src/stories)
 src/content/             typed local content (fallback + seed source)
 src/lib/content.ts       data layer: Sanity → fallback to src/content, sample gating
 src/sanity/              schemas, GROQ queries, client
-src/db/                  Drizzle schema, Neon/PGlite driver, retention.sql
 tests/                   Vitest unit tests + Playwright E2E
 ```
 

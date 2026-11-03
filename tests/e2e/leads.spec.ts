@@ -1,8 +1,8 @@
 import { expect, test } from "@playwright/test";
-import { login, uniqueEmail } from "./helpers";
+import { mailFor, uniqueEmail } from "./helpers";
 
-test.describe("Lead pipeline", () => {
-  test("contact form: 3 steps → /thank-you → lead visible in admin with score", async ({ page }) => {
+test.describe("Lead pipeline (email)", () => {
+  test("contact form: 3 steps → /thank-you → enquiry emailed to the inbox", async ({ page }) => {
     const email = uniqueEmail("contact");
     await page.goto("/contact?service=sbcc");
     await expect(page.getByRole("checkbox", { name: /Social & Behaviour Change/ })).toBeChecked();
@@ -20,11 +20,10 @@ test.describe("Lead pipeline", () => {
     await page.getByRole("button", { name: "Send brief" }).click();
     await expect(page).toHaveURL(/\/thank-you$/);
 
-    await login(page);
-    await page.goto(`/admin?q=${encodeURIComponent(email)}`);
-    await page.getByRole("link", { name: "Contact Flow Person" }).click();
-    await expect(page.getByText("Social & Behaviour Change Communication")).toBeVisible();
-    await expect(page.getByText(/Score \d+/)).toBeVisible();
+    const mail = await mailFor(email);
+    expect(mail.to).toBe("leads@example.com");
+    expect(mail.subject).toContain("Contact Flow Org");
+    for (const v of ["Contact Flow Person", "Social & Behaviour Change Communication", "NGOs & Development", "KES 5M+", "As soon as possible", "/contact"]) expect(mail.text).toContain(v);
   });
 
   test("step validation shows an error summary", async ({ page }) => {

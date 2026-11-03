@@ -8,11 +8,11 @@ export default defineConfig({
   timeout: 45_000,
   retries: process.env.CI ? 1 : 0,
   use: { baseURL, contextOptions: { reducedMotion: "reduce" } },
-  // Fresh in-process Postgres (PGlite) per run; requires `npm run build` first.
+  // Fresh mock-email outbox per run; requires `npm run build` first.
   webServer: process.env.BASE_URL
     ? undefined
     : {
-        command: `rm -rf .pglite-e2e && next start -p ${E2E.port}`,
+        command: `rm -rf ${E2E.outbox} && next start -p ${E2E.port}`,
         url: `${baseURL}/robots.txt`,
         reuseExistingServer: false,
         env: { ...E2E.env },

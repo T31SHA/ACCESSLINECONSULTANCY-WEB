@@ -44,6 +44,6 @@ test-results/
 playwright-report/
 .lighthouseci/
 
-# local PGlite databases
-.pglite*/
+# E2E/local email outbox (EMAIL_TEST_OUTBOX)
+.email-outbox*/
 storybook-static/

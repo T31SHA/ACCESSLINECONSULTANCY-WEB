@@ -1,34 +1,29 @@
 import { createHmac, randomUUID } from "node:crypto";
-import { expect, type APIRequestContext, type Page } from "@playwright/test";
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
+import { expect } from "@playwright/test";
 import { E2E } from "./env";
 
 export const uniqueEmail = (tag: string) => `${tag}-${randomUUID().slice(0, 8)}@example.com`;
 
-export async function createLead(request: APIRequestContext, over: Partial<Record<string, unknown>> = {}) {
-  const email = (over.email as string) ?? uniqueEmail("lead");
-  const res = await request.post("/api/leads", {
-    data: {
-      variant: "full",
-      data: {
-        serviceInterest: ["pr-media-relations"], organisation: "E2E Org", industry: "health", budgetBand: "2m_5m", timeline: "asap",
-        fullName: "E2E Tester", email, phone: "+254 712 345 678", consent: true, ...over,
-      },
-      meta: { sourcePage: "/contact", utmSource: "e2e" },
-    },
-  });
-  expect(res.status()).toBe(200);
-  const body = await res.json();
-  expect(body.id).toMatch(/^[0-9a-f-]{36}$/);
-  return { id: body.id as string, email };
-}
+export type OutboxMail = {
+  from: string; to: string; replyTo?: string; subject: string; text: string; html: string;
+  attachments: { filename: string; contentType: string; size: number }[];
+};
 
-export async function login(page: Page, email: string = E2E.admin.email, password: string = E2E.admin.password) {
-  await page.goto("/admin/login");
-  await page.getByLabel("Email").fill(email);
-  await page.getByLabel("Password").fill(password);
-  await page.getByRole("button", { name: "Sign in" }).click();
-  // Wait for the server action to finish (cookie set + redirect) before navigating elsewhere.
-  await page.waitForURL((u) => u.pathname !== "/admin/login" || u.searchParams.has("error"));
+/** Waits for the (mock) email whose reply-to is `replyTo` to land in the E2E outbox. */
+export async function mailFor(replyTo: string): Promise<OutboxMail> {
+  let found: OutboxMail | undefined;
+  await expect.poll(async () => {
+    const dir = path.resolve(E2E.outbox);
+    const files = await readdir(dir).catch(() => [] as string[]);
+    for (const f of files) {
+      const m = JSON.parse(await readFile(path.join(dir, f), "utf8")) as OutboxMail;
+      if (m.replyTo === replyTo) { found = m; return true; }
+    }
+    return false;
+  }, { timeout: 10_000 }).toBe(true);
+  return found!;
 }
 
 /** Sanity webhook signature: t=<ms>,v1=base64url(HMAC-SHA256(secret, `${t}.${body}`)). */
@@ -36,6 +31,3 @@ export function sanitySignature(body: string, secret: string, t = Date.now()) {
   const sig = createHmac("sha256", secret).update(`${t}.${body}`).digest("base64url");
   return `t=${t},v1=${sig}`;
 }
-
-/** Cal.com signature: hex(HMAC-SHA256(secret, rawBody)). */
-export const calSignature = (body: string, secret: string) => createHmac("sha256", secret).update(body).digest("hex");
