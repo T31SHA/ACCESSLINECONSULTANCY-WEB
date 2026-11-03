@@ -45,6 +45,7 @@ const nextConfig: NextConfig = {
   // Pin the workspace root (a stray lockfile in $HOME otherwise confuses tracing).
   outputFileTracingRoot: path.join(__dirname),
   reactStrictMode: true,
+  serverExternalPackages: ["@electric-sql/pglite"],
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],

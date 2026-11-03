@@ -19,3 +19,11 @@ Decisions made autonomously during the build. Each lists the choice and why.
 - **Fonts:** switched from `next/font/google` to vendored WOFF2 via `next/font/local` (Syne + Inter, OFL, latin subset). The build no longer needs network access to Google, and the "self-hosted WOFF2" requirement is met literally.
 - **Studio** gets a scoped CSP (`/studio/*`) that allows Sanity APIs and websockets; the public site keeps the strict CSP.
 - Images come from Sanity as `asset->url`, served through `next/image` (cdn.sanity.io allowed). No image-url builder needed.
+
+## /admin
+- **Auth:** Auth.js v5 (beta, the version that supports the App Router) with a **credentials** provider. It checks the `ADMIN_EMAILS` allowlist plus a scrypt `ADMIN_PASSWORD_HASH` (generate with `npm run admin:hash`), and login attempts are rate-limited per email. I chose credentials over magic links because magic links need an email provider *and* a database adapter (3 extra tables), which would leave the admin unusable without Resend. `ADMIN_PASSWORD` (plain) is accepted only as a dev/test fallback when no hash is set.
+- JWT sessions (12 h). Middleware guards `/admin/*` (redirect) and `/api/admin/*` (401 JSON); every page, action and route also re-checks with `requireAdmin()`. Without `AUTH_SECRET` the admin shows a "not configured" notice instead of crashing.
+- Admins are mirrored into `users` on login, so status changes, notes and exports are attributed in `lead_events` and `audit_log`.
+- CSV export uses the current filters, adds a UTF-8 BOM (Excel), escapes per RFC 4180 and neutralises spreadsheet formulas (`=+-@`). Each export is audit-logged.
+- **PGlite** (in-process Postgres, WASM) is selected with `DATABASE_URL=pglite://<dir>|memory` for local dev and E2E tests and auto-migrates on boot. Production uses Neon via `postgres://`. This lets the tests exercise the real lead → DB → admin → CSV path.
+- The auto-reply is only logged as `email_sent` when Resend actually accepted it.

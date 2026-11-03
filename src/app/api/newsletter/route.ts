@@ -1,7 +1,7 @@
 import { randomBytes } from "node:crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
-import { db, schema } from "@/db";
+import { getDb, schema } from "@/db";
 import { rateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
@@ -9,6 +9,7 @@ export const runtime = "nodejs";
 const body = z.object({ email: z.email().max(254), website: z.string().max(500).optional() });
 
 export async function POST(req: NextRequest) {
+  const db = await getDb();
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0] ?? "anon";
   if (!(await rateLimit(`nl:${ip}`)).success) return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   const parsed = body.safeParse(await req.json().catch(() => null));

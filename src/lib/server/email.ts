@@ -34,10 +34,11 @@ export async function sendLeadNotification(lead: Record<string, unknown>) {
   await Promise.allSettled(tasks);
 }
 
-export async function sendLeadAutoReply(to: string, name: string) {
-  if (!resend) return;
+/** Returns true only if an email was actually handed to Resend. */
+export async function sendLeadAutoReply(to: string, name: string): Promise<boolean> {
+  if (!resend) return false;
   const first = esc(name.split(" ")[0] ?? name);
-  await resend.emails.send({
+  const { error } = await resend.emails.send({
     from: FROM,
     to,
     subject: "We've got your brief — let's talk",
@@ -45,6 +46,7 @@ export async function sendLeadAutoReply(to: string, name: string) {
 <p>Hi ${first},</p>
 <p>Thanks for reaching out to ${site.name}. A senior consultant will review your brief and reply personally.</p>
 ${site.calUrl ? `<p>Want to move faster? <a href="${site.calUrl}" style="color:#014F29;font-weight:600">Book a 30-minute discovery call</a>.</p>` : `<p>Prefer to talk? Call us on ${site.phone}.</p>`}
-<p>— The Accessline team<br>${site.address.street}, ${site.address.locality}</p></div>`,
+<p>— The team at ${site.name}<br>${site.address.street}, ${site.address.locality}</p></div>`,
   });
+  return !error;
 }

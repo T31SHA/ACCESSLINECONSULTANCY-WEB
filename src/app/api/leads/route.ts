@@ -1,5 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { db, schema } from "@/db";
+import { getDb, schema } from "@/db";
 import { leadPayloadSchema, leadSchema, shortLeadSchema } from "@/lib/lead-schema";
 import { sendLeadAutoReply, sendLeadNotification } from "@/lib/server/email";
 import { rateLimit } from "@/lib/server/rate-limit";
@@ -21,6 +21,7 @@ function score(d: { budgetBand?: string; timeline?: string; serviceInterest?: st
 }
 
 export async function POST(req: NextRequest) {
+  const db = await getDb();
   const clientIp = ip(req);
   const rl = await rateLimit(`lead:${clientIp ?? "anon"}`);
   if (!rl.success) return NextResponse.json({ error: "Too many submissions. Please try again shortly." }, { status: 429 });
@@ -78,8 +79,8 @@ export async function POST(req: NextRequest) {
 
   await Promise.allSettled([
     sendLeadNotification({ ...record, id: leadId }),
-    sendLeadAutoReply(d.email, d.fullName).then(async () => {
-      if (db && leadId) {
+    sendLeadAutoReply(d.email, d.fullName).then(async (sent) => {
+      if (sent && db && leadId) {
         await db.insert(schema.leadEvents).values({ leadId, type: "email_sent", payload: { template: "auto_reply" } });
       }
     }),

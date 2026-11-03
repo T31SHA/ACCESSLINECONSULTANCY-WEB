@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getJob } from "@/lib/content";
-import { db, schema } from "@/db";
+import { getDb, schema } from "@/db";
 import { applicationSchema } from "@/lib/careers-schema";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { verifyTurnstile } from "@/lib/server/turnstile";
@@ -8,6 +8,7 @@ import { verifyTurnstile } from "@/lib/server/turnstile";
 export const runtime = "nodejs";
 
 export async function POST(req: NextRequest) {
+  const db = await getDb();
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0] ?? null;
   if (!(await rateLimit(`apply:${ip ?? "anon"}`)).success) return NextResponse.json({ error: "Too many requests." }, { status: 429 });
   const parsed = applicationSchema.safeParse(await req.json().catch(() => null));
