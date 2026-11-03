@@ -11,7 +11,7 @@ Decisions made autonomously during the build. Each lists the choice and why.
 
 ## Sanity CMS
 - **Versions:** `next-sanity@11` + `sanity@4`. The latest next-sanity (12+) requires Next 16 / React 19.2; upgrading the framework mid-project wasn't worth the risk.
-- **Route groups:** marketing pages live in `app/(site)` with the header/footer layout. `/studio` (and `/admin`) get their own chrome. The 404 page renders the site chrome itself.
+- **Route groups:** marketing pages live in `app/(site)` with the header/footer layout. `/studio` gets its own chrome. The 404 page renders the site chrome itself.
 - **Data layer** (`src/lib/content.ts`): async loaders read Sanity when `NEXT_PUBLIC_SANITY_PROJECT_ID` is set, else `src/content`. If Sanity errors at runtime, they log and fall back to local content, so the site never goes blank. `sample` gating applies to both sources.
 - **Caching:** tag-based (`sanity` + per-type tags), 1-hour fallback. `/api/revalidate` verifies Sanity's HMAC signature, then purges tags and the layout.
 - **FAQs** are standalone `faq` documents referenced from services (reusable across pages). **Site settings** is a singleton that edits stats, socials and the Cal.com URL. Verified NAP (name, address, phone, email) stays in code on purpose: it feeds schema/legal pages and shouldn't drift.
@@ -20,25 +20,19 @@ Decisions made autonomously during the build. Each lists the choice and why.
 - **Studio** gets a scoped CSP (`/studio/*`) that allows Sanity APIs and websockets; the public site keeps the strict CSP.
 - Images come from Sanity as `asset->url`, served through `next/image` (cdn.sanity.io allowed). No image-url builder needed.
 
-## /admin
-- **Auth:** Auth.js v5 (beta, the version that supports the App Router) with a **credentials** provider. It checks the `ADMIN_EMAILS` allowlist plus a scrypt `ADMIN_PASSWORD_HASH` (generate with `npm run admin:hash`), and login attempts are rate-limited per email. I chose credentials over magic links because magic links need an email provider *and* a database adapter (3 extra tables), which would leave the admin unusable without Resend. `ADMIN_PASSWORD` (plain) is accepted only as a dev/test fallback when no hash is set.
-- JWT sessions (12 h). Middleware guards `/admin/*` (redirect) and `/api/admin/*` (401 JSON); every page, action and route also re-checks with `requireAdmin()`. Without `AUTH_SECRET` the admin shows a "not configured" notice instead of crashing.
-- Admins are mirrored into `users` on login, so status changes, notes and exports are attributed in `lead_events` and `audit_log`.
-- CSV export uses the current filters, adds a UTF-8 BOM (Excel), escapes per RFC 4180 and neutralises spreadsheet formulas (`=+-@`). Each export is audit-logged.
-- **PGlite** (in-process Postgres, WASM) is selected with `DATABASE_URL=pglite://<dir>|memory` for local dev and E2E tests and auto-migrates on boot. Production uses Neon via `postgres://`. This lets the tests exercise the real lead → DB → admin → CSV path.
-- The auto-reply is only logged as `email_sent` when Resend actually accepted it.
+## No database (2026-11-03)
+- The Postgres layer (Drizzle, Neon/PGlite, migrations), the `/admin` lead dashboard and Auth.js, the retention cron, Cal.com booking persistence, R2 CV storage and newsletter storage were removed. The site is a plain website on Hostinger.
+- Every form is **emailed** to `LEADS_INBOX` with Reply-To set to the submitter (`src/lib/server/email.ts`). Transport: Resend if `RESEND_API_KEY` is set, otherwise SMTP via nodemailer (Gmail App Password). Validation, honeypot, optional Turnstile and optional Upstash rate limiting are unchanged. With no transport configured the routes return 503 with a "please email us" message, so nothing is silently lost.
+- Careers: the CV is optional and sent as an email attachment (PDF/DOCX ≤5 MB, multipart upload to `/api/careers/apply`).
+- Newsletter: signups are emailed to `LEADS_INBOX` (no double opt-in; add them to a mailing tool manually).
 
 ## Integrations
-- **Cal.com:** HMAC-SHA256 of the raw body (`X-Cal-Signature-256`) is verified with a timing-safe compare. Bookings are linked by `metadata[leadId]`, which the auto-reply email pre-fills in the booking link, else by the newest lead with the attendee's email. A reschedule marks the old booking `rescheduled`. Booking a call moves a lead `new → contacted` (later stages are never downgraded).
-- **Newsletter double opt-in:** one-time base64url token, 14-day TTL, single use. The confirm page needs a button click (POST) instead of confirming on GET, so corporate link-scanners (Outlook Safe Links etc.) can't auto-subscribe people. Re-subscribing an already-confirmed address returns the same response (no enumeration). Without Resend, the confirm link is logged in development.
-- **Retention:** `/api/cron/retention` (Bearer `CRON_SECRET`, daily via `vercel.json`) implements `retention.sql` in Drizzle, because it needs the CV keys to delete R2 objects *before* rows. Runs are audit-logged. An application whose CV deletion fails is kept and retried.
 - **Sentry:** runtime SDK only when `SENTRY_DSN`/`NEXT_PUBLIC_SENTRY_DSN` is set. The client SDK is a lazy, idle-time dynamic import, so it adds 0 KB to the home bundle. The source-map upload plugin (`withSentryConfig`) is enabled only when `SENTRY_AUTH_TOKEN` exists.
 - **Storybook 10** (`@storybook/nextjs-vite`) with the a11y addon. 27 stories cover every core primitive, layout, card, block and form, plus a sand/dark/forest surface toolbar. Async server components were split into presentational views (`CtaBandView`) so they render in isolation. Chromatic wasn't set up: it needs a project token from the client's account (LAUNCH.md).
 
 ## Testing
 - **Bug found and fixed by the suite:** `dynamicParams = false` made every `[slug]` page 404 (`NoFallbackError`) after `/api/revalidate` purged the cache, so a single CMS publish would have broken all detail pages. It would also have hidden new CMS slugs until a redeploy. All dynamic routes now use `dynamicParams = true`, and `notFound()` guards unknown slugs. A regression test covers it.
-- The E2E server boots on a fresh PGlite database with throwaway secrets (`tests/e2e/env.ts`). API/flow specs run on desktop; the page-level a11y/SEO spec also runs on a Pixel 7 profile.
-- `E2E_EXPOSE_TOKENS=1` makes `/api/newsletter` return the confirm token so the opt-in flow is testable without an inbox. It is ignored when `VERCEL_ENV=production` or when Resend is configured.
+- The E2E server runs with email in dry-run mode (`tests/e2e/env.ts`). API/flow specs run on desktop; the page-level a11y/SEO spec also runs on a Pixel 7 profile.
 
 ## Performance (to meet Lighthouse ≥95)
 - **Reveal-on-scroll** no longer hides content that is already on screen at hydration. Previously it re-hid and faded in the LCP text, causing a visible flash and ~2.5 s of LCP render delay.
@@ -50,7 +44,7 @@ Decisions made autonomously during the build. Each lists the choice and why.
 - Lighthouse's simulated LCP (~2.5 s) is dominated by Lantern's modelling of JS download on throttled 4G. Measured LCP in Chrome at 4× CPU slowdown is ~0.2 s. LHCI warns above 2.5 s; the brief's <2.0 s real-world target should be confirmed with Plausible/CrUX field data after launch.
 
 ## Graceful degradation
-Verified against a production build started with an **empty environment**: every page renders, the Studio and admin show "not configured" notices, and webhooks/cron/admin APIs return `503 … not configured`. Plausible, Turnstile and booking CTAs are simply absent. Endpoints that would otherwise *lose user data* fail honestly in production with a 503 telling the visitor to email the configured contact address: a lead with no DB *and* no email/Slack channel, a newsletter signup with no DB, and a job application with no DB. In development they accept, so local work isn't blocked.
+Every page renders with an empty environment; the Studio shows a "not configured" notice. Plausible, Turnstile and booking CTAs are simply absent. Endpoints that would otherwise *lose user data* fail honestly in production with a 503 telling the visitor to email the configured contact address: any form submission when no email transport is configured. Use `EMAIL_DRY_RUN=1` locally.
 
 ## New domain, no legacy redirects (2026-11-03)
 This is a new site, not a replacement of the old WordPress site, so the WordPress 301s (`/about-us`, `/wp-json/*`, …) were dropped. Every absolute URL (metadataBase, canonicals, sitemap, robots, OG, JSON-LD, email links) derives from `NEXT_PUBLIC_SITE_URL`, defaulting to the Hostinger preview domain until the new domain is set.
