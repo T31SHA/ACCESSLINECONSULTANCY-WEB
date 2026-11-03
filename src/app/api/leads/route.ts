@@ -1,7 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getDb, schema } from "@/db";
 import { leadPayloadSchema, leadSchema, shortLeadSchema } from "@/lib/lead-schema";
-import { sendLeadAutoReply, sendLeadNotification } from "@/lib/server/email";
+import { emailConfigured, sendLeadAutoReply, sendLeadNotification } from "@/lib/server/email";
+import { site } from "@/content/site";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { verifyTurnstile } from "@/lib/server/turnstile";
 
@@ -69,12 +70,18 @@ export async function POST(req: NextRequest) {
     score: score(d),
   };
 
+  // Never silently drop a lead: with no database and no notification channel, fail honestly.
+  if (!db && !emailConfigured && process.env.NODE_ENV === "production") {
+    console.error("[leads] neither DATABASE_URL nor RESEND_API_KEY/SLACK_WEBHOOK_URL configured — lead rejected");
+    return NextResponse.json({ error: `We couldn't send your brief right now. Please email ${site.email}.` }, { status: 503 });
+  }
+
   let leadId: string | undefined;
   if (db) {
     const [row] = await db.insert(schema.leads).values(record).returning({ id: schema.leads.id });
     leadId = row?.id;
   } else if (process.env.NODE_ENV === "production") {
-    console.error("[leads] DATABASE_URL missing — lead not persisted");
+    console.error("[leads] DATABASE_URL missing — lead sent by email only");
   }
 
   await Promise.allSettled([

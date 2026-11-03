@@ -18,7 +18,12 @@ export async function POST(req: NextRequest) {
   const parsed = body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Enter a valid email address." }, { status: 422 });
   if (parsed.data.website) return NextResponse.json({ ok: true });
-  if (!db) return NextResponse.json({ ok: true });
+  if (!db) {
+    // Dev without a DB: accept. Production: don't pretend to subscribe someone we can't store.
+    return process.env.NODE_ENV === "production"
+      ? NextResponse.json({ error: "Sign-up is temporarily unavailable. Please try again later." }, { status: 503 })
+      : NextResponse.json({ ok: true });
+  }
 
   const email = parsed.data.email.toLowerCase();
   const [existing] = await db.select().from(schema.newsletterSubscribers).where(eq(schema.newsletterSubscribers.email, email)).limit(1);

@@ -48,3 +48,6 @@ Decisions made autonomously during the build. Each lists the choice and why.
 - **Contact form** no longer uses `useSearchParams`, which had forced client-only rendering; `?service=` is applied after mount, so the form is server-rendered.
 - **Zod** runs `jitless` (no `new Function` probe), which removes a CSP violation that cost Best Practices points. CV constants were split out so the careers page doesn't ship Zod for two constants.
 - Lighthouse's simulated LCP (~2.5 s) is dominated by Lantern's modelling of JS download on throttled 4G. Measured LCP in Chrome at 4× CPU slowdown is ~0.2 s. LHCI warns above 2.5 s; the brief's <2.0 s real-world target should be confirmed with Plausible/CrUX field data after launch.
+
+## Graceful degradation
+Verified against a production build started with an **empty environment**: every page renders, the Studio and admin show "not configured" notices, and webhooks/cron/admin APIs return `503 … not configured`. Plausible, Turnstile and booking CTAs are simply absent. Endpoints that would otherwise *lose user data* fail honestly in production with a 503 telling the visitor to email info@accesslineconsultancy.com: a lead with no DB *and* no email/Slack channel, a newsletter signup with no DB, and a job application with no DB. In development they accept, so local work isn't blocked.

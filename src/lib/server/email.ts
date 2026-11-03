@@ -4,6 +4,7 @@ import { site } from "@/content/site";
 import { calLinkForLead } from "@/lib/integrations/cal";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
+export const emailConfigured = Boolean(resend || process.env.SLACK_WEBHOOK_URL);
 const FROM = process.env.EMAIL_FROM ?? `Accessline Consultancy Limited <info@accesslineconsultancy.com>`;
 
 const esc = (s: string) =>
