@@ -1,5 +1,11 @@
 import { published } from "./types";
 
+/** Default origin until the new domain is live; override with NEXT_PUBLIC_SITE_URL (no trailing slash). */
+const DEFAULT_SITE_URL = "https://slategrey-deer-824136.hostingersite.com";
+/** Kenyan number in E.164 digits — the ONE place the phone number is stored. */
+const PHONE_E164 = "254729963218";
+const phoneDisplay = `+${PHONE_E164.slice(0, 3)} ${PHONE_E164.slice(3, 6)} ${PHONE_E164.slice(6, 9)} ${PHONE_E164.slice(9)}`; // +254 729 963 218
+
 /**
  * site_settings — single source of truth for company name and contact details.
  * Only verified facts live here (see DECISIONS.md). Anything unverified is `sample: true`.
@@ -13,13 +19,15 @@ export const site = {
   positioning: "The PR & Brand Strategy Agency for Africa.",
   description:
     "Nairobi PR and strategic communications agency. Media relations, brand strategy, SBCC, research and events for organisations across Africa.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://accesslineconsultancy.com",
+  /** Every absolute URL (canonicals, sitemap, robots, OG, JSON-LD, email links) derives from this. */
+  url: (process.env.NEXT_PUBLIC_SITE_URL || DEFAULT_SITE_URL).replace(/\/+$/, ""),
   locale: "en_KE",
-  email: "info@accesslineconsultancy.com",
-  phone: "+254 727 684443",
-  phoneHref: "tel:+254727684443",
-  /** Same verified number; confirm WhatsApp is enabled on it before launch (LAUNCH.md). */
-  whatsapp: "https://wa.me/254727684443",
+  /** Contact email — single config value; set NEXT_PUBLIC_CONTACT_EMAIL to change it. */
+  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@accesslineconsultancy.com",
+  phone: phoneDisplay,
+  phoneHref: `tel:+${PHONE_E164}`,
+  /** Same number; confirm WhatsApp is enabled on it before launch (LAUNCH.md). */
+  whatsapp: `https://wa.me/${PHONE_E164}`,
   address: {
     street: "10th Floor, Ecobank Towers",
     locality: "Nairobi",

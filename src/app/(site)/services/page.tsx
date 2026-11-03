@@ -21,7 +21,8 @@ export default async function ServicesPage() {
         title="Everything it takes to be heard — and believed."
         lede="Eight disciplines under one roof, orchestrated around the outcome you need. Pick one, or let us design the mix."
       />
-      <section className="container-site pb-[var(--section-y)]">
+      <section className="container-site pb-[var(--section-y)]" aria-labelledby="all-services">
+        <h2 id="all-services" className="sr-only">All services</h2>
         <div className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
           {services.map((s, i) => <ServiceCard key={s.slug} service={s} index={i} />)}
         </div>

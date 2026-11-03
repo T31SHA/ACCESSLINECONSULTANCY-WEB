@@ -24,9 +24,13 @@ describe("site facts", () => {
     expect(site.name).toBe("Accessline Consultancy Limited");
     expect(site.legalName).toBe("Accessline Consultancy Limited");
     expect(site.email).toBe("info@accesslineconsultancy.com");
-    expect(site.phone).toBe("+254 727 684443");
+    expect(site.phone).toBe("+254 729 963 218");
+    expect(site.phoneHref).toBe("tel:+254729963218");
+    expect(site.whatsapp).toBe("https://wa.me/254729963218");
     expect(site.address.street).toBe("10th Floor, Ecobank Towers");
-    expect(JSON.stringify(site)).not.toMatch(/gmail|700 000|Ltd"/);
+    expect(JSON.stringify(site)).not.toMatch(/gmail|700 000|Ltd"|727 ?684 ?443/);
+    if (!process.env.NEXT_PUBLIC_SITE_URL) expect(site.url).toBe("https://slategrey-deer-824136.hostingersite.com");
+    expect(site.url).not.toMatch(/accesslineconsultancy\.com|\/$/);
   });
 });
 

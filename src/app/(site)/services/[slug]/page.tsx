@@ -10,6 +10,7 @@ import { JsonLd } from "@/components/ui/json-ld";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getCaseStudies, getIndustries, getService, getServices } from "@/lib/content";
 import { faqSchema, serviceSchema } from "@/lib/schema";
+import { serviceImages } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -39,6 +40,7 @@ export default async function ServicePage({ params }: Props) {
         overline="Service"
         title={s.title}
         lede={s.short}
+        image={serviceImages[s.slug]}
       >
         <div className="mt-10"><ButtonLink href={`/contact?service=${s.slug}`} size="lg" withArrow>Discuss your brief</ButtonLink></div>
       </PageHero>

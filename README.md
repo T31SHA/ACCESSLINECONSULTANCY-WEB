@@ -1,4 +1,4 @@
-# Accessline Consultancy Limited · accesslineconsultancy.com
+# Accessline Consultancy Limited · website
 
 Custom-built replacement for the old WordPress/Elementor site. *Lead the Change.*
 
@@ -66,11 +66,11 @@ Every variable is documented inline in **`.env.example`**. All are optional; thi
 4. **Admin access:** `AUTH_SECRET` (`openssl rand -base64 32`), `ADMIN_EMAILS`, and `ADMIN_PASSWORD_HASH` (`npm run admin:hash -- '…'`).
 5. **Cron:** `vercel.json` schedules `/api/cron/retention` daily at 00:00 UTC (03:00 EAT). Set `CRON_SECRET` and Vercel authenticates automatically.
 6. **Webhooks** (after the first deploy):
-   - *Sanity* → sanity.io/manage → API → Webhooks: URL `https://accesslineconsultancy.com/api/revalidate`, trigger on create/update/delete, projection `{_type, "slug": slug.current}`, secret = `SANITY_REVALIDATE_SECRET`.
-   - *Cal.com* → Settings → Developer → Webhooks: URL `https://accesslineconsultancy.com/api/webhooks/cal`, events Booking Created / Rescheduled / Cancelled / Meeting Ended, secret = `CAL_WEBHOOK_SECRET`.
+   - *Sanity* → sanity.io/manage → API → Webhooks: URL `<NEXT_PUBLIC_SITE_URL>/api/revalidate`, trigger on create/update/delete, projection `{_type, "slug": slug.current}`, secret = `SANITY_REVALIDATE_SECRET`.
+   - *Cal.com* → Settings → Developer → Webhooks: URL `<NEXT_PUBLIC_SITE_URL>/api/webhooks/cal`, events Booking Created / Rescheduled / Cancelled / Meeting Ended, secret = `CAL_WEBHOOK_SECRET`.
 7. **R2 CORS** (CV uploads go browser → R2 directly):
    ```json
-   [{ "AllowedOrigins": ["https://accesslineconsultancy.com"], "AllowedMethods": ["PUT"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
+   [{ "AllowedOrigins": ["<NEXT_PUBLIC_SITE_URL>"], "AllowedMethods": ["PUT"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
    ```
 8. **Domain & DNS:** see LAUNCH.md.
 
@@ -85,11 +85,11 @@ CI (`.github/workflows/ci.yml`) runs typecheck → lint → unit → build → P
    ```bash
    NEXT_PUBLIC_SANITY_PROJECT_ID=… SANITY_API_WRITE_TOKEN=… npm run sanity:seed
    ```
-3. Editors go to **`https://accesslineconsultancy.com/studio`** and sign in with their Sanity account (invite them in sanity.io/manage → Members).
+3. Editors go to **`<NEXT_PUBLIC_SITE_URL>/studio`** and sign in with their Sanity account (invite them in sanity.io/manage → Members).
 4. What's editable: **Services, Industries, Case studies, Team, Testimonials, Client logos, Insights, Jobs, FAQs, Site settings** (stats, social links, booking URL). Company name, address, phone and email are fixed in code on purpose (they feed legal pages and structured data).
 5. **Publishing:** hit *Publish* and the webhook refreshes the affected pages within seconds. New slugs (e.g. a new job) go live without a redeploy.
 6. **The "Sample / unverified" toggle:** every document has one. Anything ticked is hidden on the live site (`HIDE_SAMPLE_CONTENT=true`). Untick it only once the client has approved the content.
-7. **Images:** upload authentic photography (no stock) and always fill in *Alt text* (required). Portraits 4:5 ≥1200 px; case-study heroes 16:9 ≥2000 px.
+7. **Images:** upload authentic photography where possible (bundled stock lives in `src/lib/images.ts`) and always fill in *Alt text* (required). Portraits 4:5 ≥1200 px; case-study heroes 16:9 ≥2000 px.
 
 ---
 

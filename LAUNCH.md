@@ -15,20 +15,20 @@ Full detail and file locations are in **CONTENT.md**. In Studio, every item belo
 - [ ] **Credentials/memberships** (e.g. PRSK) if any
 - [ ] **Insights:** proofread articles (or launch with none; the section hides itself)
 - [ ] **Jobs:** live vacancies (or none; the page says "No open roles right now")
-- [ ] **Photography:** authentic Nairobi/team/work imagery (hero, case studies, insights)
+- [ ] **Photography:** licensed stock in place (`src/lib/images.ts`, credits on /terms); swap in authentic Nairobi/work imagery when available. Team stays on monogram placeholders until real portraits arrive
 - [ ] **Social profiles:** real URLs (Studio → Site settings)
-- [ ] **WhatsApp:** confirm WhatsApp is active on +254 727 684443
+- [ ] **WhatsApp:** confirm WhatsApp is active on +254 729 963 218
 - [ ] **Legal review** of /privacy and /terms (Kenya DPA 2019); register with the ODPC if required
 - [ ] Final **proofread** of all copy
 
-Already settled: company name *Accessline Consultancy Limited*; contacts info@accesslineconsultancy.com · 10th Floor, Ecobank Towers, Nairobi · +254 727 684443.
+Already settled: company name *Accessline Consultancy Limited*; contacts 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218 (`src/content/site.ts`). Contact email = `NEXT_PUBLIC_CONTACT_EMAIL` (default info@accesslineconsultancy.com — confirm the mailbox is still valid).
 
 ## 2. Accounts & environment keys (Vercel → Production)
 
 | | Key(s) | Done |
 |---|---|---|
 | Launch gate | `HIDE_SAMPLE_CONTENT=true` | [ ] |
-| Site URL | `NEXT_PUBLIC_SITE_URL=https://accesslineconsultancy.com` | [ ] |
+| Site URL | `NEXT_PUBLIC_SITE_URL=https://slategrey-deer-824136.hostingersite.com` (switch to the new domain when set, then rebuild) | [ ] |
 | Neon | `DATABASE_URL` + run `npm run db:migrate` | [ ] |
 | Sanity | `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_REVALIDATE_SECRET` (+ seed, editors invited, CORS origin) | [ ] |
 | Admin | `AUTH_SECRET`, `ADMIN_EMAILS`, `ADMIN_PASSWORD_HASH` | [ ] |
@@ -60,18 +60,16 @@ Must **not** be set in Production: `ADMIN_PASSWORD`, `E2E_EXPOSE_TOKENS`, `SANIT
 ## 4. DNS & go-live
 
 - [ ] Lower TTL on existing DNS records to 300 s, 24 h before cutover
-- [ ] Add `accesslineconsultancy.com` and `www.accesslineconsultancy.com` in Vercel → Domains; redirect `www` → apex
+- [ ] Point the new domain (and `www`) at the host; redirect `www` → apex; set `NEXT_PUBLIC_SITE_URL` to it and rebuild
 - [ ] At the registrar/DNS host: apex `A 76.76.21.21`, `www CNAME cname.vercel-dns.com` (or as shown by Vercel)
 - [ ] **Keep MX/SPF/DKIM records for email untouched**; add Resend's DKIM/SPF records
 - [ ] SSL certificate issued (automatic) → HSTS header active
-- [ ] Verify legacy redirects return **301**: `/about-us → /about`, `/our-services → /services`, `/our-partners → /industries`, `/gis-remote-sensing → /team`, `/logistics-support → /careers`, `/wp-json/* → /`, `/wp-admin/* → /`
-- [ ] Crawl the old sitemap for any other indexed WordPress URLs and add redirects in `next.config.ts`
 
 ## 5. After launch
 
 - [ ] Google Search Console: verify domain, submit `/sitemap.xml`, request indexing of key pages
 - [ ] Bing Webmaster Tools: import from Search Console
-- [ ] Google Business Profile: NAP must match exactly (Accessline Consultancy Limited · 10th Floor, Ecobank Towers, Nairobi · +254 727 684443)
+- [ ] Google Business Profile: NAP must match exactly (Accessline Consultancy Limited · 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218)
 - [ ] Sentry receives a test error; Plausible shows traffic and goal conversions
 - [ ] Confirm the first retention cron run in Vercel → Cron logs (and `audit_log`)
 - [ ] Retire WordPress: export a final backup, then shut down hosting (the public `/wp-json/wp/v2/users` exposure ends here)

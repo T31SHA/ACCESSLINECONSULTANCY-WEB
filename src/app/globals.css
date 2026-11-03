@@ -105,6 +105,16 @@
   color-scheme: dark;
 }
 
+/* Photo scrim: #014F29 (forest-700) at 80% → 60%; text only ever sits on the ≥75% part. */
+.photo-scrim { background: rgb(1 79 41 / 0.8); }
+@media (min-width: 1024px) {
+  .photo-scrim { background: linear-gradient(90deg, rgb(1 79 41 / 0.8) 0%, rgb(1 79 41 / 0.8) 55%, rgb(1 79 41 / 0.6) 100%); }
+  .photo-scrim-r { background: linear-gradient(270deg, rgb(1 79 41 / 0.8) 0%, rgb(1 79 41 / 0.8) 55%, rgb(1 79 41 / 0.6) 100%); }
+}
+/* Text on photos: sand-50 for body copy too (mint-200 is only 4.0:1 on the scrim). */
+.on-photo { --fg: var(--color-sand-50); --fg-muted: var(--color-sand-50); color: var(--fg); }
+
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;

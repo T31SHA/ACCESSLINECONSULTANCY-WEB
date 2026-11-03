@@ -8,6 +8,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { getTeam } from "@/lib/content";
 import { sampleFacts, site } from "@/content/site";
 import { published } from "@/content/types";
+import { images } from "@/lib/images";
+import { Photo } from "@/components/ui/photo";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -40,6 +42,7 @@ export default async function AboutPage() {
         overline={sampleFacts ? `Est. ${sampleFacts.foundingYear} · Nairobi` : "Nairobi"}
         title="We help Africa's changemakers be heard and believed."
         lede={`${site.name} is a strategic communications and PR agency. We shape how corporates, NGOs and governments talk to the people who matter most.`}
+        image={images["about-nairobi-skyscrapers"]}
       />
 
       {milestones.length > 0 && (
@@ -72,6 +75,11 @@ export default async function AboutPage() {
           </ul>
         </div>
       </section>
+
+      {/* Mobile-only (kept well below the fold so it never becomes a lazy LCP); from 1024px up the hero shows it. */}
+      <div className="container-site pt-[var(--section-y)] md:hidden">
+        <Photo image={images["about-nairobi-skyscrapers"]} ratio="aspect-[4/3]" className="rounded-lg" sizes="100vw" />
+      </div>
 
       {leaders.length > 0 && (
         <section className="section container-site">
