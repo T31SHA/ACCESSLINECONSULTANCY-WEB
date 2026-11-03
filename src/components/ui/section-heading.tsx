@@ -3,9 +3,10 @@ import { cn } from "@/lib/utils";
 
 export function Overline({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <p className={cn("eyebrow flex items-center gap-3 text-[var(--fg-muted)]", className)}>
-      <span aria-hidden className="h-px w-8 bg-current" />
+    <p className={cn("readout flex items-center gap-3 text-[var(--fg-muted)]", className)}>
+      <span aria-hidden className="size-1.5 shrink-0 bg-accent-400" />
       {children}
+      <span aria-hidden className="h-px w-12 bg-current opacity-40" />
     </p>
   );
 }

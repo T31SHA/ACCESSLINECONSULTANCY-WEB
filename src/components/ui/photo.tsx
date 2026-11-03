@@ -38,7 +38,7 @@ export function Photo({ image, sizes, ratio = "aspect-[4/3]", className, imgClas
 }
 
 /**
- * Deep-green (#014F29) scrim for text over photos. 80% wherever small text can sit
+ * Deep-navy (#2C3140) scrim for text over photos. 80% wherever small text can sit
  * (sand-50 on worst-case white pixel ≥ 5.1:1); fades to 60% only on the text-free side at ≥1024px.
  */
 export function PhotoScrim({ side = "left", className }: { side?: "left" | "right"; className?: string }) {

@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { inter, syne } from "@/lib/fonts";
+import { inter, plexMono, syne } from "@/lib/fonts";
 import { site } from "@/content/site";
 import "./globals.css";
 
@@ -18,7 +18,7 @@ export const viewport: Viewport = { themeColor: "#014F29", width: "device-width"
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en-KE" className={`${syne.variable} ${inter.variable}`}>
+    <html lang="en-KE" className={`${syne.variable} ${inter.variable} ${plexMono.variable}`}>
       <body>{children}</body>
     </html>
   );

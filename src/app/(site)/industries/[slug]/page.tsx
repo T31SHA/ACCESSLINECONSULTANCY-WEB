@@ -57,7 +57,7 @@ export default async function IndustryPage({ params }: Props) {
         <section className="section container-site">
           <SectionHeading overline="Related work" title={`${ind.title} in practice`} />
           <div className="grid gap-12 md:grid-cols-3 md:gap-6">
-            {related.map((c) => <CaseStudyCard key={c.slug} cs={c} industryTitle={ind.title} />)}
+            {related.map((c, i) => <CaseStudyCard key={c.slug} index={i} cs={c} industryTitle={ind.title} />)}
           </div>
         </section>
       )}

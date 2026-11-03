@@ -31,7 +31,7 @@ export function WorkFilter({ items, services, industries }: { items: CaseStudy[]
         {[{ slug: "", title: "All" }, ...opts].map((o) => (
           <button key={o.slug || "all"} type="button" aria-pressed={value === o.slug} onClick={() => set(k, o.slug)}
             className={cn("min-h-11 rounded-pill border px-4 text-sm font-medium transition-colors",
-              value === o.slug ? "border-forest-700 bg-forest-700 text-sand-50" : "border-[var(--line)] hover:border-[var(--fg-muted)]")}>
+              value === o.slug ? "border-ink-950 bg-ink-950 text-sand-50" : "border-[var(--line)] hover:border-[var(--fg-muted)]")}>
             {o.title}
           </button>
         ))}
@@ -48,7 +48,7 @@ export function WorkFilter({ items, services, industries }: { items: CaseStudy[]
       <p aria-live="polite" className="sr-only">{filtered.length} case studies shown</p>
       {filtered.length ? (
         <div className="grid gap-x-6 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((c) => <CaseStudyCard key={c.slug} cs={c} industryTitle={industries.find((x) => x.slug === c.industry)?.title} />)}
+          {filtered.map((c, i) => <CaseStudyCard key={c.slug} index={i} cs={c} industryTitle={industries.find((x) => x.slug === c.industry)?.title} />)}
         </div>
       ) : (
         <p className="py-16 text-center text-[var(--fg-muted)]">No case studies match that combination yet.</p>

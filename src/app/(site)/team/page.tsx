@@ -34,7 +34,7 @@ export default async function TeamPage() {
           <SectionHeading overline="Culture" title="How we work together" action={<ButtonLink href="/careers" withArrow>Join us</ButtonLink>} />
           <ul className="grid gap-8 md:grid-cols-4">
             {culture.map((c) => (
-              <li key={c.title} data-reveal className="border-t-2 border-forest-700 pt-6">
+              <li key={c.title} data-reveal className="border-t-2 border-ink-950 pt-6">
                 <h3 className="text-xl">{c.title}</h3>
                 <p className="mt-2 text-[var(--fg-muted)]">{c.body}</p>
               </li>

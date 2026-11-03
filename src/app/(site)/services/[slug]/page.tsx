@@ -51,7 +51,7 @@ export default async function ServicePage({ params }: Props) {
           <p className="eyebrow text-[var(--fg-muted)]">The problem</p>
           <p className="mt-6 font-display text-h3 font-bold">{s.problem}</p>
         </div>
-        <div className="bg-forest-700 p-8 text-sand-50 md:p-12" data-reveal>
+        <div className="bg-ink-950 p-8 text-sand-50 md:p-12" data-reveal>
           <p className="eyebrow text-mint-200">The outcome</p>
           <p className="mt-6 font-display text-h3 font-bold">{s.outcome}</p>
         </div>
@@ -76,7 +76,7 @@ export default async function ServicePage({ params }: Props) {
           <SectionHeading overline="Process" title="How it runs" />
           <ol className="grid gap-6 md:grid-cols-4">
             {s.process.map((p, i) => (
-              <li key={p.title} data-reveal className="border-t-2 border-forest-700 pt-6">
+              <li key={p.title} data-reveal className="border-t-2 border-ink-950 pt-6">
                 <p className="font-display text-sm font-bold text-forest-500">0{i + 1}</p>
                 <h3 className="mt-4 text-xl">{p.title}</h3>
                 <p className="mt-2 text-[var(--fg-muted)]">{p.body}</p>
@@ -90,7 +90,7 @@ export default async function ServicePage({ params }: Props) {
         <section className="section container-site">
           <SectionHeading overline="Related work" title="Proof, not promises" />
           <div className="grid gap-12 md:grid-cols-3 md:gap-6">
-            {related.map((c) => <CaseStudyCard key={c.slug} cs={c} industryTitle={industries.find((i) => i.slug === c.industry)?.title} />)}
+            {related.map((c, i) => <CaseStudyCard key={c.slug} index={i} cs={c} industryTitle={industries.find((i) => i.slug === c.industry)?.title} />)}
           </div>
         </section>
       )}

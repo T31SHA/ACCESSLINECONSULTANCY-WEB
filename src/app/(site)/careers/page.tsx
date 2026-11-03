@@ -35,7 +35,7 @@ export default async function CareersPage() {
           sizes="(min-width: 1320px) 520px, (min-width: 1024px) 40vw, 100vw" />
         <ul className="grid gap-8 sm:grid-cols-2 md:col-span-7">
           {culture.map((c) => (
-            <li key={c.title} data-reveal className="border-t-2 border-forest-700 pt-6">
+            <li key={c.title} data-reveal className="border-t-2 border-ink-950 pt-6">
               <h3 className="text-xl">{c.title}</h3>
               <p className="mt-2 text-[var(--fg-muted)]">{c.body}</p>
             </li>
