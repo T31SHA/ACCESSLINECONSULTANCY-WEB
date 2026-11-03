@@ -15,6 +15,7 @@ export type Service = {
   deliverables: string[];
   process: { title: string; body: string }[];
   faqs: Faq[];
+  sample?: boolean;
 };
 
 export type Industry = {
@@ -24,6 +25,7 @@ export type Industry = {
   seo: Seo;
   challenges: string[];
   approach: string;
+  sample?: boolean;
 };
 
 export type CaseStudy = {
@@ -82,6 +84,7 @@ export type Job = {
   summary: string;
   responsibilities: string[];
   requirements: string[];
+  sample?: boolean;
 };
 
 export type Testimonial = { quote: string; author: string; role: string; organisation: string; sample?: boolean };

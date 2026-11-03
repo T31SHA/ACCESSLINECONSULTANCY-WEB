@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { industries } from "@/content/industries";
-import { services } from "@/content/services";
 import { site } from "@/content/site";
 import { LinkedInIcon } from "@/components/ui/icons";
 import { NewsletterForm } from "@/components/forms/newsletter-form";
@@ -15,7 +13,9 @@ const company = [
   { label: "Contact", href: "/contact" },
 ];
 
-export function Footer() {
+type Props = { services: { slug: string; title: string }[]; industryCount: number; socials: Partial<Record<string, string>> };
+
+export function Footer({ services, industryCount, socials }: Props) {
   const year = new Date().getFullYear();
   return (
     <footer className="theme-dark relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]">
@@ -45,7 +45,7 @@ export function Footer() {
               {company.map((l) => (
                 <li key={l.href}><Link href={l.href} className="hover:text-mint-200">{l.label}</Link></li>
               ))}
-              <li><Link href="/industries" className="hover:text-mint-200">Industries ({industries.length})</Link></li>
+              <li><Link href="/industries" className="hover:text-mint-200">Industries ({industryCount})</Link></li>
             </ul>
           </nav>
           <div className="md:col-span-2">
@@ -55,8 +55,8 @@ export function Footer() {
               <p><a href={`mailto:${site.email}`} className="hover:text-mint-200">{site.email}</a></p>
               <p><a href={site.phoneHref} className="hover:text-mint-200">{site.phone}</a></p>
             </address>
-            {site.socials.linkedin && (
-              <a href={site.socials.linkedin} className="mt-6 inline-flex size-11 items-center justify-center rounded-pill border border-[var(--line)] hover:bg-[var(--line)]" aria-label={`${site.name} on LinkedIn`} rel="noopener" target="_blank">
+            {socials.linkedin && (
+              <a href={socials.linkedin} className="mt-6 inline-flex size-11 items-center justify-center rounded-pill border border-[var(--line)] hover:bg-[var(--line)]" aria-label={`${site.name} on LinkedIn`} rel="noopener" target="_blank">
                 <LinkedInIcon className="size-4" />
               </a>
             )}

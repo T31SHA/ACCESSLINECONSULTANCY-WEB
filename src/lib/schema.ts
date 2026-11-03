@@ -4,7 +4,7 @@ import { absoluteUrl } from "./seo";
 
 const orgId = absoluteUrl("/#organization");
 
-export const organizationSchema = () => ({
+export const organizationSchema = (socials: Partial<Record<string, string>> = site.socials) => ({
   "@context": "https://schema.org",
   "@type": ["ProfessionalService", "LocalBusiness"],
   "@id": orgId,
@@ -25,7 +25,7 @@ export const organizationSchema = () => ({
   },
   areaServed: [{ "@type": "Country", name: "Kenya" }, { "@type": "Place", name: "Africa" }],
   knowsAbout: ["Public relations", "Media relations", "Strategic communications", "SBCC", "Market research", "Events"],
-  ...(Object.keys(site.socials).length ? { sameAs: Object.values(site.socials) } : {}),
+  ...(Object.values(socials).some(Boolean) ? { sameAs: Object.values(socials).filter(Boolean) } : {}),
 });
 
 export const breadcrumbSchema = (items: { name: string; path: string }[]) => ({

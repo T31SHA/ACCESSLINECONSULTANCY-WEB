@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { getIndustry } from "@/content/industries";
 import type { CaseStudy } from "@/content/types";
 import { MediaFrame } from "@/components/ui/media-frame";
 
-export function CaseStudyCard({ cs, priority }: { cs: CaseStudy; priority?: boolean }) {
+export function CaseStudyCard({ cs, priority, industryTitle }: { cs: CaseStudy; priority?: boolean; industryTitle?: string }) {
   const metric = cs.metrics[0];
   return (
     <article data-reveal className="group relative">
@@ -17,7 +16,7 @@ export function CaseStudyCard({ cs, priority }: { cs: CaseStudy; priority?: bool
           </div>
         )}
       </div>
-      <p className="eyebrow mt-6 text-[var(--fg-muted)]">{cs.client} · {getIndustry(cs.industry)?.title}</p>
+      <p className="eyebrow mt-6 text-[var(--fg-muted)]">{cs.client}{industryTitle ? ` · ${industryTitle}` : ""}</p>
       <h3 className="mt-3 text-[1.5rem] leading-tight">
         <Link href={`/work/${cs.slug}`} className="after:absolute after:inset-0 group-hover:underline group-hover:decoration-2 group-hover:underline-offset-4">
           {cs.title}

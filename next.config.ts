@@ -1,3 +1,4 @@
+import path from "node:path";
 import type { NextConfig } from "next";
 
 const isDev = process.env.NODE_ENV !== "production";
@@ -17,6 +18,20 @@ const csp = [
   "upgrade-insecure-requests",
 ].join("; ");
 
+// Embedded Sanity Studio needs Sanity APIs + websockets; scoped to /studio only.
+const studioCsp = [
+  "default-src 'self'",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+  "style-src 'self' 'unsafe-inline'",
+  "img-src 'self' data: blob: https:",
+  "font-src 'self' data:",
+  "connect-src 'self' https://*.sanity.io wss://*.sanity.io https://*.apicdn.sanity.io",
+  "frame-src 'self'",
+  "frame-ancestors 'none'",
+  "base-uri 'self'",
+  "object-src 'none'",
+].join("; ");
+
 const securityHeaders = [
   { key: "Content-Security-Policy", value: csp },
   { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
@@ -27,6 +42,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Pin the workspace root (a stray lockfile in $HOME otherwise confuses tracing).
+  outputFileTracingRoot: path.join(__dirname),
   reactStrictMode: true,
   poweredByHeader: false,
   images: {
@@ -36,7 +53,12 @@ const nextConfig: NextConfig = {
   },
   experimental: { optimizePackageImports: ["lucide-react"] },
   async headers() {
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Later entries override earlier ones for the same key.
+      { source: "/studio/:path*", headers: [{ key: "Content-Security-Policy", value: studioCsp }] },
+      { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "no-store" }] },
+    ];
   },
   async redirects() {
     return [

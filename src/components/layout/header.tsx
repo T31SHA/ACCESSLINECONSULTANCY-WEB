@@ -5,14 +5,15 @@ import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { services } from "@/content/services";
 import { nav, site } from "@/content/site";
 import { ServiceIcon } from "@/components/ui/icons";
 import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 
-export function Header() {
+export type NavService = { slug: string; title: string; short: string; icon: string };
+
+export function Header({ services }: { services: NavService[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);

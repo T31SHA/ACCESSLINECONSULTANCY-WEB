@@ -1,12 +1,9 @@
 import type { MetadataRoute } from "next";
-import { industries } from "@/content/industries";
-import { posts } from "@/content/insights";
-import { jobs } from "@/content/people";
-import { services } from "@/content/services";
+import { getCaseStudies, getIndustries, getJobs, getPosts, getServices } from "@/lib/content";
 import { absoluteUrl } from "@/lib/seo";
-import { caseStudies } from "@/content/work";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const [services, industries, caseStudies, posts, jobs] = await Promise.all([getServices(), getIndustries(), getCaseStudies(), getPosts(), getJobs()]);
   const now = new Date();
   const statics = ["/", "/about", "/services", "/industries", "/work", "/team", "/insights", "/careers", "/contact", "/privacy", "/terms"];
   return [

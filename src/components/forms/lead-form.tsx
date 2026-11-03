@@ -6,8 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
 import type { z } from "zod";
-import { industries } from "@/content/industries";
-import { services } from "@/content/services";
 import { Button } from "@/components/ui/button";
 import { track, trackingMeta } from "@/lib/analytics";
 import {
@@ -27,7 +25,9 @@ const fieldLabels: Record<string, string> = {
   timeline: "Timeline", fullName: "Full name", email: "Email", phone: "Phone", message: "Message", consent: "Privacy consent",
 };
 
-export function LeadForm() {
+type Option = { slug: string; title: string };
+
+export function LeadForm({ services, industries }: { services: Option[]; industries: Option[] }) {
   const router = useRouter();
   const defaultService = useSearchParams().get("service") ?? undefined;
   const [step, setStep] = useState(0);

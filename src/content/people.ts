@@ -28,7 +28,7 @@ export const culture = [
 ] as const;
 
 /** SAMPLE roles — replace with live vacancies from the CMS. */
-export const jobs: Job[] = [
+export const jobs: Job[] = published([
   {
     slug: "senior-pr-account-manager",
     title: "Senior PR Account Manager",
@@ -40,6 +40,7 @@ export const jobs: Job[] = [
     summary: "Lead a portfolio of corporate and development clients, own media relationships and grow a team of account executives.",
     responsibilities: ["Own day-to-day client relationships and PR plans", "Pitch and secure tier-one coverage", "Lead crisis response for assigned accounts", "Coach and review the work of account executives"],
     requirements: ["5+ years in PR, agency or newsroom", "Strong East African media network", "Outstanding writing in English; Kiswahili an advantage", "Degree in communications, journalism or related field"],
+    sample: true,
   },
   {
     slug: "sbcc-programme-officer",
@@ -52,7 +53,8 @@ export const jobs: Job[] = [
     summary: "Coordinate community-level SBCC activities, pre-testing and MEL data collection for health programmes.",
     responsibilities: ["Coordinate field activities and partners", "Facilitate message pre-testing", "Collect and report MEL data"],
     requirements: ["3+ years in SBCC or public-health programmes", "Experience working with community health structures", "Fluency in Kiswahili"],
+    sample: true,
   },
-];
+]);
 
 export const getJob = (slug: string) => jobs.find((j) => j.slug === slug);
