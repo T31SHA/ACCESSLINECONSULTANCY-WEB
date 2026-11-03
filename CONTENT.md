@@ -1,21 +1,23 @@
 # Client content checklist (blocks launch)
 
-Search the code for `CLIENT TO CONFIRM` / `CLIENT TO SUPPLY` / `sample: true`.
+Everything unverified is marked **Sample / unverified** (`sample: true` in code, a toggle in Studio) and disappears when `HIDE_SAMPLE_CONTENT=true`. Replace each item in **Studio** (`/studio`) once Sanity is connected, or in `src/content/*` before that.
 
-| Item | Where | Status |
+| Item | Studio type / file | Status |
 |---|---|---|
-| One legal name (currently "Accessline Consultancy Ltd") | `src/content/site.ts` | ☐ confirm |
-| Phone, WhatsApp number, office hours | `src/content/site.ts` | ☐ placeholder `+254 700 000 000` |
-| Social URLs (LinkedIn, X, Instagram) | `src/content/site.ts` | ☐ confirm |
-| Real stats (years, campaigns, sectors, countries) | `src/content/site.ts → stats` | ☐ verify |
-| Company milestones 2012→now | `src/app/about/page.tsx` | ☐ confirm |
-| Professional memberships / credentials | `src/app/about/page.tsx` | ☐ supply |
-| Team: names, roles, photos (4:5, ≥1200px), bios, LinkedIn | `src/content/people.ts` | ☐ sample roles only |
-| 3–6 case studies with metrics + photos + quote approval | `src/content/work.ts` | ☐ 3 illustrative samples |
-| 3+ attributable testimonials | `src/content/work.ts` | ☐ samples |
-| Permitted client logos (SVG) | `src/content/work.ts → clientLogos` | ☐ "Partner One…" wordmarks |
-| Authentic Nairobi photography (hero, case studies, insights) | `MediaFrame src` | ☐ topo fallback in use |
-| Insights articles (proofread) | `src/content/insights.ts` | ☐ samples |
-| Live vacancies | `src/content/people.ts → jobs` | ☐ samples |
-| Privacy & Terms legal review | `src/app/privacy`, `src/app/terms` | ☐ draft |
-| Cal.com booking URL | `NEXT_PUBLIC_CAL_URL` | ☐ |
+| Company name | fixed in code | ✅ Accessline Consultancy Limited |
+| Email · address · phone | fixed in code | ✅ info@accesslineconsultancy.com · 10th Floor, Ecobank Towers, Nairobi · +254 727 684443 |
+| WhatsApp on +254 727 684443 | `src/content/site.ts` | ☐ client to confirm it's active |
+| Social profile URLs | Site settings → Socials | ☐ none shown until supplied |
+| Booking link | Site settings → Cal.com URL / `NEXT_PUBLIC_CAL_URL` | ☐ |
+| Stats (years, campaigns, sectors, countries) | Site settings → Stats | ☐ sample |
+| Founding year & milestones | `src/app/(site)/about/page.tsx` | ☐ sample (hidden at launch) |
+| Memberships / credentials | About page | ☐ supply if any |
+| Team: names, roles, photos (4:5, ≥1200 px), bios, LinkedIn | Team member | ☐ 4 role-only samples |
+| 3–6 case studies with metrics, photos, quote approval | Case study | ☐ 3 illustrative samples |
+| 3+ attributable testimonials | Testimonial | ☐ 3 samples |
+| Permitted client logos (SVG) | Client logo | ☐ "Partner One…" placeholders |
+| Authentic Nairobi photography | image fields | ☐ duotone topographic fallback in use |
+| Insights articles (proofread) | Insight | ☐ 3 samples |
+| Live vacancies | Job | ☐ 2 samples |
+| Privacy & Terms legal review | `src/app/(site)/privacy`, `terms` | ☐ draft |
+| Service & industry copy proofread | Service / Industry | ☐ written by us, client to approve |
