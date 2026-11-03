@@ -23,37 +23,32 @@ Full detail and file locations are in **CONTENT.md**. In Studio, every item belo
 
 Already settled: company name *Accessline Consultancy Limited*; contacts 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218 (`src/content/site.ts`). Contact email = `NEXT_PUBLIC_CONTACT_EMAIL` (default info@accesslineconsultancy.com — confirm the mailbox is still valid).
 
-## 2. Accounts & environment keys (Vercel → Production)
+## 2. Accounts & environment keys (Hostinger → Node.js app → environment variables)
 
 | | Key(s) | Done |
 |---|---|---|
 | Launch gate | `HIDE_SAMPLE_CONTENT=true` | [ ] |
 | Site URL | `NEXT_PUBLIC_SITE_URL=https://slategrey-deer-824136.hostingersite.com` (switch to the new domain when set, then rebuild) | [ ] |
-| Neon | `DATABASE_URL` + run `npm run db:migrate` | [ ] |
+| Email (required) | `LEADS_INBOX` + **either** `SMTP_HOST=smtp.hostinger.com`, `SMTP_PORT=465`, `SMTP_USER`, `SMTP_PASS` (Hostinger mailbox) **or** `RESEND_API_KEY` (domain verified: SPF/DKIM/DMARC); optional `EMAIL_FROM` | [ ] |
 | Sanity | `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_REVALIDATE_SECRET` (+ seed, editors invited, CORS origin) | [ ] |
-| Admin | `AUTH_SECRET`, `ADMIN_EMAILS`, `ADMIN_PASSWORD_HASH` | [ ] |
-| Resend | `RESEND_API_KEY`, `EMAIL_FROM`, `LEADS_INBOX` (domain verified: SPF/DKIM/DMARC) | [ ] |
 | Turnstile | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | [ ] |
 | Upstash | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | [ ] |
-| R2 | `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`, `R2_BUCKET` (private + CORS) | [ ] |
-| Cal.com | `NEXT_PUBLIC_CAL_URL`, `CAL_WEBHOOK_SECRET` (+ webhook created) | [ ] |
-| Cron | `CRON_SECRET` | [ ] |
+| Cal.com (optional) | `NEXT_PUBLIC_CAL_URL` | [ ] |
 | Plausible | `NEXT_PUBLIC_PLAUSIBLE_DOMAIN` (+ site added in Plausible; goals: Lead Submitted, WhatsApp Click, Newsletter Signup, Job Application) | [ ] |
 | Sentry | `NEXT_PUBLIC_SENTRY_DSN`, `SENTRY_DSN` (optional: `SENTRY_AUTH_TOKEN`, `SENTRY_ORG`, `SENTRY_PROJECT`) | [ ] |
-| Slack (optional) | `SLACK_WEBHOOK_URL` | [ ] |
 | Chromatic (optional) | project token → add a Chromatic step to CI | [ ] |
 
-Must **not** be set in Production: `ADMIN_PASSWORD`, `E2E_EXPOSE_TOKENS`, `SANITY_API_WRITE_TOKEN`.
+Must **not** be set in Production: `EMAIL_TEST_OUTBOX` (diverts all mail to disk), `SANITY_API_WRITE_TOKEN`.
 
-## 3. Pre-launch verification (on the Vercel preview URL)
+## 3. Pre-launch verification (on the Hostinger preview URL)
 
 - [ ] CI green on `main` (typecheck, lint, unit, build, Playwright + axe, Lighthouse)
-- [ ] Submit the contact form → lead appears in `/admin`, notification arrives at info@, auto-reply arrives with booking link
-- [ ] Book via the auto-reply link → booking shows on the lead in `/admin`
-- [ ] Newsletter signup → confirmation email → confirm page works
-- [ ] Apply for a job with a PDF → row in DB, file in R2
+- [ ] Submit the contact form → email with every field arrives at `LEADS_INBOX`; *Reply* addresses the submitter
+- [ ] Submit the home-page quick form → email arrives
+- [ ] Newsletter signup → sign-up email arrives (add the address to the mailing list manually)
+- [ ] Apply for a job with a PDF CV → email arrives with the CV attached; apply again without a CV → still arrives
+- [ ] Check the messages didn't land in spam (SPF/DKIM for the sending domain)
 - [ ] Publish an edit in Studio → page updates within ~10 s
-- [ ] `/admin` CSV export opens correctly in Excel
 - [ ] No sample content visible anywhere (spot-check home, work, team, insights, careers)
 - [ ] Design QA at 375 / 768 / 1280 / 1536 px
 
@@ -61,8 +56,8 @@ Must **not** be set in Production: `ADMIN_PASSWORD`, `E2E_EXPOSE_TOKENS`, `SANIT
 
 - [ ] Lower TTL on existing DNS records to 300 s, 24 h before cutover
 - [ ] Point the new domain (and `www`) at the host; redirect `www` → apex; set `NEXT_PUBLIC_SITE_URL` to it and rebuild
-- [ ] At the registrar/DNS host: apex `A 76.76.21.21`, `www CNAME cname.vercel-dns.com` (or as shown by Vercel)
-- [ ] **Keep MX/SPF/DKIM records for email untouched**; add Resend's DKIM/SPF records
+- [ ] At the registrar/DNS host: point the domain at Hostinger (Hostinger nameservers, or the A/CNAME records hPanel shows for the site)
+- [ ] **Keep MX/SPF/DKIM records for email intact** (Hostinger mail, or Resend's DKIM/SPF records if using Resend)
 - [ ] SSL certificate issued (automatic) → HSTS header active
 
 ## 5. After launch
@@ -71,6 +66,6 @@ Must **not** be set in Production: `ADMIN_PASSWORD`, `E2E_EXPOSE_TOKENS`, `SANIT
 - [ ] Bing Webmaster Tools: import from Search Console
 - [ ] Google Business Profile: NAP must match exactly (Accessline Consultancy Limited · 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218)
 - [ ] Sentry receives a test error; Plausible shows traffic and goal conversions
-- [ ] Confirm the first retention cron run in Vercel → Cron logs (and `audit_log`)
+- [ ] Set a recurring reminder to purge the inbox per /privacy: enquiries after 24 months, applications (and CVs) after 12 months
 - [ ] Retire WordPress: export a final backup, then shut down hosting (the public `/wp-json/wp/v2/users` exposure ends here)
 - [ ] After 2–4 weeks: check field Core Web Vitals (CrUX / Search Console) against LCP < 2.0 s, INP < 200 ms, CLS < 0.05

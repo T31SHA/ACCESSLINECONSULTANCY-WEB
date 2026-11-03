@@ -1,6 +1,6 @@
 /**
  * Single source of truth for local site photography (public/images/**).
- * Alt text and dimensions come verbatim from the photo MANIFEST.md.
+ * Alt text comes verbatim from the photo MANIFEST.md (service/industry photos: accessline-photos-v2).
  * All photos are Pexels/Unsplash-licensed stock: free for commercial use, credit optional
  * (credited anyway on /terms). Replace with authentic Accessline photography when available.
  * Team portraits are intentionally NOT stock — keep the monogram placeholders.
@@ -43,64 +43,64 @@ export const images = {
     credit: { photographer: "Youngafrikanna .", licence: "Pexels License", source: "https://www.pexels.com/photo/nairobi-skyline-at-sunset-with-urban-landmarks-38133494/" },
     crop: { src: "/images/contact/contact-nairobi-sunset.4x3.webp", width: 2000, height: 1500 } },
   // Services – PR & Media Relations
-  "service-pr-media-relations": { src: "/images/services/service-pr-media-relations.webp", alt: "Spokesperson in a suit answering journalists holding microphones", width: 2000, height: 3000,
-    credit: { photographer: "Werner Pfennig", licence: "Pexels License", source: "https://www.pexels.com/photo/journalists-hands-holding-microphones-around-man-in-suit-6950231/" },
-    crop: { src: "/images/services/service-pr-media-relations.4x3.webp", width: 2000, height: 1500 } },
+  "service-pr-media-relations": { src: "/images/services/service-pr-media-relations.webp", alt: "African spokesperson in a suit answering journalists holding microphones", width: 1600, height: 2400,
+    credit: { photographer: "Werner Pfennig", licence: "Pexels License", source: "https://www.pexels.com/photo/6950231/" },
+    crop: { src: "/images/services/service-pr-media-relations.4x3.webp", width: 1600, height: 1200 } },
   // Services – Strategic Communications
-  "service-strategic-communications": { src: "/images/services/service-strategic-communications.webp", alt: "Leadership team aligning on messaging around a boardroom table", width: 2000, height: 1333,
-    credit: { photographer: "Ninthgrid", licence: "Unsplash License", source: "https://unsplash.com/photos/YsJUxCIW14U" } },
+  "service-strategic-communications": { src: "/images/services/service-strategic-communications.webp", alt: "Strategist mapping messaging ideas on sticky notes on a whiteboard", width: 1600, height: 1943,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/17714158/" },
+    crop: { src: "/images/services/service-strategic-communications.4x3.webp", width: 1600, height: 1200 } },
   // Services – Strategic Planning
-  "service-strategic-planning": { src: "/images/services/service-strategic-planning.webp", alt: "Consultant leading a strategy discussion with colleagues in a conference room", width: 2000, height: 3000,
-    credit: { photographer: "Mikhail Nilov", licence: "Pexels License", source: "https://www.pexels.com/photo/men-having-a-meeting-in-a-conference-room-9301763/" },
-    crop: { src: "/images/services/service-strategic-planning.4x3.webp", width: 2000, height: 1500 } },
+  "service-strategic-planning": { src: "/images/services/service-strategic-planning.webp", alt: "Analyst presenting charts and graphs pinned to a whiteboard", width: 1600, height: 2400,
+    credit: { photographer: "Kaboompics", licence: "Pexels License", source: "https://www.pexels.com/photo/7876509/" },
+    crop: { src: "/images/services/service-strategic-planning.4x3.webp", width: 1600, height: 1200 } },
   // Services – Capacity Building & Training
-  "service-capacity-building": { src: "/images/services/service-capacity-building.webp", alt: "Participants with laptops in a business training workshop", width: 2000, height: 2500,
-    credit: { photographer: "Beniam", licence: "Pexels License", source: "https://www.pexels.com/photo/diverse-team-engaged-in-business-training-workshop-34046709/" },
-    crop: { src: "/images/services/service-capacity-building.4x3.webp", width: 2000, height: 1500 } },
+  "service-capacity-building-training": { src: "/images/services/service-capacity-building-training.webp", alt: "Facilitator delivering a training session beside a flip chart", width: 1600, height: 2400,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/9034265/" },
+    crop: { src: "/images/services/service-capacity-building-training.4x3.webp", width: 1600, height: 1200 } },
   // Services – Social & Behaviour Change Communication
-  "service-sbcc": { src: "/images/services/service-sbcc.webp", alt: "Community members gathered at an outdoor engagement meeting", width: 2000, height: 1333,
-    credit: { photographer: "mk_photoz", licence: "Pexels License", source: "https://www.pexels.com/photo/community-engagement-meeting-in-kaduna-nigeria-33107901/" } },
+  "service-sbcc": { src: "/images/services/service-sbcc.webp", alt: "Health outreach workers speaking with residents in a rural community", width: 1600, height: 1067,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/37285163/" } },
   // Services – Research & Market Intelligence
-  "service-research-market-intelligence": { src: "/images/services/service-research-market-intelligence.webp", alt: "Analyst presenting research findings and charts to colleagues", width: 2000, height: 3000,
-    credit: { photographer: "Sora Shimazaki", licence: "Pexels License", source: "https://www.pexels.com/photo/black-businesswoman-reporting-financial-results-at-meeting-5668778/" },
-    crop: { src: "/images/services/service-research-market-intelligence.4x3.webp", width: 2000, height: 1500 } },
+  "service-research-market-intelligence": { src: "/images/services/service-research-market-intelligence.webp", alt: "Researchers analysing data and charts on a laptop and tablet", width: 1600, height: 1068,
+    credit: { photographer: "AlphaTradeZone", licence: "Pexels License", source: "https://www.pexels.com/photo/5784805/" } },
   // Services – Events & Experiential
-  "service-events-experiential": { src: "/images/services/service-events-experiential.webp", alt: "Speaker addressing attendees from the stage at a conference", width: 2000, height: 1332,
-    credit: { photographer: "Ufoma Ojo", licence: "Unsplash License", source: "https://unsplash.com/photos/JB1C6JbJkCQ" } },
+  "service-events": { src: "/images/services/service-events.webp", alt: "Speaker presenting on a lit conference stage", width: 1600, height: 2400,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/29708255/" },
+    crop: { src: "/images/services/service-events.4x3.webp", width: 1600, height: 1200 } },
   // Services – Creative & Multimedia
-  "service-creative-multimedia": { src: "/images/services/service-creative-multimedia.webp", alt: "Cameraman filming a live event in Dar es Salaam", width: 2000, height: 1333,
-    credit: { photographer: "Japhet Kweba", licence: "Pexels License", source: "https://www.pexels.com/photo/professional-cameraman-filming-event-in-tanzania-32926963/" } },
+  "service-creative-multimedia": { src: "/images/services/service-creative-multimedia.webp", alt: "African photographer holding a DSLR camera up to shoot", width: 1600, height: 1629,
+    credit: { photographer: "Dennis Ojenomoh", licence: "Pexels License", source: "https://www.pexels.com/photo/8394305/" },
+    crop: { src: "/images/services/service-creative-multimedia.4x3.webp", width: 1600, height: 1200 } },
   // Industries – Corporate
-  "industry-corporate": { src: "/images/industries/industry-corporate.webp", alt: "Professionals in a business meeting in a bright modern office", width: 2000, height: 1333,
-    credit: { photographer: "Ninthgrid", licence: "Pexels License", source: "https://www.pexels.com/photo/business-meeting-in-lagos-office-setting-30688596/" } },
+  "industry-corporate": { src: "/images/industries/industry-corporate.webp", alt: "Executive presenting to colleagues around a boardroom table", width: 1600, height: 1067,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/1367274/" } },
   // Industries – NGOs & Development
-  "industry-ngos-development": { src: "/images/industries/industry-ngos-development.webp", alt: "Villagers seated together at a rural community meeting", width: 2000, height: 3000,
-    credit: { photographer: "\u015eeyhmus Kino", licence: "Pexels License", source: "https://www.pexels.com/photo/community-gathering-in-rural-african-village-30564957/" },
-    crop: { src: "/images/industries/industry-ngos-development.4x3.webp", width: 2000, height: 1500 } },
+  "industry-ngos": { src: "/images/industries/industry-ngos.webp", alt: "Volunteers preparing food supplies beside a relief van", width: 1600, height: 1067,
+    credit: { photographer: "RDNE Stock project", licence: "Pexels License", source: "https://www.pexels.com/photo/6646855/" } },
   // Industries – Public Sector
-  "industry-public-sector": { src: "/images/industries/industry-public-sector.webp", alt: "Instructor leading a training session for uniformed officers", width: 2000, height: 1501,
-    credit: { photographer: "ARISTIDE OUEDRAOGO", licence: "Pexels License", source: "https://www.pexels.com/photo/african-classroom-training-session-with-uniformed-students-31820972/" } },
+  "industry-public-sector": { src: "/images/industries/industry-public-sector.webp", alt: "Uniformed officers being briefed in a formal training hall", width: 1600, height: 1201,
+    credit: { photographer: "ARISTIDE OUEDRAOGO", licence: "Pexels License", source: "https://www.pexels.com/photo/31820972/" } },
   // Industries – Education
-  "industry-education": { src: "/images/industries/industry-education.webp", alt: "Students collaborating on an assignment in a classroom", width: 2000, height: 1335,
-    credit: { photographer: "Tosin Olowoleni", licence: "Pexels License", source: "https://www.pexels.com/photo/african-school-students-engaged-in-classroom-activity-34211750/" } },
+  "industry-education": { src: "/images/industries/industry-education.webp", alt: "African schoolchildren learning at their desks in a classroom", width: 1600, height: 1067,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/28593054/" } },
   // Industries – Health
-  "industry-health": { src: "/images/industries/industry-health.webp", alt: "Nutritionist advising a woman on healthy eating at home", width: 2000, height: 3000,
-    credit: { photographer: "Yaroslav Shuraev", licence: "Pexels License", source: "https://www.pexels.com/photo/a-nutritionist-educating-a-woman-8844553/" },
-    crop: { src: "/images/industries/industry-health.4x3.webp", width: 2000, height: 1500 } },
+  "industry-health": { src: "/images/industries/industry-health.webp", alt: "Doctor in consultation with a patient at a clinic desk", width: 1600, height: 1067,
+    credit: { photographer: "Ninthgrid", licence: "Pexels License", source: "https://www.pexels.com/photo/30677597/" } },
   // Industries – Technology
-  "industry-technology": { src: "/images/industries/industry-technology.webp", alt: "Product team brainstorming with sticky notes in a tech office", width: 2000, height: 2830,
-    credit: { photographer: "Ketut Subiyanto", licence: "Pexels License", source: "https://www.pexels.com/photo/a-meeting-in-the-office-4623479/" },
-    crop: { src: "/images/industries/industry-technology.4x3.webp", width: 2000, height: 1500 } },
+  "industry-technology": { src: "/images/industries/industry-technology.webp", alt: "Developer writing code on a desktop and laptop in a Nairobi office", width: 1600, height: 1067,
+    credit: { photographer: "Naboth Otieno", licence: "Pexels License", source: "https://www.pexels.com/photo/19805876/" } },
   // Industries – Environment & Sustainability
-  "industry-environment-sustainability": { src: "/images/industries/industry-environment-sustainability.webp", alt: "Rows of solar panels in an open field", width: 2000, height: 1333,
-    credit: { photographer: "El Jundi", licence: "Pexels License", source: "https://www.pexels.com/photo/expansive-solar-farm-in-sunny-open-field-33537433/" } },
+  "industry-environment-sustainability": { src: "/images/industries/industry-environment-sustainability.webp", alt: "Hand planting a tree seedling in soil in Uganda", width: 1600, height: 1177,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/35744764/" } },
   // Industries – Retail & FMCG
-  "industry-retail-fmcg": { src: "/images/industries/industry-retail-fmcg.webp", alt: "Two women choosing products in a mini-mart", width: 2000, height: 1333,
-    credit: { photographer: "Ninthgrid", licence: "Pexels License", source: "https://www.pexels.com/photo/happy-shopping-experience-in-lagos-mini-mart-30689327/" } },
+  "industry-retail-fmcg": { src: "/images/industries/industry-retail-fmcg.webp", alt: "Shopkeeper standing among packed shelves of goods in a local shop", width: 1600, height: 2400,
+    credit: { photographer: "Pexels contributor (see source)", licence: "Pexels License", source: "https://www.pexels.com/photo/35704478/" },
+    crop: { src: "/images/industries/industry-retail-fmcg.4x3.webp", width: 1600, height: 1200 } },
   // Industries – Financial Services
-  "industry-financial-services": { src: "/images/industries/industry-financial-services.webp", alt: "Market vendor using a mobile phone at his stall", width: 2000, height: 2000,
-    credit: { photographer: "Clarence Gaspar", licence: "Pexels License", source: "https://www.pexels.com/photo/street-vendor-using-mobile-phone-in-market-36969131/" },
-    crop: { src: "/images/industries/industry-financial-services.4x3.webp", width: 2000, height: 1500 } },
+  "industry-financial-services": { src: "/images/industries/industry-financial-services.webp", alt: "Bank teller assisting customers at a service counter", width: 1600, height: 2405,
+    credit: { photographer: "Thang Nguyen", licence: "Pexels License", source: "https://www.pexels.com/photo/38815862/" },
+    crop: { src: "/images/industries/industry-financial-services.4x3.webp", width: 1600, height: 1200 } },
   // Work / case studies – featured card
   "work-case-study-media-production": { src: "/images/work/work-case-study-media-production.webp", alt: "Cameraman with a stabiliser filming an outdoor event", width: 2000, height: 3000,
     credit: { photographer: "Alfredo Dacosta", licence: "Pexels License", source: "https://www.pexels.com/photo/cameraman-filming-at-outdoor-event-in-ghana-39715315/" },
@@ -121,17 +121,17 @@ export const serviceImages: Partial<Record<string, SiteImage>> = {
   "pr-media-relations": images["service-pr-media-relations"],
   "strategic-communications": images["service-strategic-communications"],
   "strategic-planning": images["service-strategic-planning"],
-  "capacity-building-training": images["service-capacity-building"],
+  "capacity-building-training": images["service-capacity-building-training"],
   sbcc: images["service-sbcc"],
   "research-market-intelligence": images["service-research-market-intelligence"],
-  events: images["service-events-experiential"],
+  events: images["service-events"],
   "creative-multimedia": images["service-creative-multimedia"],
 };
 
 /** Industry slug → photo. */
 export const industryImages: Partial<Record<string, SiteImage>> = {
   corporate: images["industry-corporate"],
-  ngos: images["industry-ngos-development"],
+  ngos: images["industry-ngos"],
   "public-sector": images["industry-public-sector"],
   education: images["industry-education"],
   health: images["industry-health"],

@@ -1,30 +1,17 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { getDb, schema } from "@/db";
-import { leadPayloadSchema, leadSchema, shortLeadSchema } from "@/lib/lead-schema";
-import { emailConfigured, sendLeadAutoReply, sendLeadNotification } from "@/lib/server/email";
+import { budgetLabels, leadPayloadSchema, leadSchema, shortLeadSchema, timelineLabels, type LeadInput } from "@/lib/lead-schema";
+import { emailConfigured, renderFields, sendMail } from "@/lib/server/email";
 import { site } from "@/content/site";
+import { getIndustries, getServices } from "@/lib/content";
 import { rateLimit } from "@/lib/server/rate-limit";
 import { verifyTurnstile } from "@/lib/server/turnstile";
+import { clientIp, clientCountry } from "@/lib/server/request";
 
 export const runtime = "nodejs";
 
-const ip = (req: NextRequest) =>
-  req.headers.get("cf-connecting-ip") ?? req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? null;
-
-/** Simple heuristic lead score (0–100) for triage in /admin. */
-function score(d: { budgetBand?: string; timeline?: string; serviceInterest?: string[]; phone?: string }) {
-  let s = 10;
-  s += { "5m_plus": 40, "2m_5m": 30, "500k_2m": 20, under_500k: 5, undecided: 5 }[d.budgetBand ?? ""] ?? 0;
-  s += { asap: 25, "1_3_months": 20, "3_6_months": 10, exploring: 0 }[d.timeline ?? ""] ?? 0;
-  s += Math.min((d.serviceInterest?.length ?? 0) * 5, 15);
-  if (d.phone) s += 10;
-  return Math.min(s, 100);
-}
-
 export async function POST(req: NextRequest) {
-  const db = await getDb();
-  const clientIp = ip(req);
-  const rl = await rateLimit(`lead:${clientIp ?? "anon"}`);
+  const ip = clientIp(req);
+  const rl = await rateLimit(`lead:${ip ?? "anon"}`);
   if (!rl.success) return NextResponse.json({ error: "Too many submissions. Please try again shortly." }, { status: 429 });
 
   const json = await req.json().catch(() => null);
@@ -35,7 +22,7 @@ export async function POST(req: NextRequest) {
   // Honeypot: pretend success so bots learn nothing.
   if (website) return NextResponse.json({ ok: true });
 
-  if (!(await verifyTurnstile(turnstileToken, clientIp))) {
+  if (!(await verifyTurnstile(turnstileToken, ip))) {
     return NextResponse.json({ error: "Verification failed. Please refresh and try again." }, { status: 400 });
   }
 
@@ -46,52 +33,55 @@ export async function POST(req: NextRequest) {
       { status: 422 },
     );
   }
-  const d = parsed.data as Partial<import("@/lib/lead-schema").LeadInput> & { fullName: string; email: string };
+  const d = parsed.data as Partial<LeadInput> & { fullName: string; email: string };
 
-  const record = {
-    fullName: d.fullName,
-    email: d.email,
-    phone: d.phone || null,
-    organisation: d.organisation ?? null,
-    role: d.role || null,
-    country: req.headers.get("cf-ipcountry") ?? req.headers.get("x-vercel-ip-country") ?? null,
-    serviceInterest: d.serviceInterest ?? [],
-    industry: d.industry ?? null,
-    budgetBand: d.budgetBand ?? null,
-    timeline: d.timeline ?? null,
-    message: d.message || null,
-    sourcePage: meta.sourcePage ?? null,
-    utmSource: meta.utmSource ?? null,
-    utmMedium: meta.utmMedium ?? null,
-    utmCampaign: meta.utmCampaign ?? null,
-    referrer: meta.referrer ?? null,
-    consentMarketing: d.consentMarketing ?? false,
-    consentAt: new Date(),
-    score: score(d),
-  };
-
-  // Never silently drop a lead: with no database and no notification channel, fail honestly.
-  if (!db && !emailConfigured && process.env.NODE_ENV === "production") {
-    console.error("[leads] neither DATABASE_URL nor RESEND_API_KEY/SLACK_WEBHOOK_URL configured — lead rejected");
-    return NextResponse.json({ error: `We couldn't send your brief right now. Please email ${site.email}.` }, { status: 503 });
+  // Email is the only place a lead goes: never accept one we can't deliver.
+  if (!emailConfigured()) {
+    console.error("[leads] email not configured (RESEND_API_KEY or SMTP_*) — lead rejected");
+    return NextResponse.json(
+      { error: `Our contact form is temporarily unavailable. Please email ${site.email} or call ${site.phone}.` },
+      { status: 503 },
+    );
   }
 
-  let leadId: string | undefined;
-  if (db) {
-    const [row] = await db.insert(schema.leads).values(record).returning({ id: schema.leads.id });
-    leadId = row?.id;
-  } else if (process.env.NODE_ENV === "production") {
-    console.error("[leads] DATABASE_URL missing — lead sent by email only");
+  // Human-readable labels for the inbox (falls back to the raw slug).
+  const [services, industries] = await Promise.all([getServices(), getIndustries()]);
+  const label = (list: { slug: string; title: string }[], slug: string) => list.find((x) => x.slug === slug)?.title ?? slug;
+
+  const title = variant === "full" ? "New enquiry (contact form)" : "New enquiry (quick form)";
+  try {
+    await sendMail({
+      subject: `New enquiry — ${d.organisation || d.fullName}`,
+      replyTo: d.email,
+      ...renderFields(title, [
+        ["Name", d.fullName],
+        ["Email", d.email],
+        ["Phone", d.phone],
+        ["Organisation", d.organisation],
+        ["Role", d.role],
+        ["Services", d.serviceInterest?.map((x) => label(services, x))],
+        ["Sector", d.industry && label(industries, d.industry)],
+        ["Budget", d.budgetBand && budgetLabels[d.budgetBand]],
+        ["Timeline", d.timeline && timelineLabels[d.timeline]],
+        ["Message", d.message],
+        ["Privacy consent", d.consent],
+        ["Marketing consent", d.consentMarketing ?? false],
+        ["Country", clientCountry(req)],
+        ["Source page", meta.sourcePage],
+        ["Referrer", meta.referrer],
+        ["UTM source", meta.utmSource],
+        ["UTM medium", meta.utmMedium],
+        ["UTM campaign", meta.utmCampaign],
+        ["Submitted", new Date().toISOString()],
+      ]),
+    });
+  } catch (err) {
+    console.error("[leads] sending failed", err);
+    return NextResponse.json(
+      { error: `We couldn't send your brief right now. Please try again or email ${site.email}.` },
+      { status: 502 },
+    );
   }
 
-  await Promise.allSettled([
-    sendLeadNotification({ ...record, id: leadId }),
-    sendLeadAutoReply(d.email, d.fullName, leadId).then(async (sent) => {
-      if (sent && db && leadId) {
-        await db.insert(schema.leadEvents).values({ leadId, type: "email_sent", payload: { template: "auto_reply" } });
-      }
-    }),
-  ]);
-
-  return NextResponse.json({ ok: true, id: leadId });
+  return NextResponse.json({ ok: true });
 }

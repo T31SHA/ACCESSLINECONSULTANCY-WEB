@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
-import { CV_MAX_BYTES, CV_TYPES } from "@/lib/cv";
+import { checkCvFile } from "@/lib/cv";
 import { Field, Input, Textarea } from "./fields";
 import { Turnstile } from "./turnstile";
 
@@ -32,34 +32,24 @@ export function ApplyForm({ jobSlug, jobTitle }: { jobSlug: string; jobTitle: st
       onSubmit={async (e) => {
         e.preventDefault();
         const fd = new FormData(e.currentTarget);
-        const file = fd.get("cv") as File | null;
-        if (!file || file.size === 0) return setFileError("Attach your CV (PDF or DOCX).");
-        if (!(file.type in CV_TYPES)) return setFileError("CV must be a PDF or DOCX file.");
-        if (file.size > CV_MAX_BYTES) return setFileError("CV must be 5MB or smaller.");
+        const file = fd.get("cv");
+        if (file instanceof File && file.size > 0) {
+          const check = checkCvFile(file);
+          if (!check.ok) return setFileError(check.error);
+        } else {
+          fd.delete("cv");
+        }
         setFileError(undefined);
-        setStatus({ kind: "loading", message: "Uploading CV…" });
+        fd.set("jobSlug", jobSlug);
+        if (token) fd.set("turnstileToken", token);
+        setStatus({ kind: "loading", message: "Sending application…" });
         try {
-          const presign = await fetch("/api/careers/upload-url", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({ jobSlug, contentType: file.type, size: file.size }),
-          });
-          const p = await presign.json();
-          if (!presign.ok) throw new Error(p.error);
-          const put = await fetch(p.url, { method: "PUT", body: file, headers: { "content-type": file.type } });
-          if (!put.ok) throw new Error("Upload failed. Please try again.");
-          setStatus({ kind: "loading", message: "Submitting…" });
-          const res = await fetch("/api/careers/apply", {
-            method: "POST",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify({
-              jobSlug, cvObjectKey: p.key, turnstileToken: token,
-              fullName: fd.get("fullName"), email: fd.get("email"), phone: fd.get("phone"),
-              linkedinUrl: fd.get("linkedinUrl"), coverNote: fd.get("coverNote"),
-            }),
-          });
-          const r = await res.json();
-          if (!res.ok) throw new Error(r.error);
+          const res = await fetch("/api/careers/apply", { method: "POST", body: fd });
+          const r = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            if (r.fieldErrors?.cv?.[0]) setFileError(r.fieldErrors.cv[0]);
+            throw new Error(r.error ?? "Something went wrong.");
+          }
           track("Job Application", { job: jobSlug });
           setStatus({ kind: "ok" });
         } catch (err) {
@@ -73,9 +63,10 @@ export function ApplyForm({ jobSlug, jobTitle }: { jobSlug: string; jobTitle: st
         <Field id="ap-phone" label="Phone"><Input id="ap-phone" name="phone" type="tel" autoComplete="tel" placeholder="+254" /></Field>
         <Field id="ap-li" label="LinkedIn URL"><Input id="ap-li" name="linkedinUrl" type="url" placeholder="https://linkedin.com/in/" /></Field>
       </div>
-      <Field id="ap-cv" label="CV" required hint="PDF or DOCX, up to 5MB" error={fileError}>
+      <Field id="ap-cv" label="CV" hint="PDF or DOCX, up to 5MB" error={fileError}>
         <Input id="ap-cv" name="cv" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-describedby={fileError ? "ap-cv-error ap-cv-hint" : "ap-cv-hint"} aria-invalid={!!fileError} className="file:mr-4 file:rounded-pill file:border-0 file:bg-forest-700 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-sand-50" />
       </Field>
+      <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
       <Field id="ap-note" label="Why you, why now?"><Textarea id="ap-note" name="coverNote" rows={5} /></Field>
       <Turnstile active={active} onToken={setToken} />
       <p aria-live="polite" className={status.kind === "error" ? "text-sm font-medium text-[#B42318]" : "text-sm text-[var(--fg-muted)]"}>{status.message}</p>

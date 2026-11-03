@@ -29,10 +29,9 @@ export default function PrivacyPage() {
         <ul>
           <li>Enquiries: up to 24 months after last contact, unless you become a client.</li>
           <li>Job applications: 12 months.</li>
-          <li>Spam submissions: 30 days.</li>
         </ul>
         <h2>Who we share it with</h2>
-        <p>Processors acting on our instructions: hosting (Vercel), database (Neon), file storage (Cloudflare R2), email delivery (Resend) and bot protection (Cloudflare Turnstile). Some processors store data outside Kenya under appropriate safeguards.</p>
+        <p>Processors acting on our instructions: website hosting and email (Hostinger), email delivery (Resend, where used) and bot protection (Cloudflare Turnstile). Form submissions, including any CV you attach, are delivered by email to our inbox; we do not store them in a website database. Some processors store data outside Kenya under appropriate safeguards.</p>
         <h2>Your rights</h2>
         <p>You may request access, correction, deletion or objection at any time by emailing <a href={`mailto:${site.email}`}>{site.email}</a>. You may also complain to the Office of the Data Protection Commissioner (ODPC).</p>
       </article>
