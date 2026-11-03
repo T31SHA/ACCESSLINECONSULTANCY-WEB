@@ -1,11 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { inter, syne } from "@/lib/fonts";
 import { site } from "@/content/site";
 import "./globals.css";
 
-// Self-hosted, vendored WOFF2 (OFL; latin subset, variable axes), preloaded. Two families only.
-const syne = localFont({ src: "../fonts/syne-latin-var.woff2", weight: "600 700", variable: "--font-syne", display: "swap", preload: true });
-const inter = localFont({ src: "../fonts/inter-latin-var.woff2", weight: "100 900", variable: "--font-inter", display: "swap", preload: true });
 
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
