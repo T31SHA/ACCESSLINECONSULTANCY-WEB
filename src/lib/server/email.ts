@@ -1,6 +1,7 @@
 import "server-only";
 import { Resend } from "resend";
 import { site } from "@/content/site";
+import { calLinkForLead } from "@/lib/integrations/cal";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const FROM = process.env.EMAIL_FROM ?? `Accessline Consultancy Limited <info@accesslineconsultancy.com>`;
@@ -35,8 +36,9 @@ export async function sendLeadNotification(lead: Record<string, unknown>) {
 }
 
 /** Returns true only if an email was actually handed to Resend. */
-export async function sendLeadAutoReply(to: string, name: string): Promise<boolean> {
+export async function sendLeadAutoReply(to: string, name: string, leadId?: string): Promise<boolean> {
   if (!resend) return false;
+  const cal = site.calUrl ? calLinkForLead(site.calUrl, { id: leadId, name, email: to }) : undefined;
   const first = esc(name.split(" ")[0] ?? name);
   const { error } = await resend.emails.send({
     from: FROM,
@@ -45,8 +47,29 @@ export async function sendLeadAutoReply(to: string, name: string): Promise<boole
     html: `<div style="font-family:sans-serif;font-size:16px;line-height:1.6;color:#0B1A13;max-width:560px">
 <p>Hi ${first},</p>
 <p>Thanks for reaching out to ${site.name}. A senior consultant will review your brief and reply personally.</p>
-${site.calUrl ? `<p>Want to move faster? <a href="${site.calUrl}" style="color:#014F29;font-weight:600">Book a 30-minute discovery call</a>.</p>` : `<p>Prefer to talk? Call us on ${site.phone}.</p>`}
+${cal ? `<p>Want to move faster? <a href="${esc(cal)}" style="color:#014F29;font-weight:600">Book a 30-minute discovery call</a>.</p>` : `<p>Prefer to talk? Call us on ${site.phone}.</p>`}
 <p>— The team at ${site.name}<br>${site.address.street}, ${site.address.locality}</p></div>`,
+  });
+  return !error;
+}
+
+export const newsletterConfirmUrl = (token: string) => `${site.url}/newsletter/confirm?token=${encodeURIComponent(token)}`;
+
+/** Double opt-in email. Without Resend the link is logged in development so the flow stays testable. */
+export async function sendNewsletterConfirmation(to: string, token: string): Promise<boolean> {
+  const url = newsletterConfirmUrl(token);
+  if (!resend) {
+    if (process.env.NODE_ENV !== "production") console.info(`[newsletter] confirm link for ${to}: ${url}`);
+    return false;
+  }
+  const { error } = await resend.emails.send({
+    from: FROM,
+    to,
+    subject: "Confirm your subscription",
+    html: `<div style="font-family:sans-serif;font-size:16px;line-height:1.6;color:#0B1A13;max-width:560px">
+<p>One click to confirm you'd like monthly insights from ${site.name}.</p>
+<p><a href="${esc(url)}" style="display:inline-block;background:#014F29;color:#F7F4EE;padding:12px 20px;border-radius:999px;text-decoration:none;font-weight:600">Confirm subscription</a></p>
+<p style="color:#4A5550;font-size:14px">Didn't ask for this? Ignore this email and you won't be subscribed.</p></div>`,
   });
   return !error;
 }

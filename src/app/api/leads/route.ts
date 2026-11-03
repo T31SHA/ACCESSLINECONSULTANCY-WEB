@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
 
   await Promise.allSettled([
     sendLeadNotification({ ...record, id: leadId }),
-    sendLeadAutoReply(d.email, d.fullName).then(async (sent) => {
+    sendLeadAutoReply(d.email, d.fullName, leadId).then(async (sent) => {
       if (sent && db && leadId) {
         await db.insert(schema.leadEvents).values({ leadId, type: "email_sent", payload: { template: "auto_reply" } });
       }

@@ -20,7 +20,7 @@ export function NewsletterForm() {
           headers: { "content-type": "application/json" },
           body: JSON.stringify({ email: fd.get("email"), website: fd.get("website") || undefined }),
         }).catch(() => null);
-        if (res?.ok) { setState("ok"); setMsg("Check your inbox to confirm your subscription."); track("Newsletter Signup"); }
+        if (res?.ok) { setState("ok"); setMsg("Check your inbox and click the link to confirm."); track("Newsletter Signup"); }
         else { setState("error"); setMsg((await res?.json().catch(() => null))?.error ?? "Something went wrong. Try again."); }
       }}
     >

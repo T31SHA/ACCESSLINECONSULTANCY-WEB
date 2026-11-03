@@ -1,13 +1,16 @@
 import { randomBytes } from "node:crypto";
+import { eq } from "drizzle-orm";
 import { NextResponse, type NextRequest } from "next/server";
 import { z } from "zod";
 import { getDb, schema } from "@/db";
+import { sendNewsletterConfirmation } from "@/lib/server/email";
 import { rateLimit } from "@/lib/server/rate-limit";
 
 export const runtime = "nodejs";
 
 const body = z.object({ email: z.email().max(254), website: z.string().max(500).optional() });
 
+/** Double opt-in: store as pending with a one-time token and email a confirmation link. */
 export async function POST(req: NextRequest) {
   const db = await getDb();
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0] ?? "anon";
@@ -15,12 +18,19 @@ export async function POST(req: NextRequest) {
   const parsed = body.safeParse(await req.json().catch(() => null));
   if (!parsed.success) return NextResponse.json({ error: "Enter a valid email address." }, { status: 422 });
   if (parsed.data.website) return NextResponse.json({ ok: true });
-  if (db) {
-    await db
-      .insert(schema.newsletterSubscribers)
-      .values({ email: parsed.data.email, confirmToken: randomBytes(24).toString("hex") })
-      .onConflictDoNothing();
-    // TODO(P3): send double-opt-in confirmation email via Resend + /api/newsletter/confirm route.
+  if (!db) return NextResponse.json({ ok: true });
+
+  const email = parsed.data.email.toLowerCase();
+  const [existing] = await db.select().from(schema.newsletterSubscribers).where(eq(schema.newsletterSubscribers.email, email)).limit(1);
+  // Already confirmed: respond identically (no enumeration), send nothing.
+  if (existing?.status === "confirmed") return NextResponse.json({ ok: true });
+
+  const token = randomBytes(24).toString("base64url");
+  if (existing) {
+    await db.update(schema.newsletterSubscribers).set({ status: "pending", confirmToken: token, createdAt: new Date() }).where(eq(schema.newsletterSubscribers.id, existing.id));
+  } else {
+    await db.insert(schema.newsletterSubscribers).values({ email, confirmToken: token });
   }
+  await sendNewsletterConfirmation(email, token);
   return NextResponse.json({ ok: true });
 }

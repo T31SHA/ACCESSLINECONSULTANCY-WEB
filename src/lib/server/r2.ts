@@ -19,3 +19,10 @@ export async function presignCvUpload(key: string, contentType: string) {
   });
   return signed.url;
 }
+
+/** Deletes a CV object. Returns true on success or if the object is already gone. */
+export async function deleteCvObject(key: string) {
+  if (!client) return false;
+  const res = await client.fetch(`https://${R2_ACCOUNT_ID}.r2.cloudflarestorage.com/${R2_BUCKET}/${key}`, { method: "DELETE" });
+  return res.ok || res.status === 404;
+}
