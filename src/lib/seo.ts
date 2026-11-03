@@ -13,7 +13,7 @@ type PageMeta = {
 export function pageMetadata({ title, description, path, type = "website", noindex }: PageMeta): Metadata {
   const url = new URL(path, site.url).toString();
   // Keep the rendered <title> ≤60 chars: add the brand suffix only when it fits.
-  const suffixed = `${title} | Accessline`;
+  const suffixed = `${title} | ${site.shortName}`;
   const full = suffixed.length <= 60 ? suffixed : title.slice(0, 60);
   // Default OG card; segment-level opengraph-image files take precedence.
   const images = [{ url: "/opengraph-image", width: 1200, height: 630, alt: site.name }];

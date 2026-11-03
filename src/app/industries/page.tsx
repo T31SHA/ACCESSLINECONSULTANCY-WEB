@@ -18,7 +18,7 @@ export default function IndustriesPage() {
         crumbs={[{ name: "Industries", path: "/industries" }]}
         overline="Industries"
         title="Sector fluency, from boardroom to county."
-        lede="Every sector has its own regulators, audiences and unwritten rules. We have spent over a decade learning them."
+        lede="Every sector has its own regulators, audiences and unwritten rules. We know them."
       />
       <section className="container-site pb-[var(--section-y)]">
         <ul className="border-t border-[var(--line)]">

@@ -1,40 +1,39 @@
+import { published } from "./types";
+
 /**
- * site_settings — single source of truth for NAP, socials and brand copy.
- * CLIENT TO CONFIRM: legal name, phone, WhatsApp, socials, hours (see CONTENT.md).
+ * site_settings — single source of truth for company name and contact details.
+ * Only verified facts live here (see DECISIONS.md). Anything unverified is `sample: true`.
  */
 export const site = {
-  name: "Accessline Consultancy",
-  legalName: "Accessline Consultancy Ltd",
+  name: "Accessline Consultancy Limited",
+  legalName: "Accessline Consultancy Limited",
+  /** Short brand mark used only in the logo and <title> suffix (60-char title budget). */
+  shortName: "Accessline",
   tagline: "Lead the Change.",
   positioning: "The PR & Brand Strategy Agency for Africa.",
   description:
-    "Nairobi PR and strategic communications agency. Media relations, brand strategy, SBCC, research and events for organisations across Africa since 2012.",
+    "Nairobi PR and strategic communications agency. Media relations, brand strategy, SBCC, research and events for organisations across Africa.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://accesslineconsultancy.com",
   locale: "en_KE",
-  foundingYear: 2012,
   email: "info@accesslineconsultancy.com",
-  phone: "+254 700 000 000", // CLIENT TO CONFIRM
-  phoneHref: "tel:+254700000000",
-  whatsapp: "https://wa.me/254700000000", // CLIENT TO CONFIRM
+  phone: "+254 727 684443",
+  phoneHref: "tel:+254727684443",
+  /** Same verified number; confirm WhatsApp is enabled on it before launch (LAUNCH.md). */
+  whatsapp: "https://wa.me/254727684443",
   address: {
-    street: "10th Floor, Ecobank Towers, Muindi Mbingu Street",
+    street: "10th Floor, Ecobank Towers",
     locality: "Nairobi",
-    region: "Nairobi County",
-    postalCode: "00100",
     country: "KE",
     countryName: "Kenya",
   },
-  geo: { lat: -1.2833, lng: 36.8172 },
-  hours: [
-    { days: "Monday – Friday", time: "08:00 – 17:30", schema: "Mo-Fr 08:00-17:30" },
-  ],
-  calUrl: process.env.NEXT_PUBLIC_CAL_URL ?? "https://cal.com/accessline/discovery",
-  socials: {
-    linkedin: "https://www.linkedin.com/company/accessline-consultancy",
-    x: "https://x.com/accesslineke",
-    instagram: "https://www.instagram.com/accesslineconsultancy",
-  },
+  /** Booking link only shown when configured. */
+  calUrl: process.env.NEXT_PUBLIC_CAL_URL || undefined,
+  /** Unverified social profiles were removed; add real URLs here or in Studio. */
+  socials: {} as Partial<Record<"linkedin" | "x" | "instagram" | "facebook", string>>,
 } as const;
+
+/** Unverified company facts — hidden when HIDE_SAMPLE_CONTENT=true. */
+export const sampleFacts = published([{ foundingYear: 2012, sample: true }])[0];
 
 export const nav = [
   { label: "Services", href: "/services", mega: true },
@@ -45,13 +44,13 @@ export const nav = [
   { label: "Careers", href: "/careers" },
 ] as const;
 
-/** CLIENT TO CONFIRM: real, verifiable figures. */
-export const stats = [
-  { value: 12, suffix: "+", label: "Years shaping African narratives" },
-  { value: 150, suffix: "+", label: "Campaigns delivered" },
-  { value: 9, suffix: "", label: "Sectors served" },
-  { value: 14, suffix: "", label: "Countries reached" },
-] as const;
+/** SAMPLE — unverified figures. Replace with client-verified numbers, then drop `sample`. */
+export const stats = published([
+  { value: 12, suffix: "+", label: "Years shaping African narratives", sample: true },
+  { value: 150, suffix: "+", label: "Campaigns delivered", sample: true },
+  { value: 9, suffix: "", label: "Sectors served", sample: true },
+  { value: 14, suffix: "", label: "Countries reached", sample: true },
+]);
 
 export const approach = [
   { n: "01", title: "Listen", body: "Audit the audience, the landscape and the noise. Find the truth worth telling." },

@@ -55,9 +55,11 @@ export function Footer() {
               <p><a href={`mailto:${site.email}`} className="hover:text-mint-200">{site.email}</a></p>
               <p><a href={site.phoneHref} className="hover:text-mint-200">{site.phone}</a></p>
             </address>
-            <a href={site.socials.linkedin} className="mt-6 inline-flex size-11 items-center justify-center rounded-pill border border-[var(--line)] hover:bg-[var(--line)]" aria-label="Accessline on LinkedIn" rel="noopener" target="_blank">
-              <LinkedInIcon className="size-4" />
-            </a>
+            {site.socials.linkedin && (
+              <a href={site.socials.linkedin} className="mt-6 inline-flex size-11 items-center justify-center rounded-pill border border-[var(--line)] hover:bg-[var(--line)]" aria-label={`${site.name} on LinkedIn`} rel="noopener" target="_blank">
+                <LinkedInIcon className="size-4" />
+              </a>
+            )}
           </div>
         </div>
 

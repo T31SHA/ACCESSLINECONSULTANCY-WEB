@@ -3,7 +3,7 @@ import { Resend } from "resend";
 import { site } from "@/content/site";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
-const FROM = process.env.EMAIL_FROM ?? `Accessline Consultancy <hello@accesslineconsultancy.com>`;
+const FROM = process.env.EMAIL_FROM ?? `Accessline Consultancy Limited <info@accesslineconsultancy.com>`;
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -43,8 +43,8 @@ export async function sendLeadAutoReply(to: string, name: string) {
     subject: "We've got your brief — let's talk",
     html: `<div style="font-family:sans-serif;font-size:16px;line-height:1.6;color:#0B1A13;max-width:560px">
 <p>Hi ${first},</p>
-<p>Thanks for reaching out to ${site.name}. A senior consultant will review your brief and reply within one working day.</p>
-<p>Want to move faster? <a href="${site.calUrl}" style="color:#014F29;font-weight:600">Book a 30-minute discovery call</a>.</p>
+<p>Thanks for reaching out to ${site.name}. A senior consultant will review your brief and reply personally.</p>
+${site.calUrl ? `<p>Want to move faster? <a href="${site.calUrl}" style="color:#014F29;font-weight:600">Book a 30-minute discovery call</a>.</p>` : `<p>Prefer to talk? Call us on ${site.phone}.</p>`}
 <p>— The Accessline team<br>${site.address.street}, ${site.address.locality}</p></div>`,
   });
 }

@@ -9,7 +9,7 @@ export const services: Service[] = [
     seo: {
       title: "PR & Media Relations Agency in Nairobi, Kenya",
       description:
-        "Media relations, press office and crisis communications from a Nairobi PR agency with 12+ years of newsroom relationships across East Africa.",
+        "Media relations, press office and crisis communications from a Nairobi PR agency with deep newsroom relationships across East Africa.",
     },
     problem:
       "Good work goes unreported. Press releases land in inboxes and die there, while competitors own the conversation.",

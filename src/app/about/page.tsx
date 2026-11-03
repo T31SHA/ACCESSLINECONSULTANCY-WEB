@@ -6,22 +6,23 @@ import { Timeline } from "@/components/blocks/timeline";
 import { ButtonLink } from "@/components/ui/button";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { team } from "@/content/people";
-import { site } from "@/content/site";
+import { sampleFacts, site } from "@/content/site";
+import { published } from "@/content/types";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About Us — Nairobi PR Agency Since 2012",
-  description: "Founded in Nairobi in 2012, Accessline Consultancy is a strategic communications and PR agency helping organisations across Africa lead the change.",
+  title: "About Us — Nairobi PR & Communications Agency",
+  description: "Accessline Consultancy Limited is a Nairobi strategic communications and PR agency helping organisations across Africa lead the change.",
   path: "/about",
 });
 
-// CLIENT TO CONFIRM: milestones.
-const milestones = [
-  { year: "2012", title: "Founded in Nairobi", body: "Started with one conviction: African organisations deserve world-class communications built on local truth." },
-  { year: "2016", title: "SBCC practice launched", body: "Expanded into behaviour change for health and development partners." },
-  { year: "2020", title: "Research & insight unit", body: "In-house research to ground every strategy in evidence." },
-  { year: "Now", title: "Africa-wide", body: "Integrated PR, strategy and creative for clients across the continent from Ecobank Towers." },
-];
+// SAMPLE — unverified milestones; client to confirm.
+const milestones = published([
+  { year: "2012", title: "Founded in Nairobi", body: "Started with one conviction: African organisations deserve world-class communications built on local truth.", sample: true },
+  { year: "2016", title: "SBCC practice launched", body: "Expanded into behaviour change for health and development partners.", sample: true },
+  { year: "2020", title: "Research & insight unit", body: "In-house research to ground every strategy in evidence.", sample: true },
+  { year: "Now", title: "Africa-wide", body: "Integrated PR, strategy and creative for clients across the continent from Ecobank Towers.", sample: true },
+]);
 
 const values = [
   { title: "Truth first", body: "Credibility is the only currency that compounds." },
@@ -36,15 +37,17 @@ export default function AboutPage() {
     <>
       <PageHero
         crumbs={[{ name: "About", path: "/about" }]}
-        overline={`Est. ${site.foundingYear} · Nairobi`}
+        overline={sampleFacts ? `Est. ${sampleFacts.foundingYear} · Nairobi` : "Nairobi"}
         title="We help Africa's changemakers be heard and believed."
-        lede="Accessline Consultancy is a strategic communications and PR agency. For more than a decade we have shaped how corporates, NGOs and governments talk to the people who matter most."
+        lede={`${site.name} is a strategic communications and PR agency. We shape how corporates, NGOs and governments talk to the people who matter most.`}
       />
 
-      <section className="section container-site pt-0">
-        <SectionHeading overline="Our story" title={`${site.foundingYear} → now`} />
-        <Timeline items={milestones} />
-      </section>
+      {milestones.length > 0 && (
+        <section className="section container-site pt-0">
+          <SectionHeading overline="Our story" title="How we got here" />
+          <Timeline items={milestones} />
+        </section>
+      )}
 
       <section className="theme-dark section bg-[var(--surface)] text-[var(--fg)]">
         <div className="container-site grid gap-px overflow-hidden rounded-lg bg-[var(--line)] md:grid-cols-2">
@@ -81,9 +84,8 @@ export default function AboutPage() {
         <SectionHeading overline="Credentials" title="Registered, compliant, accountable." />
         <ul className="grid gap-6 md:grid-cols-3">
           {[
-            ["Registered in Kenya", `${site.legalName}, incorporated ${site.foundingYear}.`],
+            ["Registered in Kenya", `${site.legalName}, ${site.address.street}, ${site.address.locality}.`],
             ["Data protection", "Processes personal data in line with the Kenya Data Protection Act, 2019."],
-            ["Memberships", "Professional body memberships — to be confirmed by client (e.g. PRSK)."],
           ].map(([t, b]) => (
             <li key={t} data-reveal className="rounded-lg border border-[var(--line)] p-8">
               <h3 className="text-xl">{t}</h3>

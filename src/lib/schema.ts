@@ -17,20 +17,15 @@ export const organizationSchema = () => ({
   image: absoluteUrl("/opengraph-image"),
   email: site.email,
   telephone: site.phone,
-  foundingDate: String(site.foundingYear),
   address: {
     "@type": "PostalAddress",
     streetAddress: site.address.street,
     addressLocality: site.address.locality,
-    addressRegion: site.address.region,
-    postalCode: site.address.postalCode,
     addressCountry: site.address.country,
   },
-  geo: { "@type": "GeoCoordinates", latitude: site.geo.lat, longitude: site.geo.lng },
-  openingHours: site.hours.map((h) => h.schema),
   areaServed: [{ "@type": "Country", name: "Kenya" }, { "@type": "Place", name: "Africa" }],
   knowsAbout: ["Public relations", "Media relations", "Strategic communications", "SBCC", "Market research", "Events"],
-  sameAs: Object.values(site.socials),
+  ...(Object.keys(site.socials).length ? { sameAs: Object.values(site.socials) } : {}),
 });
 
 export const breadcrumbSchema = (items: { name: string; path: string }[]) => ({

@@ -5,7 +5,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Terms of Use",
-  description: "Terms governing use of the Accessline Consultancy website.",
+  description: "Terms governing use of the Accessline Consultancy Limited website.",
   path: "/terms",
 });
 

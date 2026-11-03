@@ -3,7 +3,7 @@ import { site } from "@/content/site";
 
 export function CtaBand({
   title = "Ready to lead the change?",
-  body = "Tell us the outcome you need. We'll come back within one working day with a point of view.",
+  body = "Tell us the outcome you need. We'll come back with a point of view.",
 }: { title?: string; body?: string }) {
   return (
     <section className="theme-forest relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]">
@@ -14,9 +14,15 @@ export function CtaBand({
           <p className="text-[var(--fg-muted)]">{body}</p>
           <div className="mt-8 flex flex-wrap gap-3">
             <ButtonLink href="/contact" size="lg" withArrow>Start a project</ButtonLink>
-            <a href={site.calUrl} className="inline-flex min-h-11 items-center rounded-pill border border-current px-6 font-semibold hover:bg-sand-50 hover:text-forest-900" rel="noopener" target="_blank">
-              Book a call
-            </a>
+            {site.calUrl ? (
+              <a href={site.calUrl} className="inline-flex min-h-11 items-center rounded-pill border border-current px-6 font-semibold hover:bg-sand-50 hover:text-forest-900" rel="noopener" target="_blank">
+                Book a call
+              </a>
+            ) : (
+              <a href={site.phoneHref} className="inline-flex min-h-11 items-center rounded-pill border border-current px-6 font-semibold hover:bg-sand-50 hover:text-forest-900">
+                Call us
+              </a>
+            )}
           </div>
         </div>
       </div>

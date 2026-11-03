@@ -22,7 +22,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "PR & Brand Strategy Agency in Nairobi",
-  description: "Nairobi PR agency for media relations, strategic communications and brand strategy across Africa. Lead the change — since 2012.",
+  description: "Nairobi PR agency for media relations, strategic communications and brand strategy across Africa. Lead the change.",
   path: "/",
 });
 
@@ -46,7 +46,7 @@ export default function HomePage() {
           <div className="mt-12 grid gap-10 md:mt-16 lg:grid-cols-12 lg:gap-8">
             <div className="flex flex-col justify-between gap-10 lg:col-span-5">
               <p className="max-w-[46ch] text-lg text-[var(--fg-muted)] md:text-xl">
-                Strategic communications, PR and behaviour change for corporates, NGOs and governments — built in Nairobi, trusted across the continent since {site.foundingYear}.
+                Strategic communications, PR and behaviour change for corporates, NGOs and governments — built in Nairobi for audiences across the continent.
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <Magnetic><ButtonLink href="/contact" size="lg" withArrow>Start a project</ButtonLink></Magnetic>
@@ -56,8 +56,8 @@ export default function HomePage() {
             <div className="relative lg:col-span-7">
               <MediaFrame label="Nairobi skyline at dusk, duotone" priority ratio="aspect-[16/10]" sizes="(min-width: 1024px) 55vw, 100vw" />
               <div className="absolute bottom-4 left-4 max-w-[240px] rounded-md bg-[var(--surface-raised)] p-5 shadow-hover md:bottom-6 md:left-6">
-                <p className="font-display text-2xl font-bold leading-none text-forest-700">Since {site.foundingYear}</p>
-                <p className="mt-2 text-sm text-[var(--fg-muted)]">10th Floor, Ecobank Towers — the heart of Nairobi.</p>
+                <p className="font-display text-2xl font-bold leading-none text-forest-700">Nairobi HQ</p>
+                <p className="mt-2 text-sm text-[var(--fg-muted)]">{site.address.street} — the heart of the city.</p>
               </div>
             </div>
           </div>
@@ -67,12 +67,14 @@ export default function HomePage() {
       <LogoMarquee logos={clientLogos} />
 
       {/* ─── Stats ─── */}
-      <section className="section container-site" aria-labelledby="stats-title">
-        <h2 id="stats-title" className="sr-only">Accessline in numbers</h2>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
-          {stats.map((s) => <StatCounter key={s.label} {...s} />)}
-        </div>
-      </section>
+      {stats.length > 0 && (
+        <section className="section container-site" aria-labelledby="stats-title">
+          <h2 id="stats-title" className="sr-only">Accessline in numbers</h2>
+          <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4">
+            {stats.map((s) => <StatCounter key={s.label} {...s} />)}
+          </div>
+        </section>
+      )}
 
       {/* ─── Services ─── */}
       <section className="section container-site pt-0" aria-labelledby="services-title">
@@ -159,7 +161,7 @@ export default function HomePage() {
         <div className="container-site section relative grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <h2 id="cta-title" className="text-display">Let&apos;s talk.</h2>
-            <p className="mt-6 max-w-[40ch] text-lg text-[var(--fg-muted)]">One working day to a senior reply. No account-exec relay.</p>
+            <p className="mt-6 max-w-[40ch] text-lg text-[var(--fg-muted)]">A senior reply, not an account-exec relay.</p>
             <ul className="mt-10 space-y-3">
               <li><a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center gap-2 font-semibold underline-offset-4 hover:underline"><ArrowDownRight aria-hidden className="size-4" /> {site.email}</a></li>
               <li><Link href="/contact" className="inline-flex min-h-11 items-center gap-2 font-semibold underline-offset-4 hover:underline"><ArrowDownRight aria-hidden className="size-4" /> Detailed brief form</Link></li>

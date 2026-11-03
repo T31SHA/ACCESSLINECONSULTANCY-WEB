@@ -5,7 +5,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Privacy Policy",
-  description: "How Accessline Consultancy collects, uses and protects personal data under the Kenya Data Protection Act, 2019.",
+  description: "How Accessline Consultancy Limited collects, uses and protects personal data under the Kenya Data Protection Act, 2019.",
   path: "/privacy",
 });
 

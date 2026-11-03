@@ -7,7 +7,7 @@ import { site } from "@/content/site";
 /** Click-to-load map: no third-party requests until the visitor opts in. */
 export function MapEmbed() {
   const [load, setLoad] = useState(false);
-  const q = encodeURIComponent(`Ecobank Towers, Muindi Mbingu Street, Nairobi`);
+  const q = encodeURIComponent(`Ecobank Towers, Nairobi, Kenya`);
   return (
     <div className="duotone relative aspect-[4/3] overflow-hidden rounded-lg">
       {load ? (
