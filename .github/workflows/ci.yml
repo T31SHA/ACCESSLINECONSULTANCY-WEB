@@ -3,9 +3,14 @@ on:
   push: { branches: [main] }
   pull_request:
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   verify:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -15,7 +20,23 @@ jobs:
       - run: npm run lint
       - run: npm test
       - run: npm run build
+      # Launch-gate build must also compile (all sample content stripped)
+      - run: HIDE_SAMPLE_CONTENT=true npx next build --no-lint
+      - run: npm run build # restore the default build for E2E/LHCI
       - run: npx playwright install --with-deps chromium
       - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with: { name: playwright-report, path: playwright-report, retention-days: 7 }
       - run: npx @lhci/cli@0.15.x autorun
         env: { LHCI_GITHUB_APP_TOKEN: "${{ secrets.LHCI_GITHUB_APP_TOKEN }}" }
+
+  storybook:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run build-storybook
