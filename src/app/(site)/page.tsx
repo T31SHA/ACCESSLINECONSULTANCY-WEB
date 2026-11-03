@@ -11,10 +11,11 @@ import { ServiceCard } from "@/components/cards/service-card";
 import { LazyShortLeadForm } from "@/components/forms/lazy-short-lead-form";
 import { ButtonLink } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/magnetic";
-import { MediaFrame } from "@/components/ui/media-frame";
+import { Photo, PhotoScrim } from "@/components/ui/photo";
 import { Overline, SectionHeading } from "@/components/ui/section-heading";
 import { approach, site } from "@/content/site";
 import { getCaseStudies, getClientLogos, getIndustries, getPosts, getServices, getSiteSettings, getTestimonials } from "@/lib/content";
+import { images } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -33,14 +34,15 @@ export default async function HomePage() {
   return (
     <>
       {/* ─── Hero ─── */}
-      <section className="relative overflow-hidden">
-        <div aria-hidden className="topo pointer-events-none absolute -right-60 -top-10 h-[700px] w-[1100px] opacity-[0.06]" />
+      <section className="on-photo relative isolate overflow-hidden bg-forest-900">
+        <Photo image={images["hero-nairobi-skyline"]} hero sizes="100vw" ratio="" quality={50} className="absolute inset-0 -z-10" />
+        <PhotoScrim className="-z-10" />
         <div className="container-site relative pb-20 pt-12 md:pt-20 lg:pb-28">
           <Overline className="mb-8">{site.positioning}</Overline>
           <h1 className="text-display">
             {heroLines.map((line, i) => (
               <span key={line} className="split-line lg:whitespace-nowrap" style={{ ["--line-i" as string]: i }}>
-                <span className={i === 0 ? "text-forest-700" : undefined}>{line}</span>
+                <span className={i === 0 ? "text-mint-200" : undefined}>{line}</span>
               </span>
             ))}
           </h1>
@@ -51,14 +53,13 @@ export default async function HomePage() {
               </p>
               <div className="flex flex-wrap items-center gap-4">
                 <Magnetic><ButtonLink href="/contact" size="lg" withArrow>Start a project</ButtonLink></Magnetic>
-                <ButtonLink href="/work" variant="outline" size="lg">See our work</ButtonLink>
+                <ButtonLink href="/work" variant="outline" size="lg" className="hover:text-forest-900">See our work</ButtonLink>
               </div>
             </div>
-            <div className="relative lg:col-span-7">
-              <MediaFrame label="Nairobi skyline at dusk, duotone" priority ratio="aspect-[16/10]" sizes="(min-width: 1024px) 55vw, 100vw" />
-              <div className="absolute bottom-4 left-4 max-w-[240px] rounded-md bg-[var(--surface-raised)] p-5 shadow-hover md:bottom-6 md:left-6">
+            <div className="flex lg:col-span-4 lg:col-start-9 lg:items-end lg:justify-end">
+              <div className="max-w-[260px] rounded-md bg-sand-50 p-5 text-ink-950 shadow-hover">
                 <p className="font-display text-2xl font-bold leading-none text-forest-700">Nairobi HQ</p>
-                <p className="mt-2 text-sm text-[var(--fg-muted)]">{site.address.street} — the heart of the city.</p>
+                <p className="mt-2 text-sm text-slate-600">{site.address.street} — the heart of the city.</p>
               </div>
             </div>
           </div>
@@ -85,7 +86,7 @@ export default async function HomePage() {
           action={<ButtonLink href="/services" variant="arrow">All services</ButtonLink>}
         />
         <div className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((s, i) => <ServiceCard key={s.slug} service={s} index={i} />)}
+          {services.map((s, i) => <ServiceCard key={s.slug} service={s} index={i} mobileThumb={false} />)}
         </div>
       </section>
 
@@ -157,8 +158,9 @@ export default async function HomePage() {
       )}
 
       {/* ─── CTA + short form ─── */}
-      <section className="theme-forest relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="cta-title">
-        <div aria-hidden className="topo absolute inset-0 opacity-[0.1] text-sand-50" />
+      <section className="theme-forest on-photo relative isolate overflow-hidden bg-[var(--surface)]" aria-labelledby="cta-title">
+        <Photo image={images["home-cta-nairobi-cbd-night"]} sizes="100vw" ratio="" quality={50} className="absolute inset-0 -z-10" />
+        <PhotoScrim className="-z-10" />
         <div className="container-site section relative grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <h2 id="cta-title" className="text-display">Let&apos;s talk.</h2>

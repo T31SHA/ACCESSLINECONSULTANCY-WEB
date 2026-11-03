@@ -11,6 +11,7 @@ import { track, trackingMeta } from "@/lib/analytics";
 import {
   budgetBands, budgetLabels, leadSchema, leadStepFields, timelineLabels, timelines,
 } from "@/lib/lead-schema";
+import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { describedBy, Field, Honeypot, Input, Select, Textarea } from "./fields";
 import { Turnstile } from "./turnstile";
@@ -93,7 +94,7 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
       }).catch(() => null);
       if (!res?.ok) {
         const body = await res?.json().catch(() => null);
-        setServerError(body?.error ?? "We couldn't send your brief. Please try again or email info@accesslineconsultancy.com.");
+        setServerError(body?.error ?? `We couldn't send your brief. Please try again or email ${site.email}.`);
         return;
       }
       localStorage.removeItem(STORAGE_KEY);

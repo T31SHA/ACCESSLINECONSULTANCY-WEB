@@ -5,6 +5,8 @@ import { ArrowRight } from "lucide-react";
 import { CtaBand } from "@/components/blocks/cta-band";
 import { PageHero } from "@/components/blocks/page-hero";
 import { MediaFrame } from "@/components/ui/media-frame";
+import { Photo } from "@/components/ui/photo";
+import { caseStudyImages } from "@/lib/images";
 import { getCaseStudies, getCaseStudy, getIndustries, getServices } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
@@ -43,7 +45,11 @@ export default async function CaseStudyPage({ params }: Props) {
       </PageHero>
 
       <div className="container-site">
-        <MediaFrame src={c.image} alt={c.imageAlt} label={c.image ? undefined : `${c.title} — campaign imagery`} ratio="aspect-[16/9]" priority sizes="100vw" />
+        {!c.image && caseStudyImages[c.slug] ? (
+          <Photo image={caseStudyImages[c.slug]!} ratio="aspect-[4/3] md:aspect-[16/9]" className="rounded-lg" sizes="(min-width: 1320px) 1280px, 100vw" />
+        ) : (
+          <MediaFrame src={c.image} alt={c.imageAlt} label={c.image ? undefined : `${c.title} — campaign imagery`} ratio="aspect-[16/9]" sizes="(min-width: 1320px) 1280px, 100vw" />
+        )}
       </div>
 
       <section className="section container-site grid gap-12 lg:grid-cols-12">

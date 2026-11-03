@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/blocks/page-hero";
 import { site } from "@/content/site";
+import { photoCredits } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -24,6 +25,13 @@ export default function TermsPage() {
         <p>We take care to keep information accurate but accept no liability for loss arising from reliance on it, to the extent permitted by law.</p>
         <h2>Governing law</h2>
         <p>These terms are governed by the laws of Kenya.</p>
+        <h2 id="photo-credits">Photo credits</h2>
+        <p>Photography on this site is licensed stock from Pexels and Unsplash, used under the <a href="https://www.pexels.com/license/" rel="noopener">Pexels License</a> and the <a href="https://unsplash.com/license" rel="noopener">Unsplash License</a>. With thanks to:</p>
+        <ul>
+          {photoCredits.map((c) => (
+            <li key={c.source}><a href={c.source} rel="noopener">{c.photographer}</a> ({c.licence.replace(" License", "")})</li>
+          ))}
+        </ul>
       </article>
     </>
   );

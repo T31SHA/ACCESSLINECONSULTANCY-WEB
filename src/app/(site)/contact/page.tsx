@@ -6,6 +6,8 @@ import { WhatsAppLink } from "@/components/blocks/whatsapp-link";
 import { LeadForm } from "@/components/forms/lead-form";
 import { site } from "@/content/site";
 import { getIndustries, getServices, getSiteSettings } from "@/lib/content";
+import { Photo } from "@/components/ui/photo";
+import { images } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -34,6 +36,8 @@ export default async function ContactPage() {
             <WhatsAppLink className="inline-flex min-h-11 items-center gap-2 rounded-pill border border-[var(--line)] px-5 font-semibold hover:bg-[var(--line)]" />
             {calUrl && <a href={calUrl} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center rounded-pill border border-[var(--line)] px-5 font-semibold hover:bg-[var(--line)]">Book a discovery call</a>}
           </div>
+          <Photo image={images["contact-nairobi-sunset"]} ratio="aspect-[4/3]" className="rounded-lg"
+            sizes="(min-width: 1320px) 520px, (min-width: 1280px) 40vw, 100vw" />
           <MapEmbed />
         </aside>
       </div>

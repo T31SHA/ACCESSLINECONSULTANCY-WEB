@@ -5,6 +5,7 @@ import { PageHero } from "@/components/blocks/page-hero";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { getCaseStudies, getIndustries, getIndustry } from "@/lib/content";
+import { industryImages } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -31,6 +32,7 @@ export default async function IndustryPage({ params }: Props) {
         overline="Industry"
         title={ind.title}
         lede={ind.short}
+        image={industryImages[ind.slug]}
       />
       <section className="container-site grid gap-12 pb-[var(--section-y)] lg:grid-cols-12">
         <div className="lg:col-span-5">

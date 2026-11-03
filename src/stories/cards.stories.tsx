@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/nextjs-vite";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
+import { IndustryCard } from "@/components/cards/industry-card";
 import { IndustryTile } from "@/components/cards/industry-tile";
 import { PostCard } from "@/components/cards/post-card";
 import { ServiceCard } from "@/components/cards/service-card";
@@ -36,4 +37,8 @@ export const PostCards: StoryObj = {
 
 export const IndustryTiles: StoryObj = {
   render: () => <ul className="container-site border-t border-[var(--line)] py-12">{fx.industries.map((i) => <IndustryTile key={i.slug} industry={i} />)}</ul>,
+};
+
+export const IndustryCards: StoryObj = {
+  render: () => <ul className="container-site grid gap-x-6 gap-y-14 py-12 sm:grid-cols-2 md:grid-cols-3">{fx.industries.map((i) => <IndustryCard key={i.slug} industry={i} />)}</ul>,
 };

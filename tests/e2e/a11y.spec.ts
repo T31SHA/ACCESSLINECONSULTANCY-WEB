@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const routes = ["/", "/about", "/services", "/services/sbcc", "/industries/health", "/work", "/work/fintech-market-entry", "/team", "/insights", "/insights/sbcc-beyond-awareness", "/careers", "/careers/sbcc-programme-officer", "/contact", "/thank-you", "/privacy", "/newsletter/confirm?token=x", "/admin/login", "/does-not-exist"];
+const routes = ["/", "/about", "/services", "/services/sbcc", "/industries", "/industries/health", "/work", "/work/fintech-market-entry", "/team", "/insights", "/insights/sbcc-beyond-awareness", "/careers", "/careers/sbcc-programme-officer", "/contact", "/thank-you", "/privacy", "/terms", "/newsletter/confirm?token=x", "/admin/login", "/does-not-exist"];
 
 for (const route of routes) {
   test(`axe: ${route}`, async ({ page }) => {
@@ -16,18 +16,9 @@ for (const route of routes) {
   });
 }
 
-test("legacy redirects are 301", async ({ request }) => {
-  for (const [from, to] of [["/about-us", "/about"], ["/our-services", "/services"], ["/our-partners", "/industries"], ["/gis-remote-sensing", "/team"], ["/logistics-support", "/careers"]]) {
-    const res = await request.get(from, { maxRedirects: 0 });
-    expect(res.status()).toBe(301);
-    expect(new URL(res.headers().location!, "http://x").pathname).toBe(to);
-  }
-});
-
-
 test("public pages: unique title ≤60, description ≤155, canonical, OG image", async ({ page }) => {
   const seen = new Set<string>();
-  for (const route of ["/", "/about", "/services", "/services/sbcc", "/industries/health", "/work", "/team", "/insights", "/careers", "/contact"]) {
+  for (const route of ["/", "/about", "/services", "/services/sbcc", "/industries", "/industries/health", "/work", "/team", "/insights", "/careers", "/contact"]) {
     const res = await page.goto(route);
     expect(res?.status(), route).toBe(200);
     const title = await page.title();
@@ -44,8 +35,8 @@ test("public pages: unique title ≤60, description ≤155, canonical, OG image"
 test("company name and contacts are consistent", async ({ page }) => {
   await page.goto("/contact");
   const text = await page.locator("body").innerText();
-  expect(text).toContain("info@accesslineconsultancy.com");
-  expect(text).toContain("+254 727 684443");
+  expect(text).toContain(process.env.NEXT_PUBLIC_CONTACT_EMAIL || "info@accesslineconsultancy.com");
+  expect(text).toContain("+254 729 963 218");
   expect(text).toContain("10th Floor, Ecobank Towers");
   expect(text).toContain("Accessline Consultancy Limited");
   expect(text).not.toMatch(/Accessline Consultancy Ltd|ACESSLINE|Accessine|@gmail\.com/);

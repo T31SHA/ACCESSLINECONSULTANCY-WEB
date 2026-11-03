@@ -48,7 +48,7 @@ export function WorkFilter({ items, services, industries }: { items: CaseStudy[]
       <p aria-live="polite" className="sr-only">{filtered.length} case studies shown</p>
       {filtered.length ? (
         <div className="grid gap-x-6 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((c, i) => <CaseStudyCard key={c.slug} cs={c} priority={i < 2} industryTitle={industries.find((x) => x.slug === c.industry)?.title} />)}
+          {filtered.map((c) => <CaseStudyCard key={c.slug} cs={c} industryTitle={industries.find((x) => x.slug === c.industry)?.title} />)}
         </div>
       ) : (
         <p className="py-16 text-center text-[var(--fg-muted)]">No case studies match that combination yet.</p>

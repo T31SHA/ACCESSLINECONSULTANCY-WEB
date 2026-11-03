@@ -50,6 +50,7 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   images: {
     formats: ["image/avif", "image/webp"],
+    qualities: [50, 65, 75],
     deviceSizes: [375, 640, 768, 1024, 1280, 1536, 1920],
     remotePatterns: [{ protocol: "https", hostname: "cdn.sanity.io" }],
   },
@@ -60,22 +61,6 @@ const nextConfig: NextConfig = {
       // Later entries override earlier ones for the same key.
       { source: "/studio/:path*", headers: [{ key: "Content-Security-Policy", value: studioCsp }] },
       { source: "/admin/:path*", headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow" }, { key: "Cache-Control", value: "no-store" }] },
-    ];
-  },
-  async redirects() {
-    return [
-      // Legacy WordPress slugs → new IA (301)
-      { source: "/about-us", destination: "/about", statusCode: 301 },
-      { source: "/our-services", destination: "/services", statusCode: 301 },
-      { source: "/our-partners", destination: "/industries", statusCode: 301 },
-      { source: "/gis-remote-sensing", destination: "/team", statusCode: 301 },
-      { source: "/logistics-support", destination: "/careers", statusCode: 301 },
-      // Close legacy WP surfaces (incl. the public users endpoint)
-      { source: "/wp-json/:path*", destination: "/", statusCode: 301 },
-      { source: "/wp-admin/:path*", destination: "/", statusCode: 301 },
-      { source: "/wp-login.php", destination: "/", statusCode: 301 },
-      { source: "/feed", destination: "/insights", statusCode: 301 },
-      { source: "/:path*/feed", destination: "/insights", statusCode: 301 },
     ];
   },
 };

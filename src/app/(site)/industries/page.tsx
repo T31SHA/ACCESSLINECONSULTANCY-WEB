@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { CtaBand } from "@/components/blocks/cta-band";
 import { PageHero } from "@/components/blocks/page-hero";
-import { IndustryTile } from "@/components/cards/industry-tile";
+import { IndustryCard } from "@/components/cards/industry-card";
+import { images } from "@/lib/images";
 import { getIndustries } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
@@ -20,10 +21,12 @@ export default async function IndustriesPage() {
         overline="Industries"
         title="Sector fluency, from boardroom to county."
         lede="Every sector has its own regulators, audiences and unwritten rules. We know them."
+        image={images["industries-hero-nairobi-cityscape"]}
+        imageRatio="aspect-[16/9] md:aspect-[4/3]"
       />
       <section className="container-site pb-[var(--section-y)]">
-        <ul className="border-t border-[var(--line)]">
-          {industries.map((i) => <IndustryTile key={i.slug} industry={i} />)}
+        <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2 sm:gap-y-14 md:grid-cols-3">
+          {industries.map((i) => <IndustryCard key={i.slug} industry={i} />)}
         </ul>
       </section>
       <CtaBand />

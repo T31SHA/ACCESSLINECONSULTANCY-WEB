@@ -5,7 +5,7 @@ import { calLinkForLead } from "@/lib/integrations/cal";
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 export const emailConfigured = Boolean(resend || process.env.SLACK_WEBHOOK_URL);
-const FROM = process.env.EMAIL_FROM ?? `Accessline Consultancy Limited <info@accesslineconsultancy.com>`;
+const FROM = process.env.EMAIL_FROM || `${site.name} <${site.email}>`;
 
 const esc = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]!);
@@ -20,7 +20,7 @@ export async function sendLeadNotification(lead: Record<string, unknown>) {
   if (resend) {
     tasks.push(resend.emails.send({
       from: FROM,
-      to: process.env.LEADS_INBOX ?? site.email,
+      to: process.env.LEADS_INBOX || site.email,
       replyTo: typeof lead.email === "string" ? lead.email : undefined,
       subject: `New enquiry — ${String(lead.organisation ?? lead.fullName ?? "website")}`,
       html,

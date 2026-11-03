@@ -6,6 +6,8 @@ import { SectionHeading } from "@/components/ui/section-heading";
 import { culture, departments } from "@/content/people";
 import { getJobs } from "@/lib/content";
 import { site } from "@/content/site";
+import { Photo } from "@/components/ui/photo";
+import { images } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -23,10 +25,15 @@ export default async function CareersPage() {
         overline="Careers"
         title="Do the best work of your career. In Nairobi."
         lede="Real clients, real responsibility, real growth. We hire curious people who care about Africa's story."
+        image={images["careers-hero-westlands"]}
+        imageRatio="aspect-[3/2]"
       />
       <section className="container-site pb-[var(--section-y)]">
         <SectionHeading overline="Why join" title="What you can expect" />
-        <ul className="grid gap-8 md:grid-cols-4">
+        <div className="grid gap-12 md:grid-cols-12 md:items-start">
+        <Photo image={images["careers-team-collaboration"]} ratio="aspect-[4/3]" className="rounded-lg md:col-span-5"
+          sizes="(min-width: 1320px) 520px, (min-width: 1024px) 40vw, 100vw" />
+        <ul className="grid gap-8 sm:grid-cols-2 md:col-span-7">
           {culture.map((c) => (
             <li key={c.title} data-reveal className="border-t-2 border-forest-700 pt-6">
               <h3 className="text-xl">{c.title}</h3>
@@ -34,6 +41,7 @@ export default async function CareersPage() {
             </li>
           ))}
         </ul>
+        </div>
       </section>
       <section className="section bg-mint-50">
         <div className="container-site">
