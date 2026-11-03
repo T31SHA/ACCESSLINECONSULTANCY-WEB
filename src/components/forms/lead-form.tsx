@@ -112,7 +112,7 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
       <ol className="mb-10 grid grid-cols-3 gap-2" aria-label="Form progress">
         {steps.map((label, i) => (
           <li key={label} aria-current={i === step ? "step" : undefined}>
-            <span className={cn("block h-1 rounded-pill transition-colors", i <= step ? "bg-forest-700" : "bg-[var(--line)]")} />
+            <span className={cn("block h-1 rounded-pill transition-colors", i <= step ? "bg-ink-950" : "bg-[var(--line)]")} />
             <span className={cn("mt-3 hidden text-sm sm:block", i === step ? "font-semibold" : "text-[var(--fg-muted)]")}>
               {i + 1}. {label}
             </span>
@@ -144,7 +144,7 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
               return (
                 <label key={s.slug} className={cn(
                   "inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-pill border px-4 py-2 text-sm font-medium transition-colors has-[:focus-visible]:outline has-[:focus-visible]:outline-3 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent-400",
-                  on ? "border-forest-700 bg-forest-700 text-sand-50" : "border-[var(--line)] hover:border-[var(--fg-muted)]",
+                  on ? "border-ink-950 bg-ink-950 text-sand-50" : "border-[var(--line)] hover:border-[var(--fg-muted)]",
                 )}>
                   <input type="checkbox" value={s.slug} className="sr-only" {...register("serviceInterest")} />
                   {on && <Check aria-hidden className="size-4" strokeWidth={2} />}
@@ -200,12 +200,12 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
         </Field>
         <div className="space-y-3 sm:col-span-2">
           <label className="flex min-h-11 items-start gap-3 text-sm">
-            <input id="lead-consent" type="checkbox" className="mt-0.5 size-5 shrink-0 accent-forest-700" aria-invalid={!!errors.consent} aria-describedby={errors.consent ? "lead-consent-error" : undefined} {...register("consent")} />
+            <input id="lead-consent" type="checkbox" className="mt-0.5 size-5 shrink-0 accent-ink-950" aria-invalid={!!errors.consent} aria-describedby={errors.consent ? "lead-consent-error" : undefined} {...register("consent")} />
             <span>I agree to Accessline processing my details to respond to this enquiry, per the <a href="/privacy" className="underline">privacy policy</a> (Kenya Data Protection Act 2019). <span aria-hidden className="text-forest-500">*</span></span>
           </label>
           {errors.consent && <p id="lead-consent-error" className="text-sm font-medium text-[#B42318]">{errors.consent.message}</p>}
           <label className="flex min-h-11 items-start gap-3 text-sm text-[var(--fg-muted)]">
-            <input type="checkbox" className="mt-0.5 size-5 shrink-0 accent-forest-700" {...register("consentMarketing")} />
+            <input type="checkbox" className="mt-0.5 size-5 shrink-0 accent-ink-950" {...register("consentMarketing")} />
             <span>Send me occasional insights. Unsubscribe anytime.</span>
           </label>
         </div>

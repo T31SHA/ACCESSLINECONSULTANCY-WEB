@@ -6,21 +6,22 @@
    ────────────────────────────────────────────────────────────── */
 @theme {
   /* Colour */
-  --color-ink-950: #0b1a13;
-  --color-forest-900: #013d20;
-  --color-forest-700: #014f29;
-  --color-forest-500: #1f7a4d;
-  --color-mint-200: #b6e3cd;
-  --color-mint-50: #eef6f1;
-  --color-sand-50: #f7f4ee;
-  --color-sand-200: #e8e1d3;
+  --color-ink-950: #383e4e;   /* deep navy (igloo-inspired) */
+  --color-forest-900: #2c3140; /* darkest navy */
+  --color-forest-700: #014f29; /* logo colour, unchanged */
+  --color-forest-500: #46506a; /* slate-navy, 7:1 on sand-50 */
+  --color-mint-200: #b6bac5; /* blue-grey */
+  --color-mint-50: #eef0f3;
+  --color-sand-50: #f5f6f8;  /* near-white */
+  --color-sand-200: #e3e5ea;
   --color-accent-400: #f2a65a;
-  --color-slate-600: #4a5550;
+  --color-slate-600: #4f5565;
   --color-white: #ffffff;
 
   /* Fonts (CSS vars injected by next/font) */
   --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, Menlo, monospace;
 
   /* Type scale (fluid, 375 → 1536 viewport) */
   --text-display: clamp(3.5rem, 2.37rem + 4.82vw, 7rem);
@@ -59,7 +60,7 @@
   --container-site: 1320px;
 
   /* Elevation — the one hover shadow */
-  --shadow-hover: 0 1px 2px rgb(11 26 19 / 0.04), 0 12px 32px -8px rgb(11 26 19 / 0.18);
+  --shadow-hover: 0 1px 2px rgb(56 62 78 / 0.05), 0 12px 32px -8px rgb(56 62 78 / 0.22);
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -78,7 +79,7 @@
   --surface-muted: var(--color-sand-200);
   --fg: var(--color-ink-950);
   --fg-muted: var(--color-slate-600);
-  --line: rgb(11 26 19 / 0.12);
+  --line: rgb(56 62 78 / 0.14);
   --section-y: clamp(80px, 12vw, 160px);
   --gutter: 16px;
   color-scheme: light;
@@ -88,16 +89,16 @@
 }
 .theme-dark {
   --surface: var(--color-ink-950);
-  --surface-raised: #12261c;
+  --surface-raised: #424959;
   --surface-muted: var(--color-forest-900);
   --fg: var(--color-sand-50);
-  --fg-muted: #b7c2bc; /* 9.4:1 on ink-950 */
-  --line: rgb(247 244 238 / 0.14);
+  --fg-muted: #c9cdd6; /* 6.9:1 on ink-950 */
+  --line: rgb(245 246 248 / 0.16);
   color-scheme: dark;
 }
 .theme-forest {
-  --surface: var(--color-forest-700);
-  --surface-raised: var(--color-forest-900);
+  --surface: var(--color-forest-900);
+  --surface-raised: var(--color-ink-950);
   --surface-muted: var(--color-forest-900);
   --fg: var(--color-sand-50);
   --fg-muted: var(--color-mint-200);
@@ -105,11 +106,11 @@
   color-scheme: dark;
 }
 
-/* Photo scrim: #014F29 (forest-700) at 80% → 60%; text only ever sits on the ≥75% part. */
-.photo-scrim { background: rgb(1 79 41 / 0.8); }
+/* Photo scrim: deep navy #2C3140 at 82% → 62%; text only ever sits on the ≥75% part. */
+.photo-scrim { background: rgb(44 49 64 / 0.82); }
 @media (min-width: 1024px) {
-  .photo-scrim { background: linear-gradient(90deg, rgb(1 79 41 / 0.8) 0%, rgb(1 79 41 / 0.8) 55%, rgb(1 79 41 / 0.6) 100%); }
-  .photo-scrim-r { background: linear-gradient(270deg, rgb(1 79 41 / 0.8) 0%, rgb(1 79 41 / 0.8) 55%, rgb(1 79 41 / 0.6) 100%); }
+  .photo-scrim { background: linear-gradient(90deg, rgb(44 49 64 / 0.82) 0%, rgb(44 49 64 / 0.82) 55%, rgb(44 49 64 / 0.62) 100%); }
+  .photo-scrim-r { background: linear-gradient(270deg, rgb(44 49 64 / 0.82) 0%, rgb(44 49 64 / 0.82) 55%, rgb(44 49 64 / 0.62) 100%); }
 }
 /* Text on photos: sand-50 for body copy too (mint-200 is only 4.0:1 on the scrim). */
 .on-photo { --fg: var(--color-sand-50); --fg-muted: var(--color-sand-50); color: var(--fg); }
@@ -158,7 +159,8 @@
     letter-spacing: var(--text-overline--letter-spacing);
     line-height: 1.2;
     text-transform: uppercase;
-    font-weight: 600;
+    font-family: var(--font-mono);
+    font-weight: 500;
   }
   .hairline { border-color: var(--line); }
   .prose-site { max-width: var(--container-measure); }
@@ -174,7 +176,7 @@
   .duotone img { filter: grayscale(1) contrast(1.1); mix-blend-mode: luminosity; opacity: 0.9; }
   .duotone::after {
     content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(160deg, rgb(182 227 205 / 0.35), rgb(1 61 32 / 0.55));
+    background: linear-gradient(160deg, rgb(182 186 197 / 0.35), rgb(44 49 64 / 0.6));
     mix-blend-mode: multiply;
   }
 
@@ -234,3 +236,14 @@
 }
 
 @keyframes drawer-in { from { transform: translateX(100%); } to { transform: none; } }
+
+/* ── Instrument readouts (igloo-inspired) ── */
+.readout { font-family: var(--font-mono); font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.3; font-weight: 500; }
+.readout-line { flex: 1 1 auto; min-width: 1.5rem; height: 1px; background: currentColor; opacity: 0.35; transform-origin: left; }
+.js .readout-line { animation: line-draw 900ms var(--ease-out-expo) both; }
+@keyframes line-draw { from { transform: scaleX(0); } to { transform: none; } }
+.font-mono-ui { font-family: var(--font-mono); font-feature-settings: "zero" 1; }
+.hero-grid {
+  background-image: linear-gradient(to right, rgb(56 62 78 / 0.07) 1px, transparent 1px), linear-gradient(to bottom, rgb(56 62 78 / 0.07) 1px, transparent 1px);
+  background-size: 64px 64px;
+}

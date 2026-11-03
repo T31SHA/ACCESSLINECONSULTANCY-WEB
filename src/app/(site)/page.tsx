@@ -12,6 +12,8 @@ import { LazyShortLeadForm } from "@/components/forms/lazy-short-lead-form";
 import { ButtonLink } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Photo, PhotoScrim } from "@/components/ui/photo";
+import { Readout } from "@/components/ui/readout";
+import { ScrambleText } from "@/components/ui/scramble-text";
 import { Overline, SectionHeading } from "@/components/ui/section-heading";
 import { approach, site } from "@/content/site";
 import { getCaseStudies, getClientLogos, getIndustries, getPosts, getServices, getSiteSettings, getTestimonials } from "@/lib/content";
@@ -33,34 +35,27 @@ export default async function HomePage() {
   const industryTitle = (slug: string) => industries.find((i) => i.slug === slug)?.title;
   return (
     <>
-      {/* ─── Hero ─── */}
-      <section className="on-photo relative isolate overflow-hidden bg-forest-900">
-        <Photo image={images["hero-nairobi-skyline"]} hero sizes="100vw" ratio="" quality={50} className="absolute inset-0 -z-10" />
-        <PhotoScrim className="-z-10" />
-        <div className="container-site relative pb-20 pt-12 md:pt-20 lg:pb-28">
-          <Overline className="mb-8">{site.positioning}</Overline>
-          <h1 className="text-display">
-            {heroLines.map((line, i) => (
-              <span key={line} className="split-line lg:whitespace-nowrap" style={{ ["--line-i" as string]: i }}>
-                <span className={i === 0 ? "text-mint-200" : undefined}>{line}</span>
-              </span>
-            ))}
-          </h1>
-          <div className="mt-12 grid gap-10 md:mt-16 lg:grid-cols-12 lg:gap-8">
-            <div className="flex flex-col justify-between gap-10 lg:col-span-5">
-              <p className="max-w-[46ch] text-lg text-[var(--fg-muted)] md:text-xl">
-                Strategic communications, PR and behaviour change for corporates, NGOs and governments — built in Nairobi for audiences across the continent.
-              </p>
-              <div className="flex flex-wrap items-center gap-4">
-                <Magnetic><ButtonLink href="/contact" size="lg" withArrow>Start a project</ButtonLink></Magnetic>
-                <ButtonLink href="/work" variant="outline" size="lg" className="hover:text-forest-900">See our work</ButtonLink>
-              </div>
-            </div>
-            <div className="flex lg:col-span-4 lg:col-start-9 lg:items-end lg:justify-end">
-              <div className="max-w-[260px] rounded-md bg-sand-50 p-5 text-ink-950 shadow-hover">
-                <p className="font-display text-2xl font-bold leading-none text-forest-700">Nairobi HQ</p>
-                <p className="mt-2 text-sm text-slate-600">{site.address.street} — the heart of the city.</p>
-              </div>
+      {/* ─── Hero: minimal, one CTA ─── */}
+      <section className="hero-grid relative isolate overflow-hidden bg-mint-200 text-ink-950 [--fg:var(--color-ink-950)] [--fg-muted:var(--color-ink-950)] [--line:rgb(56_62_78/0.22)]">
+        <div className="container-site relative flex min-h-[min(88svh,860px)] flex-col justify-between gap-16 pb-14 pt-14 md:pt-24">
+          <Readout code="ACL_HQ" meta={`${site.address.locality} · KE · ${site.address.street.split(",")[0]}`} className="max-w-2xl" />
+          <div>
+            <Overline className="mb-8">{site.positioning}</Overline>
+            <h1 className="text-display">
+              {heroLines.map((line, i) => (
+                <span key={line} className="split-line lg:whitespace-nowrap" style={{ ["--line-i" as string]: i }}>
+                  <ScrambleText text={line} delay={i * 140} className={i === 0 ? "text-forest-500" : undefined} />
+                </span>
+              ))}
+            </h1>
+          </div>
+          <div className="grid gap-10 md:grid-cols-12 md:items-end">
+            <p className="max-w-[46ch] text-lg md:col-span-6 md:text-xl">
+              Strategic communications, PR and behaviour change for corporates, NGOs and governments — built in Nairobi for audiences across the continent.
+            </p>
+            <div className="flex flex-col items-start gap-5 md:col-span-6 md:items-end">
+              <Magnetic><ButtonLink href="/contact" size="lg" withArrow className="bg-ink-950 text-sand-50 hover:bg-forest-900">Start a project</ButtonLink></Magnetic>
+              <p className="readout flex items-center gap-2"><ArrowDownRight aria-hidden className="size-3.5" strokeWidth={1.5} /> Scroll to explore</p>
             </div>
           </div>
         </div>
@@ -100,7 +95,7 @@ export default async function HomePage() {
               action={<ButtonLink href="/work" variant="arrow">All case studies</ButtonLink>}
             />
             <div className="grid gap-12 md:grid-cols-3 md:gap-6">
-              {caseStudies.slice(0, 3).map((cs) => <CaseStudyCard key={cs.slug} cs={cs} industryTitle={industryTitle(cs.industry)} />)}
+              {caseStudies.slice(0, 3).map((cs, i) => <CaseStudyCard key={cs.slug} index={i} cs={cs} industryTitle={industryTitle(cs.industry)} />)}
             </div>
           </div>
         </section>
@@ -112,7 +107,7 @@ export default async function HomePage() {
         <ol className="grid gap-px overflow-hidden rounded-lg bg-[var(--line)] md:grid-cols-4">
           {approach.map((a) => (
             <li key={a.n} data-reveal className="bg-[var(--surface)] p-8">
-              <p className="font-display text-sm font-bold text-forest-500">{a.n}</p>
+              <Readout code={`STEP_${a.n}`} className="text-forest-500" />
               <h3 className="mt-10 text-h3">{a.title}</h3>
               <p className="mt-3 text-[var(--fg-muted)]">{a.body}</p>
             </li>

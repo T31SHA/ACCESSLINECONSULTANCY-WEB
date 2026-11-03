@@ -27,11 +27,11 @@ export function StatCounter({ value, suffix = "", label }: { value: number; suff
   }, [value]);
   return (
     <div ref={ref} className="border-t border-[var(--line)] pt-6">
-      <p className="font-display text-h1 font-bold tabular-nums">
+      <p className="font-mono-ui text-h1 font-medium tracking-tight tabular-nums">
         <span aria-hidden>{n}{suffix}</span>
         <span className="sr-only">{value}{suffix}</span>
       </p>
-      <p className="mt-3 max-w-[22ch] text-[var(--fg-muted)]">{label}</p>
+      <p className="readout mt-3 max-w-[26ch] text-[var(--fg-muted)]">{label}</p>
     </div>
   );
 }

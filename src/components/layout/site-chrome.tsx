@@ -4,6 +4,7 @@ import { RevealObserver } from "@/components/ui/reveal-observer";
 import { getIndustries, getServices, getSiteSettings } from "@/lib/content";
 import { organizationSchema } from "@/lib/schema";
 import { Footer } from "./footer";
+import { FooterStage } from "./footer-stage";
 import { Header } from "./header";
 
 /** Marketing-site chrome: skip link, header, footer, analytics, org schema. */
@@ -18,6 +19,7 @@ export async function SiteChrome({ children }: { children: React.ReactNode }) {
       </a>
       <Header services={nav} />
       <main id="main" tabIndex={-1} className="focus:outline-none">{children}</main>
+      <FooterStage />
       <Footer services={nav} industryCount={industries.length} socials={settings.socials} />
       <RevealObserver />
       <JsonLd data={organizationSchema(settings.socials)} />

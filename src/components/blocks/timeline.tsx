@@ -6,7 +6,7 @@ export function Timeline({ items }: { items: Milestone[] }) {
       {items.map((m) => (
         <li key={m.year} data-reveal className="relative pb-10 pl-8 md:pl-0 md:pr-8 md:pt-10">
           <span aria-hidden className="absolute -left-[5px] top-1.5 size-[9px] rounded-pill bg-accent-400 md:-top-[5px] md:left-0" />
-          <p className="font-display text-h2 font-bold text-forest-700">{m.year}</p>
+          <p className="font-display text-h2 font-bold text-ink-950">{m.year}</p>
           <h3 className="mt-3 text-xl">{m.title}</h3>
           <p className="mt-2 text-[var(--fg-muted)]">{m.body}</p>
         </li>
