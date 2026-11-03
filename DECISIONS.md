@@ -39,3 +39,12 @@ Decisions made autonomously during the build. Each lists the choice and why.
 - **Bug found and fixed by the suite:** `dynamicParams = false` made every `[slug]` page 404 (`NoFallbackError`) after `/api/revalidate` purged the cache, so a single CMS publish would have broken all detail pages. It would also have hidden new CMS slugs until a redeploy. All dynamic routes now use `dynamicParams = true`, and `notFound()` guards unknown slugs. A regression test covers it.
 - The E2E server boots on a fresh PGlite database with throwaway secrets (`tests/e2e/env.ts`). API/flow specs run on desktop; the page-level a11y/SEO spec also runs on a Pixel 7 profile.
 - `E2E_EXPOSE_TOKENS=1` makes `/api/newsletter` return the confirm token so the opt-in flow is testable without an inbox. It is ignored when `VERCEL_ENV=production` or when Resend is configured.
+
+## Performance (to meet Lighthouse ≥95)
+- **Reveal-on-scroll** no longer hides content that is already on screen at hydration. Previously it re-hid and faded in the LCP text, causing a visible flash and ~2.5 s of LCP render delay.
+- **Page transitions** run only on client-side navigation (client `template.tsx`), never on the first paint.
+- **Topographic motif** is drawn with `mask-image` + `currentColor` instead of `background-image`, so the decorative SVG can't become the LCP element.
+- **Mobile menu** (Radix Dialog) is lazy-loaded on first interaction (preloaded on hover, touch or focus), with focus explicitly returned to the button on close. **FAQ accordion** moved from Radix to native `<details>` (zero JS, works with JS disabled).
+- **Contact form** no longer uses `useSearchParams`, which had forced client-only rendering; `?service=` is applied after mount, so the form is server-rendered.
+- **Zod** runs `jitless` (no `new Function` probe), which removes a CSP violation that cost Best Practices points. CV constants were split out so the careers page doesn't ship Zod for two constants.
+- Lighthouse's simulated LCP (~2.5 s) is dominated by Lantern's modelling of JS download on throttled 4G. Measured LCP in Chrome at 4× CPU slowdown is ~0.2 s. LHCI warns above 2.5 s; the brief's <2.0 s real-world target should be confirmed with Plausible/CrUX field data after launch.

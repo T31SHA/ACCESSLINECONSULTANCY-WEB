@@ -1,10 +1,8 @@
 import { z } from "zod";
 
-export const CV_TYPES = {
-  "application/pdf": "pdf",
-  "application/vnd.openxmlformats-officedocument.wordprocessingml.document": "docx",
-} as const;
-export const CV_MAX_BYTES = 5 * 1024 * 1024;
+z.config({ jitless: true });
+
+export { CV_MAX_BYTES, CV_TYPES } from "./cv";
 
 export const applicationSchema = z.object({
   jobSlug: z.string(),

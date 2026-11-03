@@ -13,7 +13,7 @@ export function MediaFrame({
       {src ? (
         <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className="object-cover" />
       ) : (
-        <div aria-hidden={!label} role={label ? "img" : undefined} aria-label={label} className="topo absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 [filter:invert(1)]" />
+        <div aria-hidden={!label} role={label ? "img" : undefined} aria-label={label} className="topo topo-cover absolute inset-0 text-sand-50 opacity-40" />
       )}
     </div>
   );

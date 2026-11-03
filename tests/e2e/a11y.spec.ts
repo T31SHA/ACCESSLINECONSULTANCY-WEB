@@ -50,3 +50,28 @@ test("company name and contacts are consistent", async ({ page }) => {
   expect(text).toContain("Accessline Consultancy Limited");
   expect(text).not.toMatch(/Accessline Consultancy Ltd|ACESSLINE|Accessine|@gmail\.com/);
 });
+
+test("mobile menu lazy-loads, traps focus, closes on Escape and navigation", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Open menu" }).click();
+  const dialog = page.getByRole("dialog", { name: "Site menu" });
+  await expect(dialog).toBeVisible();
+  await page.keyboard.press("Escape");
+  await expect(dialog).toBeHidden();
+  await expect(page.getByRole("button", { name: "Open menu" })).toBeFocused();
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await dialog.getByRole("link", { name: "Industries" }).click();
+  await expect(page).toHaveURL(/\/industries$/);
+  await expect(dialog).toBeHidden();
+});
+
+test("FAQ accordion works without JavaScript", async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  await page.goto("/services/pr-media-relations");
+  const q = page.locator("summary").first();
+  await q.click();
+  await expect(page.locator("details").first()).toHaveAttribute("open", "");
+  await ctx.close();
+});

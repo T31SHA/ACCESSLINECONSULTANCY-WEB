@@ -1,7 +1,7 @@
 "use client";
 
-import * as Dialog from "@radix-ui/react-dialog";
-import { ArrowUpRight, ChevronDown, Menu, X } from "lucide-react";
+import { ArrowUpRight, ChevronDown, Menu } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +11,10 @@ import { ButtonLink } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Logo } from "./logo";
 
+// Radix Dialog (focus trap, scroll lock) only ships when the menu is first used.
+const loadMobileMenu = () => void import("./mobile-menu");
+const MobileMenu = dynamic(() => import("./mobile-menu").then((m) => m.MobileMenu), { ssr: false });
+
 export type NavService = { slug: string; title: string; short: string; icon: string };
 
 export function Header({ services }: { services: NavService[] }) {
@@ -18,6 +22,8 @@ export function Header({ services }: { services: NavService[] }) {
   const [scrolled, setScrolled] = useState(false);
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [menuMounted, setMenuMounted] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
   const megaRef = useRef<HTMLLIElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
 
@@ -136,42 +142,24 @@ export function Header({ services }: { services: NavService[] }) {
 
         <div className="flex items-center gap-2">
           <ButtonLink href="/contact" className="hidden sm:inline-flex">Start a project</ButtonLink>
-          <Dialog.Root open={mobileOpen} onOpenChange={setMobileOpen}>
-            <Dialog.Trigger asChild>
-              <button type="button" className="inline-flex size-11 items-center justify-center rounded-pill hover:bg-[var(--line)] lg:hidden" aria-label="Open menu">
-                <Menu aria-hidden strokeWidth={1.5} />
-              </button>
-            </Dialog.Trigger>
-            <Dialog.Portal>
-              <Dialog.Content className="theme-dark page-enter fixed inset-0 z-[60] flex flex-col overflow-y-auto bg-[var(--surface)] text-[var(--fg)]">
-                <Dialog.Title className="sr-only">Site menu</Dialog.Title>
-                <Dialog.Description className="sr-only">Primary navigation</Dialog.Description>
-                <div className="container-site flex h-[72px] shrink-0 items-center justify-between">
-                  <Link href="/" className="text-sand-50"><Logo /></Link>
-                  <Dialog.Close className="inline-flex size-11 items-center justify-center rounded-pill hover:bg-[var(--line)]" aria-label="Close menu">
-                    <X aria-hidden strokeWidth={1.5} />
-                  </Dialog.Close>
-                </div>
-                <nav aria-label="Mobile" className="container-site flex-1 py-8">
-                  <ul className="space-y-1">
-                    {nav.map((item) => (
-                      <li key={item.href}>
-                        <Link href={item.href} className="block py-2 font-display text-[2.5rem] font-bold leading-tight hover:text-mint-200">
-                          {item.label}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-                <div className="container-site space-y-4 pb-10">
-                  <ButtonLink href="/contact" size="lg" withArrow className="w-full">Start a project</ButtonLink>
-                  <p className="text-sm text-[var(--fg-muted)]">
-                    <a href={`mailto:${site.email}`} className="underline-offset-4 hover:underline">{site.email}</a>
-                  </p>
-                </div>
-              </Dialog.Content>
-            </Dialog.Portal>
-          </Dialog.Root>
+          <button
+            ref={menuButtonRef}
+            type="button"
+            className="inline-flex size-11 items-center justify-center rounded-pill hover:bg-[var(--line)] lg:hidden"
+            aria-label="Open menu"
+            aria-haspopup="dialog"
+            aria-expanded={mobileOpen}
+            onPointerEnter={loadMobileMenu}
+            onTouchStart={loadMobileMenu}
+            onFocus={loadMobileMenu}
+            onClick={() => {
+              setMenuMounted(true);
+              setMobileOpen(true);
+            }}
+          >
+            <Menu aria-hidden strokeWidth={1.5} />
+          </button>
+          {menuMounted && <MobileMenu open={mobileOpen} onOpenChange={setMobileOpen} returnFocusRef={menuButtonRef} />}
         </div>
       </div>
     </header>

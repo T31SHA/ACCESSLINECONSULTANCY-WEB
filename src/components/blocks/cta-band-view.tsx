@@ -11,7 +11,7 @@ export function CtaBandView({
 }: CtaBandProps & { calUrl?: string }) {
   return (
     <section className="theme-forest relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]">
-      <div aria-hidden className="topo absolute inset-0 opacity-[0.12] [filter:invert(1)]" />
+      <div aria-hidden className="topo absolute inset-0 opacity-[0.12] text-sand-50" />
       <div className="container-site section relative grid gap-10 md:grid-cols-12 md:items-end">
         <h2 className="text-display md:col-span-8" data-reveal>{title}</h2>
         <div className="md:col-span-4" data-reveal>

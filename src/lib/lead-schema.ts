@@ -1,5 +1,8 @@
 import { z } from "zod";
 
+// No eval-based JIT: keeps the strict CSP (no 'unsafe-eval') violation-free in the browser.
+z.config({ jitless: true });
+
 export const budgetBands = ["under_500k", "500k_2m", "2m_5m", "5m_plus", "undecided"] as const;
 export const timelines = ["asap", "1_3_months", "3_6_months", "exploring"] as const;
 

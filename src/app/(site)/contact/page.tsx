@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Mail, MapPin, Phone } from "lucide-react";
-import { Suspense } from "react";
 import { MapEmbed } from "@/components/blocks/map-embed";
 import { PageHero } from "@/components/blocks/page-hero";
 import { WhatsAppLink } from "@/components/blocks/whatsapp-link";
@@ -23,7 +22,7 @@ export default async function ContactPage() {
       <PageHero crumbs={[{ name: "Contact", path: "/contact" }]} overline="Start a project" title="Tell us the outcome you need." lede="Three short steps. A senior consultant replies personally." />
       <div className="container-site grid gap-16 pb-[var(--section-y)] lg:grid-cols-12">
         <section aria-label="Project brief" className="rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-6 md:p-10 lg:col-span-7">
-          <Suspense><LeadForm services={services.map(opt)} industries={industries.map(opt)} /></Suspense>
+          <LeadForm services={services.map(opt)} industries={industries.map(opt)} />
         </section>
         <aside className="space-y-10 lg:col-span-5">
           <ul className="space-y-6">

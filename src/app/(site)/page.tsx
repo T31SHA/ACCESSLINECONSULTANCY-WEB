@@ -158,7 +158,7 @@ export default async function HomePage() {
 
       {/* ─── CTA + short form ─── */}
       <section className="theme-forest relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="cta-title">
-        <div aria-hidden className="topo absolute inset-0 opacity-[0.1] [filter:invert(1)]" />
+        <div aria-hidden className="topo absolute inset-0 opacity-[0.1] text-sand-50" />
         <div className="container-site section relative grid gap-12 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <h2 id="cta-title" className="text-display">Let&apos;s talk.</h2>

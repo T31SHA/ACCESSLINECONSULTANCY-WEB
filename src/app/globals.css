@@ -169,10 +169,25 @@
   }
 
   /* Topographic "access line" motif */
+  /* Drawn as a mask (not a background image) so the decorative pattern is never an LCP candidate.
+     Line colour = currentColor: ink by default, add text-sand-50 on dark surfaces. */
   .topo {
-    background-image: url("/patterns/topo.svg");
-    background-size: 900px auto;
-    background-repeat: repeat;
+    color: var(--color-ink-950);
+    background-color: currentColor;
+    -webkit-mask-image: url("/patterns/topo.svg");
+    mask-image: url("/patterns/topo.svg");
+    -webkit-mask-size: 900px auto;
+    mask-size: 900px auto;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
+  .topo-cover {
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
   }
 }
 

@@ -7,8 +7,17 @@ import { useEffect } from "react";
 export function RevealObserver() {
   const pathname = usePathname();
   useEffect(() => {
-    document.documentElement.classList.add("js");
-    const els = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)"));
+    const root = document.documentElement;
+    const all = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]:not(.is-visible)"));
+    // Anything already on screen stays visible (no hide-then-fade flash, no LCP delay).
+    const vh = window.innerHeight;
+    const els = all.filter((el) => {
+      const r = el.getBoundingClientRect();
+      const onScreen = r.top < vh && r.bottom > 0;
+      if (onScreen) el.classList.add("is-visible");
+      return !onScreen;
+    });
+    root.classList.add("js");
     if (!("IntersectionObserver" in window)) {
       els.forEach((el) => el.classList.add("is-visible"));
       return;

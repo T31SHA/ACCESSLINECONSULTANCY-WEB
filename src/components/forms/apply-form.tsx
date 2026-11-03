@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { track } from "@/lib/analytics";
-import { CV_MAX_BYTES, CV_TYPES } from "@/lib/careers-schema";
+import { CV_MAX_BYTES, CV_TYPES } from "@/lib/cv";
 import { Field, Input, Textarea } from "./fields";
 import { Turnstile } from "./turnstile";
 

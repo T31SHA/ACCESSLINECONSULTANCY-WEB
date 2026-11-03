@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm, type FieldErrors } from "react-hook-form";
 import type { z } from "zod";
@@ -29,7 +29,6 @@ type Option = { slug: string; title: string };
 
 export function LeadForm({ services, industries }: { services: Option[]; industries: Option[] }) {
   const router = useRouter();
-  const defaultService = useSearchParams().get("service") ?? undefined;
   const [step, setStep] = useState(0);
   const [touched, setTouched] = useState(false);
   const [token, setToken] = useState<string>();
@@ -41,17 +40,24 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
   const form = useForm<In, unknown, Out>({
     resolver: zodResolver(leadSchema),
     mode: "onTouched",
-    defaultValues: { serviceInterest: defaultService ? [defaultService] : [], phone: "", message: "", consentMarketing: false },
+    defaultValues: { serviceInterest: [], phone: "", message: "", consentMarketing: false },
   });
   const { register, handleSubmit, trigger, watch, reset, formState: { errors, isSubmitting } } = form;
 
-  // Autosave draft (never persists consent).
+  // Restore autosaved draft (never consent), then apply ?service= from service-page CTAs.
+  // Read from window (not useSearchParams) so the form is server-rendered on this static page.
   useEffect(() => {
+    let draft: Partial<In> = {};
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) reset({ ...JSON.parse(saved), consent: undefined }, { keepDefaultValues: true });
+      if (saved) draft = { ...JSON.parse(saved), consent: undefined };
     } catch { /* ignore corrupt drafts */ }
-  }, [reset]);
+    const svc = new URLSearchParams(window.location.search).get("service");
+    if (svc && services.some((s) => s.slug === svc)) {
+      draft.serviceInterest = Array.from(new Set([...(draft.serviceInterest ?? []), svc]));
+    }
+    if (Object.keys(draft).length) reset(draft, { keepDefaultValues: true });
+  }, [reset, services]);
   useEffect(() => {
     const sub = watch((values) => {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...values, consent: undefined }));

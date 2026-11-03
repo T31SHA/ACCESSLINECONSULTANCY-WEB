@@ -20,7 +20,7 @@ export function MapEmbed() {
         />
       ) : (
         <>
-          <div aria-hidden className="topo absolute inset-0 bg-cover bg-center bg-no-repeat opacity-40 [filter:invert(1)]" />
+          <div aria-hidden className="topo topo-cover absolute inset-0 text-sand-50 opacity-40" />
           <div className="absolute inset-0 z-10 flex flex-col items-center justify-center gap-4 p-6 text-center text-sand-50">
             <MapPin aria-hidden strokeWidth={1.5} className="size-10 text-accent-400" />
             <p className="font-display text-xl font-bold">{site.address.street}</p>
