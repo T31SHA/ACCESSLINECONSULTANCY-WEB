@@ -1,0 +1,211 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────
+   Design tokens — "Editorial Authority, African Momentum"
+   Source of truth for colour, type, spacing, radius, motion.
+   ────────────────────────────────────────────────────────────── */
+@theme {
+  /* Colour */
+  --color-ink-950: #0b1a13;
+  --color-forest-900: #013d20;
+  --color-forest-700: #014f29;
+  --color-forest-500: #1f7a4d;
+  --color-mint-200: #b6e3cd;
+  --color-mint-50: #eef6f1;
+  --color-sand-50: #f7f4ee;
+  --color-sand-200: #e8e1d3;
+  --color-accent-400: #f2a65a;
+  --color-slate-600: #4a5550;
+  --color-white: #ffffff;
+
+  /* Fonts (CSS vars injected by next/font) */
+  --font-display: var(--font-syne), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Type scale (fluid, 375 → 1536 viewport) */
+  --text-display: clamp(3.5rem, 2.37rem + 4.82vw, 7rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.03em;
+  --text-h1: clamp(2.75rem, 1.97rem + 3.31vw, 5rem);
+  --text-h1--line-height: 1;
+  --text-h1--letter-spacing: -0.025em;
+  --text-h2: clamp(2rem, 1.48rem + 2.2vw, 3.5rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.02em;
+  --text-h3: clamp(1.5rem, 1.34rem + 0.69vw, 2rem);
+  --text-h3--line-height: 1.1;
+  --text-h3--letter-spacing: -0.01em;
+  --text-body: clamp(1rem, 0.96rem + 0.17vw, 1.125rem);
+  --text-body--line-height: 1.6;
+  --text-overline: 0.75rem;
+  --text-overline--line-height: 1.2;
+  --text-overline--letter-spacing: 0.12em;
+
+  /* Radius */
+  --radius-sm: 4px;
+  --radius-md: 12px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* Breakpoints */
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 768px;
+  --breakpoint-md: 1024px;
+  --breakpoint-lg: 1280px;
+  --breakpoint-xl: 1536px;
+
+  /* Containers */
+  --container-measure: 68ch;
+  --container-site: 1320px;
+
+  /* Elevation — the one hover shadow */
+  --shadow-hover: 0 1px 2px rgb(11 26 19 / 0.04), 0 12px 32px -8px rgb(11 26 19 / 0.18);
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --animate-marquee: marquee 40s linear infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+}
+
+/* Semantic surface tokens (light by default; .theme-dark flips) */
+:root {
+  --surface: var(--color-sand-50);
+  --surface-raised: var(--color-white);
+  --surface-muted: var(--color-sand-200);
+  --fg: var(--color-ink-950);
+  --fg-muted: var(--color-slate-600);
+  --line: rgb(11 26 19 / 0.12);
+  --section-y: clamp(80px, 12vw, 160px);
+  --gutter: 16px;
+  color-scheme: light;
+}
+@media (min-width: 768px) {
+  :root { --gutter: 24px; }
+}
+.theme-dark {
+  --surface: var(--color-ink-950);
+  --surface-raised: #12261c;
+  --surface-muted: var(--color-forest-900);
+  --fg: var(--color-sand-50);
+  --fg-muted: #b7c2bc; /* 9.4:1 on ink-950 */
+  --line: rgb(247 244 238 / 0.14);
+  color-scheme: dark;
+}
+.theme-forest {
+  --surface: var(--color-forest-700);
+  --surface-raised: var(--color-forest-900);
+  --surface-muted: var(--color-forest-900);
+  --fg: var(--color-sand-50);
+  --fg-muted: var(--color-mint-200);
+  --line: rgb(247 244 238 / 0.18);
+  color-scheme: dark;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 96px;
+  }
+  body {
+    background: var(--surface);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-wrap: balance;
+  }
+  p { text-wrap: pretty; }
+  ::selection { background: var(--color-mint-200); color: var(--color-ink-950); }
+
+  /* Amber focus ring — visible on every surface */
+  :focus-visible {
+    outline: 3px solid var(--color-accent-400);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+}
+
+@layer components {
+  .container-site {
+    width: 100%;
+    max-width: var(--container-site);
+    margin-inline: auto;
+    padding-inline: max(var(--gutter), 20px);
+  }
+  .section { padding-block: var(--section-y); }
+  .eyebrow {
+    font-size: var(--text-overline);
+    letter-spacing: var(--text-overline--letter-spacing);
+    line-height: 1.2;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .hairline { border-color: var(--line); }
+  .prose-site { max-width: var(--container-measure); }
+  .prose-site > * + * { margin-top: 1.25em; }
+  .prose-site h2 { font-size: var(--text-h3); line-height: 1.1; margin-top: 2em; }
+  .prose-site h3 { font-size: 1.25rem; margin-top: 1.75em; }
+  .prose-site a { text-decoration: underline; text-underline-offset: 3px; }
+  .prose-site ul { list-style: disc; padding-left: 1.25em; }
+  .prose-site li + li { margin-top: 0.5em; }
+
+  /* Duotone image treatment: forest shadows → mint highlights */
+  .duotone { position: relative; isolation: isolate; overflow: hidden; background: var(--color-forest-900); }
+  .duotone img { filter: grayscale(1) contrast(1.1); mix-blend-mode: luminosity; opacity: 0.9; }
+  .duotone::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: linear-gradient(160deg, rgb(182 227 205 / 0.35), rgb(1 61 32 / 0.55));
+    mix-blend-mode: multiply;
+  }
+
+  /* Topographic "access line" motif */
+  .topo {
+    background-image: url("/patterns/topo.svg");
+    background-size: 900px auto;
+    background-repeat: repeat;
+  }
+}
+
+/* Scroll reveal (progressively enhanced: only hidden once JS marks <html>) */
+.js [data-reveal] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms var(--ease-out-expo), transform 400ms var(--ease-out-expo);
+  transition-delay: calc(var(--reveal-i, 0) * 60ms);
+}
+.js [data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* Split-line hero */
+.split-line { display: block; overflow: hidden; padding-bottom: 0.08em; }
+.split-line > span {
+  display: block;
+  animation: line-up 900ms var(--ease-out-expo) both;
+  animation-delay: calc(var(--line-i, 0) * 90ms + 100ms);
+}
+@keyframes line-up { from { transform: translateY(105%); } to { transform: none; } }
+
+/* Page transition */
+.page-enter { animation: page-in 500ms var(--ease-out-expo) both; }
+@keyframes page-in { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js [data-reveal] { opacity: 1; transform: none; }
+}
+
+@keyframes drawer-in { from { transform: translateX(100%); } to { transform: none; } }
