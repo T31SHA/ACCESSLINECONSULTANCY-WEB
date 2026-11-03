@@ -32,5 +32,7 @@ export async function POST(req: NextRequest) {
     await db.insert(schema.newsletterSubscribers).values({ email, confirmToken: token });
   }
   await sendNewsletterConfirmation(email, token);
-  return NextResponse.json({ ok: true });
+  // Test hook: lets E2E complete the opt-in without an inbox. Impossible to enable on Vercel production.
+  const exposeToken = process.env.E2E_EXPOSE_TOKENS === "1" && process.env.VERCEL_ENV !== "production" && !process.env.RESEND_API_KEY;
+  return NextResponse.json(exposeToken ? { ok: true, debugToken: token } : { ok: true });
 }

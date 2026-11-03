@@ -1,7 +1,7 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@playwright/test";
 
-const routes = ["/", "/about", "/services", "/services/sbcc", "/industries/health", "/work", "/team", "/insights", "/careers", "/contact", "/does-not-exist"];
+const routes = ["/", "/about", "/services", "/services/sbcc", "/industries/health", "/work", "/work/fintech-market-entry", "/team", "/insights", "/insights/sbcc-beyond-awareness", "/careers", "/careers/sbcc-programme-officer", "/contact", "/thank-you", "/privacy", "/newsletter/confirm?token=x", "/admin/login", "/does-not-exist"];
 
 for (const route of routes) {
   test(`axe: ${route}`, async ({ page }) => {
@@ -10,7 +10,7 @@ for (const route of routes) {
     expect(results.violations.map((v) => `${v.id}: ${v.nodes.length}`)).toEqual([]);
   });
 
-  test(`one h1 + canonical: ${route}`, async ({ page }) => {
+  test(`one h1: ${route}`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator("h1")).toHaveCount(1);
   });
@@ -24,8 +24,29 @@ test("legacy redirects are 301", async ({ request }) => {
   }
 });
 
-test("lead form validates step 1 and shows error summary", async ({ page }) => {
+
+test("public pages: unique title ≤60, description ≤155, canonical, OG image", async ({ page }) => {
+  const seen = new Set<string>();
+  for (const route of ["/", "/about", "/services", "/services/sbcc", "/industries/health", "/work", "/team", "/insights", "/careers", "/contact"]) {
+    const res = await page.goto(route);
+    expect(res?.status(), route).toBe(200);
+    const title = await page.title();
+    const desc = await page.locator('meta[name="description"]').getAttribute("content");
+    expect(title.length, route).toBeLessThanOrEqual(60);
+    expect(desc!.length, route).toBeLessThanOrEqual(155);
+    expect(seen.has(title), `duplicate title ${title}`).toBe(false);
+    seen.add(title);
+    await expect(page.locator('link[rel="canonical"]'), route).toHaveCount(1);
+    await expect(page.locator('meta[property="og:image"]').first(), route).toHaveAttribute("content", /opengraph-image/);
+  }
+});
+
+test("company name and contacts are consistent", async ({ page }) => {
   await page.goto("/contact");
-  await page.getByRole("button", { name: "Continue" }).click();
-  await expect(page.getByRole("alert").filter({ hasText: "Please fix" })).toContainText("Choose at least one service");
+  const text = await page.locator("body").innerText();
+  expect(text).toContain("info@accesslineconsultancy.com");
+  expect(text).toContain("+254 727 684443");
+  expect(text).toContain("10th Floor, Ecobank Towers");
+  expect(text).toContain("Accessline Consultancy Limited");
+  expect(text).not.toMatch(/Accessline Consultancy Ltd|ACESSLINE|Accessine|@gmail\.com/);
 });

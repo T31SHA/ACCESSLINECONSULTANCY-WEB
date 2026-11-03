@@ -9,7 +9,8 @@ import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const dynamicParams = false;
+// CMS can add slugs after deploy: render unknown params on demand (notFound() guards bad slugs).
+export const dynamicParams = true;
 export const generateStaticParams = async () => (await getIndustries()).map((i) => ({ slug: i.slug }));
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
