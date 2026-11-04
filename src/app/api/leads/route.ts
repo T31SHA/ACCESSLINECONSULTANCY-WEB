@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
   const d = parsed.data as Partial<import("@/lib/lead-schema").LeadInput> & { fullName: string; email: string };
 
   if (!emailConfigured()) {
-    console.error("[leads] email is not configured (RESEND_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS) — lead rejected");
+    console.error("[leads] email is not configured (RESEND_API_KEY or SMTP_HOST/SMTP_USER/SMTP_PASS), lead rejected");
     return NextResponse.json({ error: `We couldn't send your brief right now. Please email ${site.email}.` }, { status: 503 });
   }
 
@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
     "Submitted at": new Date(),
   };
 
-  const sent = await notifyInbox(`New enquiry — ${d.organisation || d.fullName}`, "New enquiry", fields, d.email);
+  const sent = await notifyInbox(`New enquiry: ${d.organisation || d.fullName}`, "New enquiry", fields, d.email);
   if (!sent) return NextResponse.json({ error: `We couldn't send your brief right now. Please email ${site.email}.` }, { status: 502 });
 
   await sendLeadAutoReply(d.email, d.fullName).catch(() => false);

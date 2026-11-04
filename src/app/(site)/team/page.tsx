@@ -10,7 +10,7 @@ import { personSchema } from "@/lib/schema";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Our Team — Communications Experts in Nairobi",
+  title: "Our Team | Communications Experts in Nairobi",
   description: "Meet the strategists, media specialists, researchers and creatives behind Accessline Consultancy Limited in Nairobi.",
   path: "/team",
 });

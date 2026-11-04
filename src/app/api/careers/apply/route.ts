@@ -46,12 +46,12 @@ export async function POST(req: NextRequest) {
   }
 
   if (!emailConfigured()) {
-    console.error("[careers] email is not configured — application rejected");
+    console.error("[careers] email is not configured, application rejected");
     return NextResponse.json({ error: `Applications are temporarily unavailable. Please email ${site.email}.` }, { status: 503 });
   }
 
   const sent = await notifyInbox(
-    `Job application — ${job.title} — ${d.fullName}`,
+    `Job application: ${job.title} (${d.fullName})`,
     `Application: ${job.title}`,
     { Role: job.title, "Full name": d.fullName, Email: d.email, Phone: d.phone, LinkedIn: d.linkedinUrl, "Cover note": d.coverNote, CV: attachments[0]?.filename ?? "not attached", "Submitted at": new Date() },
     d.email,

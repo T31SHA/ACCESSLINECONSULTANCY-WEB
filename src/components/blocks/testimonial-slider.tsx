@@ -19,7 +19,7 @@ export function TestimonialSlider({ items }: { items: Testimonial[] }) {
               &ldquo;{t.quote}&rdquo;
             </blockquote>
             <figcaption className="mt-8 text-[var(--fg-muted)]">
-              <span className="font-semibold text-[var(--fg)]">{t.author}</span> — {t.organisation}
+              <span className="font-semibold text-[var(--fg)]">{t.author}</span>, {t.organisation}
             </figcaption>
           </figure>
         </div>

@@ -10,7 +10,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/terms",
 });
 
-// DRAFT — requires legal review before launch.
+// DRAFT: requires legal review before launch.
 export default function TermsPage() {
   return (
     <>

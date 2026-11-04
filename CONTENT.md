@@ -5,7 +5,7 @@ Everything unverified is marked **Sample / unverified** (`sample: true` in code,
 | Item | Studio type / file | Status |
 |---|---|---|
 | Company name | fixed in code | ✅ Accessline Consultancy Limited |
-| Email · address · phone | fixed in code | ✅ 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218 · email via `NEXT_PUBLIC_CONTACT_EMAIL` (default info@accesslineconsultancy.com — ☐ confirm still valid) |
+| Email · address · phone | fixed in code | ✅ 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218 · email via `NEXT_PUBLIC_CONTACT_EMAIL` (default info@accesslineconsultancy.com; ☐ confirm still valid) |
 | WhatsApp on +254 729 963 218 | `src/content/site.ts` | ☐ client to confirm it's active |
 | Social profile URLs | Site settings → Socials | ☐ none shown until supplied |
 | Booking link | Site settings → Cal.com URL / `NEXT_PUBLIC_CAL_URL` | ☐ |

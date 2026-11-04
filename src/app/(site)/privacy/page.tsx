@@ -9,7 +9,7 @@ export const metadata: Metadata = pageMetadata({
   path: "/privacy",
 });
 
-// DRAFT — requires legal review before launch.
+// DRAFT: requires legal review before launch.
 export default function PrivacyPage() {
   return (
     <>
@@ -24,7 +24,7 @@ export default function PrivacyPage() {
           <li>Privacy-friendly, cookie-less analytics (Plausible). No advertising trackers.</li>
         </ul>
         <h2>Why we use it</h2>
-        <p>To respond to enquiries (legitimate interest / steps prior to contract), assess job applications, and — only with your consent — send insights by email.</p>
+        <p>To respond to enquiries (legitimate interest / steps prior to contract), assess job applications, and, only with your consent, send insights by email.</p>
         <h2>How long we keep it</h2>
         <ul>
           <li>Enquiries: up to 24 months after last contact, unless you become a client.</li>

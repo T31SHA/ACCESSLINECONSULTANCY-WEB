@@ -60,7 +60,7 @@ export function ApplyForm({ jobSlug, jobTitle }: { jobSlug: string; jobTitle: st
         <Field id="ap-phone" label="Phone"><Input id="ap-phone" name="phone" type="tel" autoComplete="tel" placeholder="+254" /></Field>
         <Field id="ap-li" label="LinkedIn URL"><Input id="ap-li" name="linkedinUrl" type="url" placeholder="https://linkedin.com/in/" /></Field>
       </div>
-      <Field id="ap-cv" label="CV" hint="PDF or DOCX, up to 5MB — attached to your application email" error={fileError}>
+      <Field id="ap-cv" label="CV" hint="PDF or DOCX, up to 5MB, attached to your application email" error={fileError}>
         <Input id="ap-cv" name="cv" type="file" accept=".pdf,.docx,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document" aria-describedby={fileError ? "ap-cv-error ap-cv-hint" : "ap-cv-hint"} aria-invalid={!!fileError} className="file:mr-4 file:rounded-pill file:border-0 file:bg-forest-700 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-sand-50" />
       </Field>
       <input name="website" type="text" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />

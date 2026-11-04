@@ -9,7 +9,7 @@ export const industries: Industry[] = [
     short: "Reputation, investor and stakeholder communications for ambitious businesses.",
     seo: seo("Corporate Communications Agency Kenya", "Corporate reputation, stakeholder relations and executive positioning for businesses operating in Kenya and Africa."),
     challenges: ["Building trust with regulators, investors and communities at once", "Executive visibility that feels credible, not promotional", "Managing issues before they become crises"],
-    approach: "We pair corporate affairs rigour with newsroom instinct — positioning leadership, protecting licence to operate and turning strategy into stories stakeholders believe.",
+    approach: "We pair corporate affairs rigour with newsroom instinct, positioning leadership, protecting licence to operate and turning strategy into stories stakeholders believe.",
   },
   {
     slug: "ngos",
@@ -41,7 +41,7 @@ export const industries: Industry[] = [
     short: "Behaviour change and health communication that saves lives.",
     seo: seo("Health Communications Agency Kenya", "Health communication, SBCC and public-health campaigns for ministries, NGOs and healthcare providers."),
     challenges: ["Combating misinformation", "Driving uptake of services and products", "Communicating sensitively on stigmatised issues"],
-    approach: "Formative research, community co-creation and rigorous message testing — so health messages are trusted, understood and acted on.",
+    approach: "Formative research, community co-creation and rigorous message testing, so health messages are trusted, understood and acted on.",
   },
   {
     slug: "technology",
@@ -65,7 +65,7 @@ export const industries: Industry[] = [
     short: "Brand love and launches that move product off shelves.",
     seo: seo("FMCG & Retail PR Agency Kenya", "Consumer PR, product launches and experiential campaigns for retail and FMCG brands in Kenya."),
     challenges: ["Cutting through cluttered consumer media", "Launching products across diverse markets", "Building brand loyalty beyond price"],
-    approach: "Consumer insight, cultural relevance and experiential flair — campaigns people talk about and buy into.",
+    approach: "Consumer insight, cultural relevance and experiential flair: campaigns people talk about and buy into.",
   },
   {
     slug: "financial-services",
@@ -73,7 +73,7 @@ export const industries: Industry[] = [
     short: "Trust, compliance-ready communication and financial inclusion.",
     seo: seo("Financial Services PR Agency Kenya", "Reputation, financial-literacy and inclusion campaigns for banks, insurers, SACCOs and fintechs."),
     challenges: ["Earning trust in a sceptical market", "Communicating within regulatory constraints", "Driving financial literacy and inclusion"],
-    approach: "Precise, compliant and human. We make financial brands understandable and trusted — from boardroom to boda-boda rider.",
+    approach: "Precise, compliant and human. We make financial brands understandable and trusted, from boardroom to boda-boda rider.",
   },
 ];
 

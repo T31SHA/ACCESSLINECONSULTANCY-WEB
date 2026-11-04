@@ -22,7 +22,7 @@ export function Footer({ services, industryCount, socials }: Props) {
       <div className="container-site pt-20 pb-10 md:pt-28">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
-            <Link href="/" className="text-sand-50" aria-label={`${site.name} — home`}><Logo /></Link>
+            <Link href="/" className="text-white" aria-label={`${site.name} home`}><Logo /></Link>
             <p className="mt-6 max-w-sm font-display text-h3 font-bold">{site.tagline}</p>
             <p className="mt-4 max-w-sm text-[var(--fg-muted)]">{site.positioning}</p>
             <div className="mt-8 max-w-sm">

@@ -16,7 +16,7 @@ export const generateStaticParams = async () => (await getJobs()).map((j) => ({ 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const j = await getJob((await params).slug);
   if (!j) return {};
-  return pageMetadata({ title: `${j.title} — Careers`, description: j.summary.slice(0, 155), path: `/careers/${j.slug}` });
+  return pageMetadata({ title: `${j.title} | Careers`, description: j.summary.slice(0, 155), path: `/careers/${j.slug}` });
 }
 
 export default async function JobPage({ params }: Props) {

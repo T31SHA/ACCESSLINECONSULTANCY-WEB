@@ -16,4 +16,4 @@ export const SiteFooter: StoryObj = { render: () => <Footer services={nav} indus
 export const Crumbs: StoryObj = {
   render: () => <div className="container-site py-12"><Breadcrumbs items={[{ name: "Services", path: "/services" }, { name: "SBCC", path: "/services/sbcc" }]} /></div>,
 };
-export const Wordmark: StoryObj = { render: () => <div className="container-site py-12 text-forest-700"><Logo /></div> };
+export const Wordmark: StoryObj = { render: () => <div className="container-site py-12 text-black"><Logo /></div> };

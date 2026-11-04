@@ -11,7 +11,7 @@ import { images } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Careers — PR & Comms Jobs in Nairobi",
+  title: "Careers | PR & Comms Jobs in Nairobi",
   description: "Join a senior-led communications agency in Nairobi. Open roles in PR, strategy, SBCC, creative and events.",
   path: "/careers",
 });

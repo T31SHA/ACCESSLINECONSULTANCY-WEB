@@ -27,7 +27,7 @@ export function MobileMenu({ open, onOpenChange, returnFocusRef }: {
           <Dialog.Title className="sr-only">Site menu</Dialog.Title>
           <Dialog.Description className="sr-only">Primary navigation</Dialog.Description>
           <div className="container-site flex h-[72px] shrink-0 items-center justify-between">
-            <Link href="/" className="text-sand-50" onClick={() => onOpenChange(false)}><Logo /></Link>
+            <Link href="/" className="text-white" onClick={() => onOpenChange(false)}><Logo /></Link>
             <Dialog.Close className="inline-flex size-11 items-center justify-center rounded-pill hover:bg-[var(--line)]" aria-label="Close menu">
               <X aria-hidden strokeWidth={1.5} />
             </Dialog.Close>

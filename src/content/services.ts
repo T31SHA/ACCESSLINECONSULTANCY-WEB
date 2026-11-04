@@ -14,7 +14,7 @@ export const services: Service[] = [
     problem:
       "Good work goes unreported. Press releases land in inboxes and die there, while competitors own the conversation.",
     outcome:
-      "A steady drumbeat of credible coverage in the outlets your stakeholders actually read — and a team ready when the headlines turn.",
+      "A steady drumbeat of credible coverage in the outlets your stakeholders actually read, and a team ready when the headlines turn.",
     deliverables: [
       "Media strategy and annual PR calendar",
       "Press office and newsroom management",
@@ -32,7 +32,7 @@ export const services: Service[] = [
     faqs: [
       { q: "Which media do you work with?", a: "National print, broadcast and digital titles across Kenya and East Africa, plus pan-African and international wires where the story warrants it." },
       { q: "Do you handle crisis communications?", a: "Yes. We build playbooks in advance and provide rapid-response support around the clock when an issue breaks." },
-      { q: "How do you measure PR?", a: "Against agreed outcomes — share of voice, message pull-through, sentiment and downstream actions — not just ad-value equivalency." },
+      { q: "How do you measure PR?", a: "Against agreed outcomes (share of voice, message pull-through, sentiment and downstream actions), not just ad-value equivalency." },
     ],
   },
   {
@@ -48,7 +48,7 @@ export const services: Service[] = [
     problem:
       "Mixed messages across departments, markets and channels erode trust and dilute impact.",
     outcome:
-      "A single, compelling narrative your leadership owns — translated into a plan every team can execute.",
+      "A single, compelling narrative your leadership owns, translated into a plan every team can execute.",
     deliverables: [
       "Communications audit and stakeholder mapping",
       "Narrative, positioning and message architecture",
@@ -81,7 +81,7 @@ export const services: Service[] = [
     problem:
       "Strategic plans that sit on shelves because no one outside the boardroom understands or believes them.",
     outcome:
-      "A focused, costed strategy with a results framework — and the story to rally staff, partners and funders behind it.",
+      "A focused, costed strategy with a results framework, plus the story to rally staff, partners and funders behind it.",
     deliverables: [
       "Situational analysis and stakeholder consultation",
       "Facilitated leadership retreats",
@@ -175,7 +175,7 @@ export const services: Service[] = [
     problem:
       "Strategy built on assumptions, anecdotes and outdated data.",
     outcome:
-      "Clear, actionable insight on audiences, perceptions and markets — presented so leaders can act on it.",
+      "Clear, actionable insight on audiences, perceptions and markets, presented so leaders can act on it.",
     deliverables: [
       "Perception and reputation audits",
       "Quantitative surveys and polling",
@@ -235,7 +235,7 @@ export const services: Service[] = [
         "Brand identity, campaign creative, video, photography and digital content produced in Nairobi for African audiences.",
     },
     problem:
-      "Stock imagery and borrowed aesthetics that look like everyone else — and connect with no one.",
+      "Stock imagery and borrowed aesthetics that look like everyone else and connect with no one.",
     outcome:
       "Distinctive brand and campaign assets that feel authentic to your audience and perform across channels.",
     deliverables: [

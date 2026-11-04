@@ -21,7 +21,7 @@ Full detail and file locations are in **CONTENT.md**. In Studio, every item belo
 - [ ] **Legal review** of /privacy and /terms (Kenya DPA 2019); register with the ODPC if required
 - [ ] Final **proofread** of all copy
 
-Already settled: company name *Accessline Consultancy Limited*; contacts 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218 (`src/content/site.ts`). Contact email = `NEXT_PUBLIC_CONTACT_EMAIL` (default info@accesslineconsultancy.com — confirm the mailbox is still valid).
+Already settled: company name *Accessline Consultancy Limited*; contacts 10th Floor, Ecobank Towers, Nairobi · +254 729 963 218 (`src/content/site.ts`). Contact email = `NEXT_PUBLIC_CONTACT_EMAIL` (default info@accesslineconsultancy.com; confirm the mailbox is still valid).
 
 ## 2. Accounts & environment keys (Hostinger hPanel → Environment variables)
 
@@ -29,7 +29,7 @@ Already settled: company name *Accessline Consultancy Limited*; contacts 10th Fl
 |---|---|---|
 | Launch gate | `HIDE_SAMPLE_CONTENT=true` | [ ] |
 | Site URL | `NEXT_PUBLIC_SITE_URL=https://slategrey-deer-824136.hostingersite.com` (switch to the new domain when set, then rebuild) | [ ] |
-| Email (forms) | `LEADS_INBOX`, `EMAIL_FROM`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` (Gmail App Password) — or `RESEND_API_KEY` | [ ] |
+| Email (forms) | `LEADS_INBOX`, `EMAIL_FROM`, `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS` (Gmail App Password) or `RESEND_API_KEY` | [ ] |
 | Sanity | `NEXT_PUBLIC_SANITY_PROJECT_ID`, `NEXT_PUBLIC_SANITY_DATASET`, `SANITY_REVALIDATE_SECRET` (+ seed, editors invited, CORS origin) | [ ] |
 | Turnstile | `NEXT_PUBLIC_TURNSTILE_SITE_KEY`, `TURNSTILE_SECRET_KEY` | [ ] |
 | Upstash | `UPSTASH_REDIS_REST_URL`, `UPSTASH_REDIS_REST_TOKEN` | [ ] |

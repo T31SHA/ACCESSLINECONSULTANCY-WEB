@@ -2,7 +2,7 @@ import { published, type Post } from "./types";
 
 export const categories = ["Media", "Strategy", "SBCC", "Research", "Brand"] as const;
 
-/** SAMPLE articles — replace with client-approved posts from the CMS. */
+/** SAMPLE articles: replace with client-approved posts from the CMS. */
 export const posts: Post[] = published([
   {
     slug: "earned-media-kenya-2026",
@@ -23,7 +23,7 @@ export const posts: Post[] = published([
   {
     slug: "sbcc-beyond-awareness",
     title: "SBCC beyond awareness: designing for behaviour",
-    excerpt: "Why awareness campaigns plateau — and the formative research that breaks through.",
+    excerpt: "Why awareness campaigns plateau, and the formative research that breaks through.",
     category: "SBCC",
     date: "2026-09-22",
     readingMinutes: 8,
@@ -31,7 +31,7 @@ export const posts: Post[] = published([
     sample: true,
     body: [
       { heading: "The awareness trap", paragraphs: ["Most audiences already know the message. Knowledge is rarely the barrier; cost, norms and access usually are."] },
-      { heading: "Start with barriers", paragraphs: ["Formative research identifies the real obstacles — and the motivators that outweigh them."] },
+      { heading: "Start with barriers", paragraphs: ["Formative research identifies the real obstacles, and the motivators that outweigh them."] },
     ],
   },
   {
