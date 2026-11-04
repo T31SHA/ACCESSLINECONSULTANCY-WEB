@@ -48,7 +48,7 @@ export default async function CaseStudyPage({ params }: Props) {
         {!c.image && caseStudyImages[c.slug] ? (
           <Photo image={caseStudyImages[c.slug]!} ratio="aspect-[4/3] md:aspect-[16/9]" className="rounded-lg" sizes="(min-width: 1320px) 1280px, 100vw" />
         ) : (
-          <MediaFrame src={c.image} alt={c.imageAlt} label={c.image ? undefined : `${c.title} — campaign imagery`} ratio="aspect-[16/9]" sizes="(min-width: 1320px) 1280px, 100vw" />
+          <MediaFrame src={c.image} alt={c.imageAlt} label={c.image ? undefined : `${c.title}: campaign imagery`} ratio="aspect-[16/9]" sizes="(min-width: 1320px) 1280px, 100vw" />
         )}
       </div>
 

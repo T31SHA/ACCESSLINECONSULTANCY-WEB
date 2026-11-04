@@ -38,7 +38,7 @@ export const FaqAccordion: StoryObj = { render: () => <div className="container-
 export const CtaWithBooking: StoryObj = { render: () => <CtaBandView calUrl="https://cal.com/example" /> };
 export const CtaWithoutBooking: StoryObj = { render: () => <CtaBandView title="Your outcome next?" /> };
 export const Hero: StoryObj = {
-  render: () => <PageHero crumbs={[{ name: "Services", path: "/services" }]} overline="Services" title="Everything it takes to be heard — and believed." lede="Eight disciplines under one roof." />,
+  render: () => <PageHero crumbs={[{ name: "Services", path: "/services" }]} overline="Services" title="Everything it takes to be heard, and believed." lede="Eight disciplines under one roof." />,
 };
 export const Team: StoryObj = { render: () => <div className="container-site py-12"><TeamGrid members={fx.team} /></div> };
 export const WorkFiltering: StoryObj = {

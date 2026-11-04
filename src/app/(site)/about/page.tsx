@@ -13,12 +13,12 @@ import { Photo } from "@/components/ui/photo";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "About Us — Nairobi PR & Communications Agency",
+  title: "About Us | Nairobi PR & Communications Agency",
   description: "Accessline Consultancy Limited is a Nairobi strategic communications and PR agency helping organisations across Africa lead the change.",
   path: "/about",
 });
 
-// SAMPLE — unverified milestones; client to confirm.
+// SAMPLE: unverified milestones; client to confirm.
 const milestones = published([
   { year: "2012", title: "Founded in Nairobi", body: "Started with one conviction: African organisations deserve world-class communications built on local truth.", sample: true },
   { year: "2016", title: "SBCC practice launched", body: "Expanded into behaviour change for health and development partners.", sample: true },

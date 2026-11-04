@@ -7,7 +7,7 @@ import { getCaseStudies, getIndustries, getServices } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Our Work — PR & Communications Case Studies",
+  title: "Our Work | PR & Communications Case Studies",
   description: "Case studies in PR, SBCC, strategy and events from Accessline Consultancy Limited: the challenge, the approach and the measurable results.",
   path: "/work",
 });

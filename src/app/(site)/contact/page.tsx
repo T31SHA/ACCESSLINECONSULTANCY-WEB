@@ -11,7 +11,7 @@ import { images } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact Us — Start a Project",
+  title: "Contact Us | Start a Project",
   description: "Brief Accessline Consultancy Limited on your PR, communications or research project. 10th Floor, Ecobank Towers, Nairobi.",
   path: "/contact",
 });

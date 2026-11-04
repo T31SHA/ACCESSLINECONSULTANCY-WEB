@@ -63,7 +63,7 @@ export function Header({ services }: { services: NavService[] }) {
       )}
     >
       <div className="container-site flex h-[72px] items-center justify-between gap-6">
-        <Link href="/" aria-label={`${site.name} — home`} className="text-black">
+        <Link href="/" aria-label={`${site.name} home`} className="text-black">
           <Logo />
         </Link>
 

@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   if (!emailConfigured()) return NextResponse.json({ error: "Sign-up is temporarily unavailable. Please try again later." }, { status: 503 });
 
   const email = parsed.data.email.toLowerCase();
-  const sent = await notifyInbox(`Newsletter signup — ${email}`, "Newsletter signup", { Email: email, "Submitted at": new Date() }, email);
+  const sent = await notifyInbox(`Newsletter signup: ${email}`, "Newsletter signup", { Email: email, "Submitted at": new Date() }, email);
   if (!sent) return NextResponse.json({ error: "Something went wrong. Try again." }, { status: 502 });
   return NextResponse.json({ ok: true });
 }

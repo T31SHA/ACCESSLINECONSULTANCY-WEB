@@ -102,12 +102,12 @@ export async function sendLeadAutoReply(to: string, name: string): Promise<boole
   return sendMail({
     to,
     replyTo: leadsInbox(),
-    subject: "We've got your brief — let's talk",
-    text: `Hi ${name.split(" ")[0] ?? name},\n\nThanks for reaching out to ${site.name}. A senior consultant will review your brief and reply personally.\n\n— The team at ${site.name}`,
+    subject: "We've got your brief. Let's talk",
+    text: `Hi ${name.split(" ")[0] ?? name},\n\nThanks for reaching out to ${site.name}. A senior consultant will review your brief and reply personally.\n\nThe team at ${site.name}`,
     html: `<div style="font-family:sans-serif;font-size:16px;line-height:1.6;color:#383E4E;max-width:560px">
 <p>Hi ${first},</p>
 <p>Thanks for reaching out to ${site.name}. A senior consultant will review your brief and reply personally.</p>
 ${cal ? `<p>Want to move faster? <a href="${esc(cal)}" style="color:#383E4E;font-weight:600">Book a 30-minute discovery call</a>.</p>` : `<p>Prefer to talk? Call us on ${site.phone}.</p>`}
-<p>— The team at ${site.name}<br>${site.address.street}, ${site.address.locality}</p></div>`,
+<p>The team at ${site.name}<br>${site.address.street}, ${site.address.locality}</p></div>`,
   });
 }

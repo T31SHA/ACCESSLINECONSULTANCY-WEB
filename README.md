@@ -53,9 +53,9 @@ Every variable is documented inline in **`.env.example`**. All are optional; thi
 
 1. **hPanel → Websites → Add website → Node.js app**, connect GitHub repo `T31SHA/ACCESSLINECONSULTANCY-WEB`, branch `main`, framework Next.js, Node 22.x. Build `npm run build`, start `npm run start`. Auto-deploy on push.
 2. **Environment variables** (hPanel → the app → Environment variables), then redeploy:
-   - `LEADS_INBOX` — the Gmail address that receives every submission
-   - `EMAIL_FROM` — e.g. `Accessline <you@gmail.com>`
-   - `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER` (the Gmail address), `SMTP_PASS` (a Gmail **App Password**; needs 2-Step Verification) — *or* `RESEND_API_KEY`
+   - `LEADS_INBOX`: the Gmail address that receives every submission
+   - `EMAIL_FROM`: e.g. `Accessline <you@gmail.com>`
+   - `SMTP_HOST=smtp.gmail.com`, `SMTP_PORT=465`, `SMTP_USER` (the Gmail address), `SMTP_PASS` (a Gmail **App Password**; needs 2-Step Verification): *or* `RESEND_API_KEY`
    - `NEXT_PUBLIC_SITE_URL`, `HIDE_SAMPLE_CONTENT=true`
    - optional: `NEXT_PUBLIC_TURNSTILE_SITE_KEY` + `TURNSTILE_SECRET_KEY`, `UPSTASH_REDIS_REST_URL` + `UPSTASH_REDIS_REST_TOKEN`, `NEXT_PUBLIC_CAL_URL`, Sanity, Plausible, Sentry
    - `NEXT_PUBLIC_*` values are inlined at build time: redeploy after changing them.

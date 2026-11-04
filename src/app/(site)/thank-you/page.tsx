@@ -4,7 +4,7 @@ import { getSiteSettings } from "@/lib/content";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Thank You — We've Got Your Brief",
+  title: "Thank You: We've Got Your Brief",
   description: "Thanks for contacting Accessline Consultancy Limited. A senior consultant will reply personally.",
   path: "/thank-you",
   noindex: true,

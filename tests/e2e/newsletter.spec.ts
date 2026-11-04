@@ -6,7 +6,7 @@ test.describe("Newsletter (emailed to LEADS_INBOX)", () => {
     await page.goto("/");
     await page.getByLabel("Email address").fill(uniqueEmail("footer"));
     await page.getByRole("button", { name: "Subscribe" }).click();
-    await expect(page.getByText("Thanks — you’re on the list.")).toBeVisible();
+    await expect(page.getByText("Thanks, you’re on the list.")).toBeVisible();
   });
 
   test("API accepts a valid email and rejects invalid ones", async ({ request }) => {

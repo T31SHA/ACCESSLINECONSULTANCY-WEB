@@ -27,7 +27,7 @@ export const culture = [
   { title: "Grow here", body: "Training budgets, mentorship and real responsibility early." },
 ] as const;
 
-/** SAMPLE roles — replace with live vacancies from the CMS. */
+/** SAMPLE roles: replace with live vacancies from the CMS. */
 export const jobs: Job[] = published([
   {
     slug: "senior-pr-account-manager",

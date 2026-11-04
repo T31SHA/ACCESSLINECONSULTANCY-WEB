@@ -1,6 +1,6 @@
 /**
  * Browser Sentry, loaded lazily (separate chunk, after hydration) and only when
- * NEXT_PUBLIC_SENTRY_DSN is set — keeps the SDK out of the critical bundle.
+ * NEXT_PUBLIC_SENTRY_DSN is set, which keeps the SDK out of the critical bundle.
  */
 const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
 

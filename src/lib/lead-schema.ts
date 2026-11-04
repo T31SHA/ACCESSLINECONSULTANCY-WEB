@@ -8,8 +8,8 @@ export const timelines = ["asap", "1_3_months", "3_6_months", "exploring"] as co
 
 export const budgetLabels: Record<(typeof budgetBands)[number], string> = {
   under_500k: "Under KES 500K (≈ $4K)",
-  "500k_2m": "KES 500K – 2M ($4K – 15K)",
-  "2m_5m": "KES 2M – 5M ($15K – 40K)",
+  "500k_2m": "KES 500K to 2M ($4K to 15K)",
+  "2m_5m": "KES 2M to 5M ($15K to 40K)",
   "5m_plus": "KES 5M+ ($40K+)",
   undecided: "Not sure yet",
 };
@@ -70,7 +70,7 @@ export const leadPayloadSchema = z.object({
     })
     .default({}),
   turnstileToken: z.string().optional(),
-  /** honeypot — any value marks the submission as a bot (handled in the route) */
+  /** honeypot: any value marks the submission as a bot (handled in the route) */
   website: z.string().max(500).optional(),
 });
 

@@ -51,7 +51,7 @@ export default async function HomePage() {
           </div>
           <div className="grid gap-10 md:grid-cols-12 md:items-end">
             <p className="max-w-[46ch] text-lg md:col-span-6 md:text-xl">
-              Strategic communications, PR and behaviour change for corporates, NGOs and governments — built in Nairobi for audiences across the continent.
+              Strategic communications, PR and behaviour change for corporates, NGOs and governments, built in Nairobi for audiences across the continent.
             </p>
             <div className="flex flex-col items-start gap-5 md:col-span-6 md:items-end">
               <Magnetic><ButtonLink href="/contact" size="lg" withArrow className="bg-ink-950 text-sand-50 hover:bg-forest-900">Start a project</ButtonLink></Magnetic>

@@ -1,7 +1,7 @@
 import { published, type CaseStudy, type ClientLogo, type Testimonial } from "./types";
 
 /**
- * SAMPLE CONTENT — illustrative structure only. Replace with 3–6 approved,
+ * SAMPLE CONTENT: illustrative structure only. Replace with 3 to 6 approved,
  * metric-backed case studies from the client before launch (see CONTENT.md).
  */
 const allCaseStudies: CaseStudy[] = [
@@ -74,7 +74,7 @@ const allCaseStudies: CaseStudy[] = [
 export const caseStudies = published(allCaseStudies);
 export const getCaseStudy = (slug: string) => caseStudies.find((c) => c.slug === slug);
 
-/** SAMPLE — replace with 3+ approved, attributable testimonials. */
+/** SAMPLE: replace with 3+ approved, attributable testimonials. */
 export const testimonials: Testimonial[] = published([
   { quote: "Accessline understood our audiences better than we did. Coverage, sentiment and enquiries all moved in the same quarter.", author: "Head of Corporate Affairs", role: "Corporate Affairs", organisation: "Regional bank", sample: true },
   { quote: "Rigorous, culturally fluent and fast. They turned a complex programme into a story donors and communities both believed.", author: "Country Director", role: "Leadership", organisation: "International NGO", sample: true },

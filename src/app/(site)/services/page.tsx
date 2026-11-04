@@ -7,7 +7,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "PR, Strategy & Communications Services",
-  description: "PR and media relations, strategic communications, SBCC, research, training, events and creative — one integrated team in Nairobi.",
+  description: "PR and media relations, strategic communications, SBCC, research, training, events and creative: one integrated team in Nairobi.",
   path: "/services",
 });
 
@@ -18,7 +18,7 @@ export default async function ServicesPage() {
       <PageHero
         crumbs={[{ name: "Services", path: "/services" }]}
         overline="Services"
-        title="Everything it takes to be heard — and believed."
+        title="Everything it takes to be heard, and believed."
         lede="Eight disciplines under one roof, orchestrated around the outcome you need. Pick one, or let us design the mix."
       />
       <section className="container-site pb-[var(--section-y)]" aria-labelledby="all-services">

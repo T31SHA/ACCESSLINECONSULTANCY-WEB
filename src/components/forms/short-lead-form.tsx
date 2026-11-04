@@ -14,7 +14,7 @@ import { Turnstile } from "./turnstile";
 type In = z.input<typeof shortLeadSchema>;
 type Out = z.output<typeof shortLeadSchema>;
 
-/** Home-page quick enquiry — posts to the same /api/leads endpoint. */
+/** Home-page quick enquiry; posts to the same /api/leads endpoint. */
 export function ShortLeadForm() {
   const router = useRouter();
   const [active, setActive] = useState(false);
