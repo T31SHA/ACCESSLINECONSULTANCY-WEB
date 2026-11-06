@@ -1,18 +1,23 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, type Resolver } from "react-hook-form";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { track, trackingMeta } from "@/lib/analytics";
-import { shortLeadSchema } from "@/lib/lead-schema";
+import type { shortLeadSchema } from "@/lib/lead-schema";
 import { describedBy, Field, Honeypot, Input, Textarea } from "./fields";
 import { Turnstile } from "./turnstile";
 
 type In = z.input<typeof shortLeadSchema>;
 type Out = z.output<typeof shortLeadSchema>;
+
+/** Zod + the resolver load on first validation, not with the form. */
+const resolver: Resolver<In, unknown, Out> = async (...args) => {
+  const [{ zodResolver }, { shortLeadSchema: schema }] = await Promise.all([import("@hookform/resolvers/zod"), import("@/lib/lead-schema")]);
+  return zodResolver(schema)(...args);
+};
 
 /** Home-page quick enquiry; posts to the same /api/leads endpoint. */
 export function ShortLeadForm() {
@@ -21,7 +26,7 @@ export function ShortLeadForm() {
   const [token, setToken] = useState<string>();
   const [serverError, setServerError] = useState<string>();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<In, unknown, Out>({
-    resolver: zodResolver(shortLeadSchema),
+    resolver,
     mode: "onTouched",
   });
 

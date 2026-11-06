@@ -1,4 +1,5 @@
 import Script from "next/script";
+import { Suspense } from "react";
 import { JsonLd } from "@/components/ui/json-ld";
 import { RevealObserver } from "@/components/ui/reveal-observer";
 import { getIndustries, getServices, getSiteSettings } from "@/lib/content";
@@ -19,8 +20,11 @@ export async function SiteChrome({ children }: { children: React.ReactNode }) {
       </a>
       <Header services={nav} />
       <main id="main" tabIndex={-1} className="focus:outline-none">{children}</main>
-      <FooterStage />
-      <Footer services={nav} industryCount={industries.length} socials={settings.socials} />
+      {/* Own Suspense boundary so the footer hydrates separately from the page (shorter tasks, lower TBT). */}
+      <Suspense>
+        <FooterStage />
+        <Footer services={nav} industryCount={industries.length} socials={settings.socials} />
+      </Suspense>
       <RevealObserver />
       <JsonLd data={organizationSchema(settings.socials)} />
       {plausibleDomain && (
