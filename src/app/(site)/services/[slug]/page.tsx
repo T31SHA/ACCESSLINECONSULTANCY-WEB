@@ -46,25 +46,36 @@ export default async function ServicePage({ params }: Props) {
       </PageHero>
 
       {/* Problem → Outcome */}
-      <section className="container-site grid gap-px overflow-hidden rounded-lg bg-[var(--line)] md:grid-cols-2">
-        <div className="bg-[var(--surface-muted)] p-8 md:p-12" data-reveal>
-          <p className="eyebrow text-[var(--fg-muted)]">The problem</p>
+      <section aria-label="Problem and outcome" className="container-site grid gap-4 md:grid-cols-2 md:gap-6">
+        <div className="rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-8 md:p-12" data-reveal>
+          <p className="readout flex items-center gap-3 text-[var(--fg-muted)]">
+            <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-[var(--fg-muted)]" />The problem
+          </p>
           <p className="mt-6 font-display text-h3 font-bold">{s.problem}</p>
         </div>
-        <div className="bg-ink-950 p-8 text-sand-50 md:p-12" data-reveal>
-          <p className="eyebrow text-mint-200">The outcome</p>
-          <p className="mt-6 font-display text-h3 font-bold">{s.outcome}</p>
+        <div className="theme-forest relative overflow-hidden rounded-lg bg-[var(--surface)] p-8 text-[var(--fg)] md:p-12" data-reveal>
+          <div aria-hidden className="topo pointer-events-none absolute inset-0 text-sand-50 opacity-[0.05]" />
+          <p className="readout relative flex items-center gap-3 text-accent-400">
+            <span aria-hidden className="size-1.5 shrink-0 rounded-pill bg-accent-400" />The outcome
+          </p>
+          <p className="relative mt-6 font-display text-h3 font-bold">{s.outcome}</p>
         </div>
       </section>
 
       {/* Deliverables */}
       <section className="section container-site grid gap-12 lg:grid-cols-12">
-        <h2 className="text-h2 lg:col-span-5" data-reveal>What you get</h2>
+        <div className="lg:col-span-5" data-reveal>
+          <p className="readout mb-5 text-[var(--fg-muted)]">Deliverables · {String(s.deliverables.length).padStart(2, "0")}</p>
+          <h2 className="text-h2">What you get</h2>
+        </div>
         <ul className="grid gap-x-8 sm:grid-cols-2 lg:col-span-7">
-          {s.deliverables.map((d) => (
-            <li key={d} data-reveal className="flex gap-3 border-t border-[var(--line)] py-5">
-              <Check aria-hidden strokeWidth={1.5} className="mt-1 size-5 shrink-0 text-forest-500" />
-              {d}
+          {s.deliverables.map((d, i) => (
+            <li key={d} data-reveal className="flex items-start gap-4 border-t border-[var(--line)] py-5">
+              <span aria-hidden className="readout mt-0.5 inline-flex size-7 shrink-0 items-center justify-center rounded-sm bg-mint-50 text-forest-700">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <span className="flex-1">{d}</span>
+              <Check aria-hidden strokeWidth={1.5} className="mt-1 size-4 shrink-0 text-forest-500" />
             </li>
           ))}
         </ul>
@@ -74,11 +85,16 @@ export default async function ServicePage({ params }: Props) {
       <section className="section bg-mint-50">
         <div className="container-site">
           <SectionHeading overline="Process" title="How it runs" />
-          <ol className="grid gap-6 md:grid-cols-4">
+          <ol className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
             {s.process.map((p, i) => (
-              <li key={p.title} data-reveal className="border-t-2 border-ink-950 pt-6">
-                <p className="font-display text-sm font-bold text-forest-500">0{i + 1}</p>
-                <h3 className="mt-4 text-xl">{p.title}</h3>
+              <li key={p.title} data-reveal className="flex flex-col rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-6 md:p-8">
+                <div className="flex items-center gap-3">
+                  <span className="readout inline-flex h-8 min-w-11 items-center justify-center rounded-pill bg-forest-900 px-3 text-sand-50">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span aria-hidden className="readout-line text-[var(--fg-muted)]" />
+                </div>
+                <h3 className="mt-8 text-xl">{p.title}</h3>
                 <p className="mt-2 text-[var(--fg-muted)]">{p.body}</p>
               </li>
             ))}

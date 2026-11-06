@@ -38,8 +38,8 @@ export function Photo({ image, sizes, ratio = "aspect-[4/3]", className, imgClas
 }
 
 /**
- * Deep-navy (#2C3140) scrim for text over photos. 80% wherever small text can sit
- * (sand-50 on worst-case white pixel ≥ 5.1:1); fades to 60% only on the text-free side at ≥1024px.
+ * Deep-forest (#092216) scrim for text over photos. ≥82% wherever text can sit
+ * (sand-50 on a worst-case white pixel ≥ 8.9:1); fades to 58% only on the text-free side at ≥1024px.
  */
 export function PhotoScrim({ side = "left", className }: { side?: "left" | "right"; className?: string }) {
   return <div aria-hidden className={cn("photo-scrim absolute inset-0", side === "right" && "photo-scrim-r", className)} />;

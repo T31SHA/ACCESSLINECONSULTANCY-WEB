@@ -26,6 +26,7 @@ export function Header({ services }: { services: NavService[] }) {
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const megaRef = useRef<HTMLLIElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const hoverOpened = useRef(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -38,6 +39,8 @@ export function Header({ services }: { services: NavService[] }) {
     setMegaOpen(false);
     setMobileOpen(false);
   }, [pathname]);
+
+  useEffect(() => { if (!megaOpen) hoverOpened.current = false; }, [megaOpen]);
 
   useEffect(() => {
     if (!megaOpen) return;
@@ -59,7 +62,9 @@ export function Header({ services }: { services: NavService[] }) {
     <header
       className={cn(
         "sticky top-0 z-50 border-b transition-[background-color,border-color,backdrop-filter] duration-300",
-        scrolled ? "border-[var(--line)] bg-[color-mix(in_oklab,var(--surface)_88%,transparent)] backdrop-blur-md" : "border-transparent bg-[var(--surface)]",
+        scrolled
+          ? "border-[var(--line)] bg-[color-mix(in_oklab,var(--surface)_82%,transparent)] shadow-[0_1px_0_rgb(15_23_20/0.04)] backdrop-blur-md backdrop-saturate-150"
+          : "border-transparent bg-[var(--surface)]",
       )}
     >
       <div className="container-site flex h-[72px] items-center justify-between gap-6">
@@ -74,18 +79,22 @@ export function Header({ services }: { services: NavService[] }) {
                 <li
                   key={item.href}
                   ref={megaRef}
-                  className="relative"
-                  onMouseEnter={() => { clearTimeout(closeTimer.current); setMegaOpen(true); }}
+                  onMouseEnter={() => { clearTimeout(closeTimer.current); if (!megaOpen) hoverOpened.current = true; setMegaOpen(true); }}
                   onMouseLeave={() => { closeTimer.current = setTimeout(() => setMegaOpen(false), 150); }}
                 >
                   <button
                     type="button"
                     aria-expanded={megaOpen}
                     aria-controls="mega-services"
-                    onClick={() => setMegaOpen((o) => !o)}
+                    onClick={(e) => {
+                      // A mouse click right after hover-open shouldn't immediately close the panel.
+                      if (e.detail > 0 && hoverOpened.current) { hoverOpened.current = false; return; }
+                      hoverOpened.current = false;
+                      setMegaOpen((o) => !o);
+                    }}
                     className={cn(
-                      "inline-flex min-h-11 items-center gap-1 rounded-pill px-4 text-[0.9375rem] font-medium hover:bg-[var(--line)]",
-                      isActive(item.href) && "text-forest-700",
+                      "inline-flex min-h-11 items-center gap-1 rounded-pill px-4 text-[0.9375rem] font-medium transition-colors hover:bg-mint-50",
+                      (isActive(item.href) || megaOpen) && "bg-mint-50 font-semibold text-forest-700",
                     )}
                   >
                     {item.label}
@@ -94,14 +103,20 @@ export function Header({ services }: { services: NavService[] }) {
                   <div
                     id="mega-services"
                     hidden={!megaOpen}
-                    className="absolute left-1/2 top-full w-[min(880px,calc(100vw-48px))] -translate-x-[30%] pt-3"
+                    className="absolute inset-x-0 top-full"
                   >
-                    <div className="grid grid-cols-12 gap-2 rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-3 shadow-hover">
+                    {/* Anchored to the header container (not the trigger), so it never clips at 1024–1280px. */}
+                    <div className="container-site pt-2">
+                    <div className="mx-auto grid w-[min(920px,calc(100vw-48px))] grid-cols-12 gap-2 rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-3 shadow-hover">
                       <ul className="col-span-8 grid grid-cols-2 gap-1">
                         {services.map((s) => (
                           <li key={s.slug}>
-                            <Link href={`/services/${s.slug}`} className="flex gap-3 rounded-md p-3 hover:bg-mint-50">
-                              <ServiceIcon name={s.icon} className="mt-0.5 size-5 shrink-0 text-forest-500" />
+                            <Link
+                              href={`/services/${s.slug}`}
+                              aria-current={pathname === `/services/${s.slug}` ? "page" : undefined}
+                              className="group/item flex gap-3 rounded-md p-3 transition-colors hover:bg-mint-50 aria-[current=page]:bg-mint-50"
+                            >
+                              <ServiceIcon name={s.icon} className="mt-0.5 size-5 shrink-0 text-forest-500 transition-transform duration-200 group-hover/item:scale-110 motion-reduce:transform-none" />
                               <span>
                                 <span className="block text-sm font-semibold">{s.title}</span>
                                 <span className="mt-0.5 block text-[0.8125rem] leading-snug text-[var(--fg-muted)]">{s.short}</span>
@@ -113,12 +128,14 @@ export function Header({ services }: { services: NavService[] }) {
                       <div className="theme-forest col-span-4 flex flex-col justify-between rounded-md bg-[var(--surface)] p-6 text-[var(--fg)]">
                         <div>
                           <p className="eyebrow text-[var(--fg-muted)]">Not sure where to start?</p>
-                          <p className="mt-3 font-display text-xl font-bold leading-tight">Tell us the outcome. We&apos;ll design the mix.</p>
+                          <p className="mt-3 font-display text-xl font-bold leading-tight">Bring us the outcome. We&apos;ll design the mix.</p>
+                          <p className="mt-3 text-sm text-[var(--fg-muted)]">One senior team integrates PR, research and behaviour change around a single objective.</p>
                         </div>
-                        <Link href="/services" className="mt-6 inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:underline">
-                          All services <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.5} />
+                        <Link href="/services" className="mt-6 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-accent-400 underline-offset-4 hover:underline">
+                          Explore all services <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.5} />
                         </Link>
                       </div>
+                    </div>
                     </div>
                   </div>
                 </li>
@@ -128,8 +145,8 @@ export function Header({ services }: { services: NavService[] }) {
                     href={item.href}
                     aria-current={isActive(item.href) ? "page" : undefined}
                     className={cn(
-                      "inline-flex min-h-11 items-center rounded-pill px-4 text-[0.9375rem] font-medium hover:bg-[var(--line)]",
-                      isActive(item.href) && "text-forest-700",
+                      "inline-flex min-h-11 items-center rounded-pill px-4 text-[0.9375rem] font-medium transition-colors hover:bg-mint-50",
+                      isActive(item.href) && "bg-mint-50 font-semibold text-forest-700",
                     )}
                   >
                     {item.label}

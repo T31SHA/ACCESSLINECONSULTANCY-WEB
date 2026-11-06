@@ -31,7 +31,9 @@ export function WorkFilter({ items, services, industries }: { items: CaseStudy[]
         {[{ slug: "", title: "All" }, ...opts].map((o) => (
           <button key={o.slug || "all"} type="button" aria-pressed={value === o.slug} onClick={() => set(k, o.slug)}
             className={cn("min-h-11 rounded-pill border px-4 text-sm font-medium transition-colors",
-              value === o.slug ? "border-ink-950 bg-ink-950 text-sand-50" : "border-[var(--line)] hover:border-[var(--fg-muted)]")}>
+              value === o.slug
+                ? "border-forest-900 bg-forest-900 font-semibold text-sand-50"
+                : "border-[var(--line)] bg-[var(--surface-raised)] hover:border-forest-700 hover:text-forest-700")}>
             {o.title}
           </button>
         ))}
@@ -41,17 +43,22 @@ export function WorkFilter({ items, services, industries }: { items: CaseStudy[]
 
   return (
     <>
-      <div className="mb-14 grid gap-8 md:grid-cols-2">
+      <div className="mb-14 grid gap-8 rounded-lg border border-[var(--line)] bg-mint-50 p-6 md:grid-cols-2 md:p-8">
         <Chips label="Service" k="service" opts={usedServices} value={service} />
         <Chips label="Industry" k="industry" opts={usedIndustries} value={industry} />
       </div>
-      <p aria-live="polite" className="sr-only">{filtered.length} case studies shown</p>
+      <p aria-live="polite" className="readout mb-8 text-[var(--fg-muted)]">{filtered.length} {filtered.length === 1 ? "case study" : "case studies"} shown</p>
       {filtered.length ? (
         <div className="grid gap-x-6 gap-y-16 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((c, i) => <CaseStudyCard key={c.slug} index={i} cs={c} industryTitle={industries.find((x) => x.slug === c.industry)?.title} />)}
         </div>
       ) : (
-        <p className="py-16 text-center text-[var(--fg-muted)]">No case studies match that combination yet.</p>
+        <div className="rounded-lg border border-dashed border-[var(--line)] px-6 py-16 text-center">
+          <p className="text-[var(--fg-muted)]">No case studies match that combination yet.</p>
+          <button type="button" onClick={() => router.replace("?", { scroll: false })} className="mt-4 inline-flex min-h-11 items-center rounded-pill px-4 text-sm font-semibold text-forest-700 underline-offset-4 hover:underline">
+            Clear filters
+          </button>
+        </div>
       )}
     </>
   );

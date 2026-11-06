@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 const GLYPHS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/_<>#";
 
 /**
- * Text-scramble reveal (igloo-style). Server-renders the real text (SEO, no-JS, LCP);
+ * Text-scramble reveal. No longer used in the home hero (kept for stories/tests). Server-renders the real text (SEO, no-JS, LCP);
  * after hydration the visible copy resolves left→right from random glyphs.
  * Screen readers always get the plain text. Skipped under prefers-reduced-motion.
  */

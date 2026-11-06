@@ -32,10 +32,11 @@ export default async function TeamPage() {
       <section className="section bg-mint-50">
         <div className="container-site">
           <SectionHeading overline="Culture" title="How we work together" action={<ButtonLink href="/careers" withArrow>Join us</ButtonLink>} />
-          <ul className="grid gap-8 md:grid-cols-4">
-            {culture.map((c) => (
-              <li key={c.title} data-reveal className="border-t-2 border-ink-950 pt-6">
-                <h3 className="text-xl">{c.title}</h3>
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-6">
+            {culture.map((c, i) => (
+              <li key={c.title} data-reveal className="rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-6 md:p-8">
+                <span aria-hidden className="readout text-forest-500">{String(i + 1).padStart(2, "0")}</span>
+                <h3 className="mt-6 text-xl">{c.title}</h3>
                 <p className="mt-2 text-[var(--fg-muted)]">{c.body}</p>
               </li>
             ))}

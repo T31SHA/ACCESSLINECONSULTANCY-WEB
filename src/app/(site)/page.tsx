@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowDownRight } from "lucide-react";
+import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { LogoMarquee } from "@/components/blocks/logo-marquee";
 import { StatCounter } from "@/components/blocks/stat-counter";
 import { TestimonialSlider } from "@/components/blocks/testimonial-slider";
@@ -13,12 +13,12 @@ import { ButtonLink } from "@/components/ui/button";
 import { Magnetic } from "@/components/ui/magnetic";
 import { Photo, PhotoScrim } from "@/components/ui/photo";
 import { Readout } from "@/components/ui/readout";
-import { ScrambleText } from "@/components/ui/scramble-text";
 import { Overline, SectionHeading } from "@/components/ui/section-heading";
 import { approach, site } from "@/content/site";
 import { getCaseStudies, getClientLogos, getIndustries, getPosts, getServices, getSiteSettings, getTestimonials } from "@/lib/content";
 import { images } from "@/lib/images";
 import { pageMetadata } from "@/lib/seo";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = pageMetadata({
   title: "PR & Brand Strategy Agency in Nairobi",
@@ -28,6 +28,12 @@ export const metadata: Metadata = pageMetadata({
 
 const heroLines = ["Lead the change.", "We build brands", "Africa trusts."];
 
+const pillars = [
+  { title: "Nairobi HQ · Pan-African Reach", body: "Headquartered in Nairobi, working with partners and audiences across the continent." },
+  { title: "Boardroom & Field Fluency", body: "At home in executive briefings and in community-level campaigns." },
+  { title: "Principal-Led Execution", body: "Senior people lead your account from first brief to final report." },
+] as const;
+
 export default async function HomePage() {
   const [services, industries, caseStudies, posts, testimonials, clientLogos, { stats }] = await Promise.all([
     getServices(), getIndustries(), getCaseStudies(), getPosts(), getTestimonials(), getClientLogos(), getSiteSettings(),
@@ -35,29 +41,69 @@ export default async function HomePage() {
   const industryTitle = (slug: string) => industries.find((i) => i.slug === slug)?.title;
   return (
     <>
-      {/* ─── Hero: minimal, one CTA ─── */}
-      <section className="hero-grid relative isolate overflow-hidden bg-mint-200 text-ink-950 [--fg:var(--color-ink-950)] [--fg-muted:var(--color-ink-950)] [--line:rgb(56_62_78/0.22)]">
-        <div className="container-site relative flex min-h-[min(88svh,860px)] flex-col justify-between gap-16 pb-14 pt-14 md:pt-24">
-          <Readout code="ACL_HQ" meta={`${site.address.locality} · KE · ${site.address.street.split(",")[0]}`} className="max-w-2xl" />
-          <div>
-            <Overline className="mb-8">{site.positioning}</Overline>
-            <h1 className="text-display">
-              {heroLines.map((line, i) => (
-                <span key={line} className="split-line lg:whitespace-nowrap" style={{ ["--line-i" as string]: i }}>
-                  <ScrambleText text={line} delay={i * 140} className={i === 0 ? "text-forest-500" : undefined} />
-                </span>
-              ))}
-            </h1>
-          </div>
-          <div className="grid gap-10 md:grid-cols-12 md:items-end">
-            <p className="max-w-[46ch] text-lg md:col-span-6 md:text-xl">
-              Strategic communications, PR and behaviour change for corporates, NGOs and governments, built in Nairobi for audiences across the continent.
+      {/* ─── Hero: editorial 12-col split on deep forest ─── */}
+      <section className="theme-forest hero-grid relative isolate overflow-hidden bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="hero-title">
+        <div aria-hidden className="topo pointer-events-none absolute inset-0 -z-10 text-sand-50 opacity-[0.04]" />
+        <div className="container-site relative flex flex-col gap-12 pb-10 pt-10 md:gap-16 md:pt-16">
+          {/* Telemetry bar */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
+            <Readout code="ACL · NAIROBI" meta={site.address.street} className="flex-1 sm:max-w-2xl [&>span:first-child]:whitespace-nowrap" />
+            <p className="readout inline-flex items-center gap-2 self-start rounded-pill border border-[var(--line)] px-3 py-1.5 text-[var(--fg-muted)] sm:ml-auto sm:self-auto">
+              <span aria-hidden className="size-1.5 rounded-pill bg-accent-400" />
+              {services.length} disciplines · {industries.length} sectors
             </p>
-            <div className="flex flex-col items-start gap-5 md:col-span-6 md:items-end">
-              <Magnetic><ButtonLink href="/contact" size="lg" withArrow className="bg-ink-950 text-sand-50 hover:bg-forest-900">Start a project</ButtonLink></Magnetic>
-              <p className="readout flex items-center gap-2"><ArrowDownRight aria-hidden className="size-3.5" strokeWidth={1.5} /> Scroll to explore</p>
-            </div>
           </div>
+
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
+            <div className="lg:col-span-8">
+              <Overline className="mb-8">{site.positioning}</Overline>
+              <h1 id="hero-title" className="text-h1">
+                {heroLines.map((line, i) => (
+                  <span key={line} className="split-line" style={{ ["--line-i" as string]: i }}>
+                    <span className={i === 0 ? "text-accent-400" : "text-sand-50"}>{line}</span>
+                  </span>
+                ))}
+              </h1>
+              <p className="mt-8 max-w-[52ch] text-lg text-mint-200 md:text-xl">
+                Strategic communications, PR and behaviour change for corporates, NGOs and governments, built in Nairobi for audiences across the continent.
+              </p>
+              <div className="mt-10 flex flex-wrap items-center gap-4">
+                <Magnetic><ButtonLink href="/contact" size="lg" withArrow>Start a project</ButtonLink></Magnetic>
+                <ButtonLink href={caseStudies.length ? "/work" : "/services"} variant="outline" size="lg">
+                  {caseStudies.length ? "See our work" : "Explore services"}
+                </ButtonLink>
+              </div>
+            </div>
+
+            {/* Editorial dispatch card */}
+            <aside aria-label="From our Nairobi office" className="rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-4 shadow-hover lg:col-span-4">
+              <div className="relative">
+                <Photo image={images["hero-nairobi-skyline"]} hero ratio="aspect-[16/10]" className="rounded-md"
+                  sizes="(min-width: 1320px) 400px, (min-width: 1024px) 30vw, calc(100vw - 72px)" />
+                <p className="readout absolute bottom-3 left-3 rounded-sm bg-forest-900/90 px-2.5 py-1.5 text-sand-50">Nairobi CBD · 1.29°S 36.82°E</p>
+              </div>
+              <div className="px-2 pb-1 pt-5">
+                <Readout code="DISPATCH_01" meta="Ecobank Towers" />
+                <p className="mt-4 text-[0.9375rem] leading-relaxed text-[var(--fg-muted)]">
+                  Counsel for boardrooms, ministries and NGOs, delivered by senior people from our Nairobi headquarters.
+                </p>
+                <Link href="/about" className="mt-3 inline-flex min-h-11 items-center gap-1.5 text-sm font-semibold text-accent-400 underline-offset-4 hover:underline">
+                  Inside Accessline <ArrowUpRight aria-hidden className="size-4" strokeWidth={1.5} />
+                </Link>
+              </div>
+            </aside>
+          </div>
+
+          {/* Credibility pillars (independent of sample content) */}
+          <ul className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] md:grid-cols-3">
+            {pillars.map((p, i) => (
+              <li key={p.title} className="bg-[var(--surface)] p-5 md:p-6">
+                <p className="readout text-accent-400">{`0${i + 1}`}</p>
+                <p className="mt-3 font-display text-lg font-bold leading-tight">{p.title}</p>
+                <p className="mt-1.5 text-[0.9375rem] text-[var(--fg-muted)]">{p.body}</p>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
 
@@ -74,7 +120,7 @@ export default async function HomePage() {
       )}
 
       {/* ─── Services ─── */}
-      <section className="section container-site pt-0" aria-labelledby="services-title">
+      <section className={cn("section container-site", stats.length > 0 && "pt-0")} aria-labelledby="services-title">
         <SectionHeading
           overline="What we do"
           title={<span id="services-title">Eight disciplines. One clear narrative.</span>}
@@ -102,17 +148,20 @@ export default async function HomePage() {
       )}
 
       {/* ─── Approach ─── */}
-      <section className="section container-site" aria-labelledby="approach-title">
-        <SectionHeading overline="How we work" title={<span id="approach-title">Four steps from noise to narrative.</span>} />
-        <ol className="grid gap-px overflow-hidden rounded-lg bg-[var(--line)] md:grid-cols-4">
-          {approach.map((a) => (
-            <li key={a.n} data-reveal className="bg-[var(--surface)] p-8">
-              <Readout code={`STEP_${a.n}`} className="text-forest-500" />
-              <h3 className="mt-10 text-h3">{a.title}</h3>
-              <p className="mt-3 text-[var(--fg-muted)]">{a.body}</p>
-            </li>
-          ))}
-        </ol>
+      {/* Dark band when there are no case studies, so light and dark sections still alternate. */}
+      <section className={cn("section", !caseStudies.length && "theme-dark bg-[var(--surface)] text-[var(--fg)]")} aria-labelledby="approach-title">
+        <div className="container-site">
+          <SectionHeading overline="How we work" title={<span id="approach-title">Four steps from noise to narrative.</span>} />
+          <ol className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] md:grid-cols-2 lg:grid-cols-4">
+            {approach.map((a) => (
+              <li key={a.n} data-reveal className="flex flex-col bg-[var(--surface-raised)] p-8">
+                <Readout code={`STEP_${a.n}`} className={caseStudies.length ? "[&>span:first-child]:text-forest-500" : "[&>span:first-child]:text-accent-400"} />
+                <h3 className="mt-10 text-h3">{a.title}</h3>
+                <p className="mt-3 text-[var(--fg-muted)]">{a.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
       {/* ─── Industries ─── */}
@@ -126,7 +175,7 @@ export default async function HomePage() {
             </div>
           </div>
           <ul className="border-t border-[var(--line)] lg:col-span-8">
-            {industries.map((ind) => <IndustryTile key={ind.slug} industry={ind} />)}
+            {industries.map((ind, i) => <IndustryTile key={ind.slug} industry={ind} index={i} />)}
           </ul>
         </div>
       </section>
@@ -165,7 +214,7 @@ export default async function HomePage() {
               <li><Link href="/contact" className="inline-flex min-h-11 items-center gap-2 font-semibold underline-offset-4 hover:underline"><ArrowDownRight aria-hidden className="size-4" /> Detailed brief form</Link></li>
             </ul>
           </div>
-          <div className="rounded-lg bg-sand-50 p-6 text-ink-950 [--fg:var(--color-ink-950)] [--fg-muted:var(--color-slate-600)] [--line:rgb(11_26_19/0.12)] [--surface-raised:#fff] md:p-10 lg:col-span-7">
+          <div className="rounded-lg bg-sand-50 p-6 text-ink-950 [--fg:var(--color-ink-950)] [--fg-muted:var(--color-slate-600)] [--line:rgb(15_23_20/0.12)] [--surface-raised:#fff] md:p-10 lg:col-span-7">
             <LazyShortLeadForm />
           </div>
         </div>

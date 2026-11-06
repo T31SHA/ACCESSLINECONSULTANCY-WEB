@@ -17,7 +17,7 @@ export function ApplyForm({ jobSlug, jobTitle }: { jobSlug: string; jobTitle: st
 
   if (status.kind === "ok") {
     return (
-      <div role="status" className="rounded-lg border border-[var(--line)] bg-mint-50 p-8">
+      <div role="status" className="rounded-lg border border-forest-700/30 border-l-4 border-l-forest-700 bg-mint-50 p-8">
         <p className="font-display text-h3 font-bold">Application received.</p>
         <p className="mt-3 text-[var(--fg-muted)]">Thanks for applying for {jobTitle}. We review every application and reply within ten working days.</p>
       </div>

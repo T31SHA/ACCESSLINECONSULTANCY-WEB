@@ -35,7 +35,7 @@ export function Footer({ services, industryCount, socials }: Props) {
             <h2 className="eyebrow mb-5 font-sans text-[var(--fg-muted)]">Services</h2>
             <ul className="space-y-2.5 text-[0.9375rem]">
               {services.map((s) => (
-                <li key={s.slug}><Link href={`/services/${s.slug}`} className="hover:text-mint-200">{s.title}</Link></li>
+                <li key={s.slug}><Link href={`/services/${s.slug}`} className="transition-colors hover:text-accent-400">{s.title}</Link></li>
               ))}
             </ul>
           </nav>
@@ -43,17 +43,17 @@ export function Footer({ services, industryCount, socials }: Props) {
             <h2 className="eyebrow mb-5 font-sans text-[var(--fg-muted)]">Company</h2>
             <ul className="space-y-2.5 text-[0.9375rem]">
               {company.map((l) => (
-                <li key={l.href}><Link href={l.href} className="hover:text-mint-200">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="transition-colors hover:text-accent-400">{l.label}</Link></li>
               ))}
-              <li><Link href="/industries" className="hover:text-mint-200">Industries ({industryCount})</Link></li>
+              <li><Link href="/industries" className="transition-colors hover:text-accent-400">Industries ({industryCount})</Link></li>
             </ul>
           </nav>
           <div className="md:col-span-2">
             <h2 className="eyebrow mb-5 font-sans text-[var(--fg-muted)]">Visit</h2>
             <address className="space-y-2.5 text-[0.9375rem] not-italic">
               <p>{site.address.street}<br />{site.address.locality}, {site.address.countryName}</p>
-              <p><a href={`mailto:${site.email}`} className="hover:text-mint-200">{site.email}</a></p>
-              <p><a href={site.phoneHref} className="hover:text-mint-200">{site.phone}</a></p>
+              <p><a href={`mailto:${site.email}`} className="transition-colors hover:text-accent-400">{site.email}</a></p>
+              <p><a href={site.phoneHref} className="transition-colors hover:text-accent-400">{site.phone}</a></p>
             </address>
             {socials.linkedin && (
               <a href={socials.linkedin} className="mt-6 inline-flex size-11 items-center justify-center rounded-pill border border-[var(--line)] hover:bg-[var(--line)]" aria-label={`${site.name} on LinkedIn`} rel="noopener" target="_blank">
@@ -69,8 +69,8 @@ export function Footer({ services, industryCount, socials }: Props) {
         <div className="mt-8 flex flex-col gap-4 border-t border-[var(--line)] pt-6 text-sm text-[var(--fg-muted)] md:flex-row md:justify-between">
           <p>© {year} {site.legalName}. All rights reserved.</p>
           <ul className="flex gap-6">
-            <li><Link href="/privacy" className="hover:text-[var(--fg)]">Privacy</Link></li>
-            <li><Link href="/terms" className="hover:text-[var(--fg)]">Terms</Link></li>
+            <li><Link href="/privacy" className="transition-colors hover:text-[var(--fg)]">Privacy</Link></li>
+            <li><Link href="/terms" className="transition-colors hover:text-[var(--fg)]">Terms</Link></li>
           </ul>
         </div>
       </div>

@@ -52,17 +52,24 @@ export default async function CaseStudyPage({ params }: Props) {
         )}
       </div>
 
-      <section className="section container-site grid gap-12 lg:grid-cols-12">
-        <h2 className="eyebrow text-[var(--fg-muted)] lg:col-span-3">The challenge</h2>
+      <section className="section container-site grid gap-8 lg:grid-cols-12 lg:gap-12">
+        <h2 className="readout flex items-center gap-3 self-start text-[var(--fg-muted)] lg:col-span-3">
+          <span className="text-[var(--fg)]">01</span><span aria-hidden className="h-px w-8 bg-current opacity-40" />The challenge
+        </h2>
         <p className="font-display text-h3 font-bold lg:col-span-9" data-reveal>{c.challenge}</p>
       </section>
 
-      <section className="container-site grid gap-12 pb-[var(--section-y)] lg:grid-cols-12">
-        <h2 className="eyebrow text-[var(--fg-muted)] lg:col-span-3">Our approach</h2>
-        <ol className="lg:col-span-9">
+      <section className="container-site grid gap-8 pb-[var(--section-y)] lg:grid-cols-12 lg:gap-12">
+        <h2 className="readout flex items-center gap-3 self-start text-[var(--fg-muted)] lg:col-span-3">
+          <span className="text-[var(--fg)]">02</span><span aria-hidden className="h-px w-8 bg-current opacity-40" />Our approach
+        </h2>
+        <ol className="grid gap-4 sm:grid-cols-2 lg:col-span-9">
           {c.approach.map((a, i) => (
-            <li key={a} data-reveal className="flex gap-6 border-t border-[var(--line)] py-6 text-lg">
-              <span className="font-display text-sm font-bold text-forest-500">0{i + 1}</span>{a}
+            <li key={a} data-reveal className="rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-6 text-lg">
+              <span aria-hidden className="readout inline-flex h-8 min-w-11 items-center justify-center rounded-pill bg-mint-50 px-3 text-forest-700">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p className="mt-5">{a}</p>
             </li>
           ))}
         </ol>
@@ -70,13 +77,14 @@ export default async function CaseStudyPage({ params }: Props) {
 
       <section className="theme-forest section bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="results">
         <div className="container-site">
-          <h2 id="results" className="eyebrow mb-12 text-[var(--fg-muted)]">The results</h2>
-          <dl className="grid gap-10 md:grid-cols-3">
+          <h2 id="results" className="readout mb-12 flex items-center gap-3 text-accent-400">
+            <span>03</span><span aria-hidden className="h-px w-8 bg-current opacity-60" />The results
+          </h2>
+          <dl className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] md:grid-cols-3">
             {c.metrics.map((m) => (
-              <div key={m.label} data-reveal className="border-t border-[var(--line)] pt-6">
-                <dt className="sr-only">{m.label}</dt>
-                <dd className="font-display text-display font-bold">{m.value}</dd>
-                <dd className="mt-3 text-[var(--fg-muted)]">{m.label}</dd>
+              <div key={m.label} data-reveal className="flex flex-col bg-[var(--surface)] p-8 md:p-10">
+                <dt className="readout order-2 mt-4 text-[var(--fg-muted)]">{m.label}</dt>
+                <dd className="order-1 font-mono-ui text-[clamp(3rem,2rem+4vw,5.5rem)] font-medium leading-none tracking-tight text-accent-400">{m.value}</dd>
               </div>
             ))}
           </dl>
