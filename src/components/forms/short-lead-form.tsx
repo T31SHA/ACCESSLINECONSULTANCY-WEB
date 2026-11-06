@@ -59,7 +59,7 @@ export function ShortLeadForm() {
       </Field>
       <div className="sm:col-span-2">
         <label className="flex min-h-11 items-start gap-3 text-sm">
-          <input type="checkbox" className="mt-0.5 size-5 shrink-0 accent-ink-950" aria-invalid={!!errors.consent} aria-describedby={errors.consent ? "short-consent-error" : undefined} {...register("consent")} />
+          <input type="checkbox" className="mt-0.5 size-5 shrink-0 accent-forest-700" aria-invalid={!!errors.consent} aria-describedby={errors.consent ? "short-consent-error" : undefined} {...register("consent")} />
           <span>I agree to the <a href="/privacy" className="underline">privacy policy</a>.</span>
         </label>
         {errors.consent && <p id="short-consent-error" className="mt-1 text-sm font-medium text-[#B42318]">{errors.consent.message}</p>}

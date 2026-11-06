@@ -1,8 +1,9 @@
 "use client";
 
 import * as Dialog from "@radix-ui/react-dialog";
-import { X } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { RefObject } from "react";
 import { ButtonLink } from "@/components/ui/button";
 import { nav, site } from "@/content/site";
@@ -15,6 +16,8 @@ export function MobileMenu({ open, onOpenChange, returnFocusRef }: {
   /** The menu button lives outside Radix (no Dialog.Trigger), so focus is returned explicitly. */
   returnFocusRef: RefObject<HTMLButtonElement | null>;
 }) {
+  const pathname = usePathname();
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -33,11 +36,17 @@ export function MobileMenu({ open, onOpenChange, returnFocusRef }: {
             </Dialog.Close>
           </div>
           <nav aria-label="Mobile" className="container-site flex-1 py-8">
-            <ul className="space-y-1">
+            <ul className="border-t border-[var(--line)]">
               {nav.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href} onClick={() => onOpenChange(false)} className="block py-2 font-display text-[2.5rem] font-bold leading-tight hover:text-mint-200">
+                  <Link
+                    href={item.href}
+                    onClick={() => onOpenChange(false)}
+                    aria-current={isActive(item.href) ? "page" : undefined}
+                    className="flex min-h-11 items-center justify-between gap-4 border-b border-[var(--line)] py-3 font-display text-[2.25rem] font-bold leading-tight transition-colors hover:text-mint-200 aria-[current=page]:text-accent-400"
+                  >
                     {item.label}
+                    <ArrowUpRight aria-hidden strokeWidth={1.5} className="size-6 shrink-0 opacity-60" />
                   </Link>
                 </li>
               ))}
@@ -45,8 +54,9 @@ export function MobileMenu({ open, onOpenChange, returnFocusRef }: {
           </nav>
           <div className="container-site space-y-4 pb-10">
             <ButtonLink href="/contact" size="lg" withArrow className="w-full" onClick={() => onOpenChange(false)}>Start a project</ButtonLink>
-            <p className="text-sm text-[var(--fg-muted)]">
-              <a href={`mailto:${site.email}`} className="underline-offset-4 hover:underline">{site.email}</a>
+            <p className="flex flex-wrap gap-x-6 text-sm text-[var(--fg-muted)]">
+              <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">{site.email}</a>
+              <a href={site.phoneHref} className="inline-flex min-h-11 items-center underline-offset-4 hover:underline">{site.phone}</a>
             </p>
           </div>
         </Dialog.Content>

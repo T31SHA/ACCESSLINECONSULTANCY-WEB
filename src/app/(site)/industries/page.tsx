@@ -26,7 +26,7 @@ export default async function IndustriesPage() {
       />
       <section className="container-site pb-[var(--section-y)]">
         <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2 sm:gap-y-14 md:grid-cols-3">
-          {industries.map((i) => <IndustryCard key={i.slug} industry={i} />)}
+          {industries.map((ind, i) => <IndustryCard key={ind.slug} industry={ind} index={i} />)}
         </ul>
       </section>
       <CtaBand />

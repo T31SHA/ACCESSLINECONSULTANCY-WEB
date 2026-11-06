@@ -44,7 +44,7 @@ export function FooterField() {
         const x = p.x + (dx / d) * push * 14;
         const y = p.y + wave * 4 + (dy / d) * push * 14;
         const a = 0.14 + (wave + 1) * 0.1 + push * 0.55;
-        ctx.fillStyle = push > 0.25 ? `rgba(242,166,90,${a})` : `rgba(182,186,197,${a})`;
+        ctx.fillStyle = push > 0.25 ? `rgba(239,160,75,${a})` : `rgba(207,224,214,${a})`;
         ctx.fillRect(x, y, 1.6 + push * 1.6, 1.6 + push * 1.6);
       }
     };
