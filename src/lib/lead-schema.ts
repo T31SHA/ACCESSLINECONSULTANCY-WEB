@@ -1,24 +1,11 @@
 import { z } from "zod";
+import { budgetBands, timelines } from "./lead-options";
+
+// Constants live in ./lead-options (no Zod) so client components can import them without the validator.
+export { budgetBands, budgetLabels, leadStepFields, timelineLabels, timelines } from "./lead-options";
 
 // No eval-based JIT: keeps the strict CSP (no 'unsafe-eval') violation-free in the browser.
 z.config({ jitless: true });
-
-export const budgetBands = ["under_500k", "500k_2m", "2m_5m", "5m_plus", "undecided"] as const;
-export const timelines = ["asap", "1_3_months", "3_6_months", "exploring"] as const;
-
-export const budgetLabels: Record<(typeof budgetBands)[number], string> = {
-  under_500k: "Under KES 500K (≈ $4K)",
-  "500k_2m": "KES 500K to 2M ($4K to 15K)",
-  "2m_5m": "KES 2M to 5M ($15K to 40K)",
-  "5m_plus": "KES 5M+ ($40K+)",
-  undecided: "Not sure yet",
-};
-export const timelineLabels: Record<(typeof timelines)[number], string> = {
-  asap: "As soon as possible",
-  "1_3_months": "1–3 months",
-  "3_6_months": "3–6 months",
-  exploring: "Just exploring",
-};
 
 const phone = z
   .string()
@@ -49,12 +36,6 @@ export const shortLeadSchema = z.object({
   message: z.string().trim().min(10, "Tell us a little more (10+ characters)").max(4000),
   consent: leadSchema.shape.consent,
 });
-
-export const leadStepFields = [
-  ["serviceInterest"],
-  ["organisation", "industry", "budgetBand", "timeline"],
-  ["fullName", "email", "phone", "message", "consent"],
-] as const;
 
 /** Server payload: either form variant + tracking meta + Turnstile token. */
 export const leadPayloadSchema = z.object({

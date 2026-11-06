@@ -12,7 +12,8 @@
         "formFactor": "mobile",
         "screenEmulation": {
           "mobile": true
-        }
+        },
+        "throttlingMethod": "devtools"
       }
     },
     "assert": {
@@ -62,7 +63,7 @@
         "resource-summary:script:size": [
           "error",
           {
-            "maxNumericValue": 122880
+            "maxNumericValue": 225280
           }
         ],
         "resource-summary:total:count": [

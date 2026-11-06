@@ -1,16 +1,14 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm, type FieldErrors, type Resolver } from "react-hook-form";
 import type { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { track, trackingMeta } from "@/lib/analytics";
-import {
-  budgetBands, budgetLabels, leadSchema, leadStepFields, timelineLabels, timelines,
-} from "@/lib/lead-schema";
+import { budgetBands, budgetLabels, leadStepFields, timelineLabels, timelines } from "@/lib/lead-options";
+import type { leadSchema } from "@/lib/lead-schema";
 import { site } from "@/content/site";
 import { cn } from "@/lib/utils";
 import { describedBy, Field, Honeypot, Input, Select, Textarea } from "./fields";
@@ -18,6 +16,11 @@ import { Turnstile } from "./turnstile";
 
 type In = z.input<typeof leadSchema>;
 type Out = z.output<typeof leadSchema>;
+/** Zod + the resolver load on first validation (blur, Continue or submit), not with the page. */
+const resolver: Resolver<In, unknown, Out> = async (...args) => {
+  const [{ zodResolver }, { leadSchema: schema }] = await Promise.all([import("@hookform/resolvers/zod"), import("@/lib/lead-schema")]);
+  return zodResolver(schema)(...args);
+};
 const STORAGE_KEY = "alc:lead-draft:v1";
 const steps = ["What you need", "About your organisation", "How to reach you"] as const;
 
@@ -39,7 +42,7 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
   const headingRef = useRef<HTMLHeadingElement>(null);
 
   const form = useForm<In, unknown, Out>({
-    resolver: zodResolver(leadSchema),
+    resolver,
     mode: "onTouched",
     defaultValues: { serviceInterest: [], phone: "", message: "", consentMarketing: false },
   });
@@ -77,7 +80,8 @@ export function LeadForm({ services, industries }: { services: Option[]; industr
   const next = async () => {
     const names = leadStepFields[step];
     const ok = await trigger(names as unknown as (keyof In)[], { shouldFocus: false });
-    if (!ok) return showSummary(form.formState.errors, names);
+    // Read errors live: the `formState` proxy captured by this closure is from the previous render.
+    if (!ok) return showSummary(Object.fromEntries(names.map((n) => [n, form.getFieldState(n as keyof In).error])) as FieldErrors<In>, names);
     setSummary([]);
     setStep((s) => s + 1);
     track("Lead Form Step", { step: step + 2 });

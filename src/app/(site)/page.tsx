@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { LogoMarquee } from "@/components/blocks/logo-marquee";
 import { StatCounter } from "@/components/blocks/stat-counter";
@@ -47,7 +48,12 @@ export default async function HomePage() {
         <div className="container-site relative flex flex-col gap-12 pb-10 pt-10 md:gap-16 md:pt-16">
           {/* Telemetry bar */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-            <Readout code="ACL · NAIROBI" meta={site.address.street} className="flex-1 sm:max-w-2xl [&>span:first-child]:whitespace-nowrap" />
+            {/* Single line at every width (a re-wrap on font swap would shift the hero). */}
+            <Readout
+              code="ACL · NAIROBI"
+              meta={<><span className="sm:hidden">Ecobank Towers</span><span className="hidden sm:inline">{site.address.street}</span></>}
+              className="flex-1 whitespace-nowrap sm:max-w-2xl"
+            />
             <p className="readout inline-flex items-center gap-2 self-start rounded-pill border border-[var(--line)] px-3 py-1.5 text-[var(--fg-muted)] sm:ml-auto sm:self-auto">
               <span aria-hidden className="size-1.5 rounded-pill bg-accent-400" />
               {services.length} disciplines · {industries.length} sectors
@@ -57,7 +63,9 @@ export default async function HomePage() {
           <div className="grid gap-12 lg:grid-cols-12 lg:items-end lg:gap-10">
             <div className="lg:col-span-8">
               <Overline className="mb-8">{site.positioning}</Overline>
-              <h1 id="hero-title" className="text-h1">
+              {/* One line per phrase at every width (widest line ≈ 9.1em in Syne), so the font swap can't
+                  change the line count and shift the content below (CLS). */}
+              <h1 id="hero-title" className="text-h1 whitespace-nowrap [font-size:min(var(--text-h1),calc((100vw-48px)/9.4))]">
                 {heroLines.map((line, i) => (
                   <span key={line} className="split-line" style={{ ["--line-i" as string]: i }}>
                     <span className={i === 0 ? "text-accent-400" : "text-sand-50"}>{line}</span>
@@ -67,9 +75,10 @@ export default async function HomePage() {
               <p className="mt-8 max-w-[52ch] text-lg text-mint-200 md:text-xl">
                 Strategic communications, PR and behaviour change for corporates, NGOs and governments, built in Nairobi for audiences across the continent.
               </p>
-              <div className="mt-10 flex flex-wrap items-center gap-4">
-                <Magnetic><ButtonLink href="/contact" size="lg" withArrow>Start a project</ButtonLink></Magnetic>
-                <ButtonLink href={caseStudies.length ? "/work" : "/services"} variant="outline" size="lg">
+              {/* Stacked full-width on mobile so the row count never depends on which font has loaded. */}
+              <div className="mt-10 grid gap-3 sm:flex sm:flex-wrap sm:items-center sm:gap-4">
+                <Magnetic><ButtonLink href="/contact" size="lg" withArrow className="w-full sm:w-auto">Start a project</ButtonLink></Magnetic>
+                <ButtonLink href={caseStudies.length ? "/work" : "/services"} variant="outline" size="lg" prefetch={false} className="w-full sm:w-auto">
                   {caseStudies.length ? "See our work" : "Explore services"}
                 </ButtonLink>
               </div>
@@ -107,6 +116,9 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Separate Suspense boundary: React hydrates everything below the hero as its own unit,
+          splitting one long hydration task (TBT) without changing the server HTML. */}
+      <Suspense>
       <LogoMarquee logos={clientLogos} />
 
       {/* ─── Stats ─── */}
@@ -211,7 +223,7 @@ export default async function HomePage() {
             <p className="mt-6 max-w-[40ch] text-lg text-[var(--fg-muted)]">A senior reply, not an account-exec relay.</p>
             <ul className="mt-10 space-y-3">
               <li><a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center gap-2 font-semibold underline-offset-4 hover:underline"><ArrowDownRight aria-hidden className="size-4" /> {site.email}</a></li>
-              <li><Link href="/contact" className="inline-flex min-h-11 items-center gap-2 font-semibold underline-offset-4 hover:underline"><ArrowDownRight aria-hidden className="size-4" /> Detailed brief form</Link></li>
+              <li><Link href="/contact" prefetch={false} className="inline-flex min-h-11 items-center gap-2 font-semibold underline-offset-4 hover:underline"><ArrowDownRight aria-hidden className="size-4" /> Detailed brief form</Link></li>
             </ul>
           </div>
           <div className="rounded-lg bg-sand-50 p-6 text-ink-950 [--fg:var(--color-ink-950)] [--fg-muted:var(--color-slate-600)] [--line:rgb(15_23_20/0.12)] [--surface-raised:#fff] md:p-10 lg:col-span-7">
@@ -219,6 +231,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      </Suspense>
     </>
   );
 }

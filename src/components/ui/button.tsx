@@ -36,9 +36,13 @@ export function Button({ variant = "primary", size = "md", className, children, 
   );
 }
 
-export function ButtonLink({ variant = "primary", size = "md", className, children, withArrow, ...props }: CommonProps & ComponentProps<typeof Link>) {
+/** /contact carries the form bundle; prefetching it from every CTA blew the per-page JS budget. */
+const isContact = (href: ComponentProps<typeof Link>["href"]) =>
+  (typeof href === "string" ? href : href.pathname ?? "").startsWith("/contact");
+
+export function ButtonLink({ variant = "primary", size = "md", className, children, withArrow, prefetch, ...props }: CommonProps & ComponentProps<typeof Link>) {
   return (
-    <Link className={buttonClasses(variant, size, className)} {...props}>
+    <Link className={buttonClasses(variant, size, className)} prefetch={prefetch ?? (isContact(props.href) ? false : undefined)} {...props}>
       {children}
       {(withArrow || variant === "arrow") && <Arrow />}
     </Link>
