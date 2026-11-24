@@ -1,35 +1,35 @@
 import type { ReactNode } from "react";
 import { Breadcrumbs, type Crumb } from "@/components/layout/breadcrumbs";
 import { Overline } from "@/components/ui/section-heading";
-import { Photo } from "@/components/ui/photo";
+import { Photo, PhotoScrim } from "@/components/ui/photo";
 import type { SiteImage } from "@/lib/images";
-import { cn } from "@/lib/utils";
 
 /**
- * Statement hero for inner pages: eyebrow + oversized H1 + lede, with an optional photo in a
- * right-hand column from md (1024px). Below 1024px the photo is not rendered (display:none →
- * the lazy image is never fetched): on mobile it would land in the first viewport, become a
- * lazy-loaded LCP and cost ~1 s. Only the home hero image is prioritised.
+ * Statement hero for inner pages: always the dark forest theme, full-bleed photo background
+ * when one is supplied (deep scrim keeps text ≥ 8.9:1), oversized H1 + lede on top — the same
+ * bold, dark treatment as the home hero and CTA band, applied consistently across the site.
  */
-export function PageHero({ crumbs, overline, title, lede, children, image, imageRatio = "aspect-[4/3]" }: {
+export function PageHero({ crumbs, overline, title, lede, children, image }: {
   crumbs: Crumb[]; overline?: string; title: ReactNode; lede?: ReactNode; children?: ReactNode;
-  image?: SiteImage; imageRatio?: string;
+  image?: SiteImage;
 }) {
   return (
-    <section className="grain relative overflow-hidden">
-      <div aria-hidden className="topo pointer-events-none absolute -right-40 -top-20 h-[640px] w-[900px] opacity-[0.07]" />
-      <div className={cn("container-site relative pb-16 pt-10 md:pb-24 md:pt-16", image && "grid gap-10 md:grid-cols-12 md:items-end md:gap-12")}>
-        <div className={cn(image && "md:col-span-7")}>
+    <section className="theme-forest on-photo grain relative isolate overflow-hidden bg-[var(--surface)] text-[var(--fg)]">
+      <div aria-hidden className="topo pointer-events-none absolute -right-40 -top-20 -z-10 h-[640px] w-[900px] text-sand-50 opacity-[0.05]" />
+      {image && (
+        <>
+          <Photo image={image} ratio="" sizes="100vw" quality={50} className="absolute inset-0 -z-10" />
+          <PhotoScrim className="-z-10" />
+        </>
+      )}
+      <div className="container-site relative pb-16 pt-14 md:pb-24 md:pt-20">
+        <div className="max-w-[72ch]">
           <Breadcrumbs items={crumbs} />
           {overline && <Overline className="mb-6">{overline}</Overline>}
-          <h1 className="max-w-[16ch] text-h1">{title}</h1>
-          {lede && <p className="mt-8 max-w-[60ch] text-lg text-[var(--fg-muted)] md:text-xl">{lede}</p>}
+          <h1 className="max-w-[18ch] text-h1 text-sand-50">{title}</h1>
+          {lede && <p className="mt-8 max-w-[60ch] text-lg text-mint-200 md:text-xl">{lede}</p>}
           {children}
         </div>
-        {image && (
-          <Photo image={image} ratio={imageRatio} className="hidden rounded-lg md:col-span-5 md:block"
-            sizes="(min-width: 1320px) 520px, (min-width: 1024px) 40vw, 100vw" />
-        )}
       </div>
     </section>
   );

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { ArrowDownRight, ArrowUpRight } from "lucide-react";
 import { LogoMarquee } from "@/components/blocks/logo-marquee";
+import { SectorTicker } from "@/components/blocks/sector-ticker";
 import { StatCounter } from "@/components/blocks/stat-counter";
 import { TestimonialSlider } from "@/components/blocks/testimonial-slider";
 import { CaseStudyCard } from "@/components/cards/case-study-card";
@@ -45,6 +46,8 @@ export default async function HomePage() {
       {/* ─── Hero: editorial 12-col split on deep forest ─── */}
       <section className="theme-forest hero-grid grain relative isolate overflow-hidden bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="hero-title">
         <div aria-hidden className="topo pointer-events-none absolute inset-0 -z-10 text-sand-50 opacity-[0.04]" />
+        <div aria-hidden className="pointer-events-none absolute -left-40 -top-48 -z-10 size-[560px] rounded-full bg-accent-400/25 blur-[130px]" />
+        <div aria-hidden className="pointer-events-none absolute -right-24 bottom-[-20%] -z-10 size-[460px] rounded-full bg-forest-500/40 blur-[110px]" />
         <div className="container-site relative flex flex-col gap-12 pb-10 pt-10 md:gap-16 md:pt-16">
           {/* Telemetry bar */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
@@ -116,6 +119,8 @@ export default async function HomePage() {
         </div>
       </section>
 
+      <SectorTicker items={industries} />
+
       {/* Separate Suspense boundary: React hydrates everything below the hero as its own unit,
           splitting one long hydration task (TBT) without changing the server HTML. */}
       <Suspense>
@@ -138,8 +143,16 @@ export default async function HomePage() {
           title={<span id="services-title">{services.length} disciplines. One clear narrative.</span>}
           action={<ButtonLink href="/services" variant="arrow">All services</ButtonLink>}
         />
-        <div className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
-          {services.map((s, i) => <ServiceCard key={s.slug} service={s} index={i} mobileThumb={false} />)}
+        <div className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4 lg:grid-rows-2">
+          {services.map((s, i) => (
+            <ServiceCard
+              key={s.slug}
+              service={s}
+              index={i}
+              mobileThumb={false}
+              className={i === 0 ? "lg:col-span-2 lg:row-span-2" : undefined}
+            />
+          ))}
         </div>
       </section>
 

@@ -22,7 +22,6 @@ export default async function IndustriesPage() {
         title="Sector fluency, from boardroom to county."
         lede="Every sector has its own regulators, audiences and unwritten rules. We know them."
         image={images["industries-hero-nairobi-cityscape"]}
-        imageRatio="aspect-[16/9] md:aspect-[4/3]"
       />
       <section className="container-site pb-[var(--section-y)]">
         <ul className="grid gap-x-6 gap-y-8 sm:grid-cols-2 sm:gap-y-14 md:grid-cols-3">

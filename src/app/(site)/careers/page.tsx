@@ -26,7 +26,6 @@ export default async function CareersPage() {
         title="Do the best work of your career. In Nairobi."
         lede="Real clients, real responsibility, real growth. We hire curious people who care about Africa's story."
         image={images["careers-hero-westlands"]}
-        imageRatio="aspect-[3/2]"
       />
       <section className="container-site pb-[var(--section-y)]">
         <SectionHeading overline="Why join" title="What you can expect" />
