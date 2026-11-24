@@ -12,7 +12,7 @@ export function CtaBandView({
   calUrl,
 }: CtaBandProps & { calUrl?: string }) {
   return (
-    <section className="theme-forest on-photo relative isolate overflow-hidden bg-[var(--surface)]">
+    <section className="theme-forest on-photo grain relative isolate overflow-hidden bg-[var(--surface)]">
       <Photo image={images["home-cta-nairobi-cbd-night"]} sizes="100vw" ratio="" quality={50} className="absolute inset-0 -z-10" />
       {/* Body copy + buttons sit on the right at ≥1024px → keep the 80% end there. */}
       <PhotoScrim side="right" className="-z-10" />

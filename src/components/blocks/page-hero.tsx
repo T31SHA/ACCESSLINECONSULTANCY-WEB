@@ -16,7 +16,7 @@ export function PageHero({ crumbs, overline, title, lede, children, image, image
   image?: SiteImage; imageRatio?: string;
 }) {
   return (
-    <section className="relative overflow-hidden">
+    <section className="grain relative overflow-hidden">
       <div aria-hidden className="topo pointer-events-none absolute -right-40 -top-20 h-[640px] w-[900px] opacity-[0.07]" />
       <div className={cn("container-site relative pb-16 pt-10 md:pb-24 md:pt-16", image && "grid gap-10 md:grid-cols-12 md:items-end md:gap-12")}>
         <div className={cn(image && "md:col-span-7")}>

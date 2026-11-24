@@ -19,7 +19,7 @@ export default async function ServicesPage() {
         crumbs={[{ name: "Services", path: "/services" }]}
         overline="Services"
         title="Everything it takes to be heard, and believed."
-        lede="Eight disciplines under one roof, orchestrated around the outcome you need. Pick one, or let us design the mix."
+        lede={`${services.length} disciplines under one roof, orchestrated around the outcome you need. Pick one, or let us design the mix.`}
       />
       <section className="container-site pb-[var(--section-y)]" aria-labelledby="all-services">
         <h2 id="all-services" className="sr-only">All services</h2>

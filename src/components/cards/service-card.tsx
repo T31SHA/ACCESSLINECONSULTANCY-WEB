@@ -15,7 +15,7 @@ export function ServiceCard({ service, index, mobileThumb = true }: { service: S
     <Link
       href={`/services/${service.slug}`}
       data-reveal
-      className="group relative flex flex-row bg-[var(--surface-raised)] transition-colors duration-300 hover:bg-forest-900 hover:text-sand-50 sm:flex-col"
+      className="group sheen relative flex flex-row bg-[var(--surface-raised)] transition-colors duration-300 hover:bg-forest-900 hover:text-sand-50 sm:flex-col"
     >
       {photo && (
         // Mobile: compact row with a thumbnail (keeps the h1 as LCP and the list short); ≥768px: 4:3 card.

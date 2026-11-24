@@ -1,10 +1,11 @@
 import {
-  CalendarRange, ChartNoAxesCombined, Clapperboard, Compass, GraduationCap, HeartHandshake, Megaphone, Route,
-  type LucideIcon, type LucideProps,
+  CalendarRange, ChartNoAxesCombined, Clapperboard, ClipboardCheck, Compass, GraduationCap, Handshake,
+  HeartHandshake, Megaphone, Route, type LucideIcon, type LucideProps,
 } from "lucide-react";
 
 const map: Record<string, LucideIcon> = {
   Megaphone, Compass, Route, GraduationCap, HeartHandshake, ChartNoAxesCombined, CalendarRange, Clapperboard,
+  ClipboardCheck, Handshake,
 };
 
 export function ServiceIcon({ name, ...props }: { name: string } & LucideProps) {

@@ -75,6 +75,22 @@ export const industries: Industry[] = [
     challenges: ["Earning trust in a sceptical market", "Communicating within regulatory constraints", "Driving financial literacy and inclusion"],
     approach: "Precise, compliant and human. We make financial brands understandable and trusted, from boardroom to boda-boda rider.",
   },
+  {
+    slug: "humanitarian",
+    title: "Humanitarian & Emergency Response",
+    short: "Crisis communication and accountability for response and recovery.",
+    seo: seo("Humanitarian Communications Agency Kenya", "Crisis communications, community accountability and donor reporting for humanitarian and emergency response programmes in Africa."),
+    challenges: ["Communicating fast and accurately as a crisis evolves", "Staying accountable to affected communities, not just donors", "Coordinating one voice across multiple response agencies"],
+    approach: "We build rapid-response communication and community-accountability systems, so affected people are heard and donors see a response that works.",
+  },
+  {
+    slug: "agriculture",
+    title: "Agriculture & Food Systems",
+    short: "Extension messaging and market stories that reach the farm gate.",
+    seo: seo("Agriculture Communications Consultancy Kenya", "Farmer-facing communication, extension campaigns and market-systems storytelling for agribusinesses and development programmes."),
+    challenges: ["Reaching smallholder farmers with practical, trusted information", "Proving market-systems impact to funders", "Shifting practice, not just awareness, across value chains"],
+    approach: "We pair extension-style communication with market-systems thinking, so messages travel from the boardroom to the field, and back again as evidence.",
+  },
 ];
 
 export const getIndustry = (slug: string) => industries.find((i) => i.slug === slug);

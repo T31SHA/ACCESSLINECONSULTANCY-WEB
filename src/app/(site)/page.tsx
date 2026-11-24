@@ -43,7 +43,7 @@ export default async function HomePage() {
   return (
     <>
       {/* ─── Hero: editorial 12-col split on deep forest ─── */}
-      <section className="theme-forest hero-grid relative isolate overflow-hidden bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="hero-title">
+      <section className="theme-forest hero-grid grain relative isolate overflow-hidden bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="hero-title">
         <div aria-hidden className="topo pointer-events-none absolute inset-0 -z-10 text-sand-50 opacity-[0.04]" />
         <div className="container-site relative flex flex-col gap-12 pb-10 pt-10 md:gap-16 md:pt-16">
           {/* Telemetry bar */}
@@ -135,7 +135,7 @@ export default async function HomePage() {
       <section className={cn("section container-site", stats.length > 0 && "pt-0")} aria-labelledby="services-title">
         <SectionHeading
           overline="What we do"
-          title={<span id="services-title">Eight disciplines. One clear narrative.</span>}
+          title={<span id="services-title">{services.length} disciplines. One clear narrative.</span>}
           action={<ButtonLink href="/services" variant="arrow">All services</ButtonLink>}
         />
         <div className="grid gap-px overflow-hidden rounded-lg border border-[var(--line)] bg-[var(--line)] sm:grid-cols-2 lg:grid-cols-4">
@@ -145,7 +145,7 @@ export default async function HomePage() {
 
       {/* ─── Work ─── */}
       {caseStudies.length > 0 && (
-        <section className="theme-dark section bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="work-title">
+        <section className="theme-dark grain section bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="work-title">
           <div className="container-site">
             <SectionHeading
               overline="Selected work"
@@ -214,7 +214,7 @@ export default async function HomePage() {
       )}
 
       {/* ─── CTA + short form ─── */}
-      <section className="theme-forest on-photo relative isolate overflow-hidden bg-[var(--surface)]" aria-labelledby="cta-title">
+      <section className="theme-forest on-photo grain relative isolate overflow-hidden bg-[var(--surface)]" aria-labelledby="cta-title">
         <Photo image={images["home-cta-nairobi-cbd-night"]} sizes="100vw" ratio="" quality={50} className="absolute inset-0 -z-10" />
         <PhotoScrim className="-z-10" />
         <div className="container-site section relative grid gap-12 lg:grid-cols-12">

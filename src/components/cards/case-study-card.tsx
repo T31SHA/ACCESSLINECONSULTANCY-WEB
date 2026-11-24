@@ -15,7 +15,7 @@ export function CaseStudyCard({ cs, industryTitle, index }: { cs: CaseStudy; ind
   return (
     <article
       data-reveal
-      className="group relative flex flex-col rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-4 transition-[border-color,box-shadow] duration-300 hover:border-accent-400/50 hover:shadow-hover"
+      className="group sheen relative flex flex-col rounded-lg border border-[var(--line)] bg-[var(--surface-raised)] p-4 transition-[border-color,box-shadow] duration-300 hover:border-accent-400/50 hover:shadow-hover"
     >
       <div className="relative overflow-hidden rounded-md">
         {photo ? (

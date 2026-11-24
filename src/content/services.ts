@@ -256,6 +256,70 @@ export const services: Service[] = [
       { q: "Do you produce in-house?", a: "Our design, video and photography teams are in-house in Nairobi." },
     ],
   },
+  {
+    slug: "monitoring-evaluation-learning",
+    title: "Monitoring, Evaluation & Learning",
+    short: "Evidence that proves impact and sharpens the next programme.",
+    icon: "ClipboardCheck",
+    seo: {
+      title: "MEL & Evaluation Consultancy in Kenya",
+      description:
+        "Monitoring, evaluation and learning (MEL) frameworks, baseline-to-endline studies and donor reporting for development and humanitarian programmes across Africa.",
+    },
+    problem:
+      "Donors and boards ask for proof of impact, but log-frames sit static and the lessons from one programme never reach the design of the next.",
+    outcome:
+      "MEL systems that track what matters, surface findings while there's still time to act on them, and produce reports donors and boards trust.",
+    deliverables: [
+      "Theory of change and indicator frameworks",
+      "Baseline, midline and endline evaluations",
+      "Real-time monitoring and data dashboards",
+      "Donor and board reporting",
+      "After-action reviews and learning briefs",
+    ],
+    process: [
+      { title: "Design", body: "Indicators and tools built around your theory of change." },
+      { title: "Collect", body: "Field teams and digital tools gather reliable data on schedule." },
+      { title: "Analyse", body: "Findings triangulated against programme and donor indicators." },
+      { title: "Learn", body: "Lessons fed back into programme design, not filed away." },
+    ],
+    faqs: [
+      { q: "Can you align MEL with our donor's indicators?", a: "Yes. Our frameworks map directly to USAID, FCDO, EU and UN agency log-frame and indicator requirements." },
+      { q: "Do you evaluate programmes you didn't design?", a: "Yes. Independent evaluation is a distinct, firewalled service from our programme and strategy work." },
+    ],
+  },
+  {
+    slug: "business-development",
+    title: "Business Development & Partnerships",
+    short: "Winning proposals and partnerships that grow what you do.",
+    icon: "Handshake",
+    seo: {
+      title: "Business Development Consultancy Kenya",
+      description:
+        "Proposal development, donor partnerships and business development support for NGOs, consultancies and growing businesses across Africa.",
+    },
+    problem:
+      "Strong programmes lose funding to weaker proposals, and good partnerships are missed because no one owns the pipeline.",
+    outcome:
+      "A disciplined pipeline, sharper proposals and partnerships that convert opportunity into contracted work.",
+    deliverables: [
+      "Opportunity tracking and go/no-go frameworks",
+      "Proposal writing and technical design",
+      "Partnership and consortium brokering",
+      "Capture strategy for competitive bids",
+      "Pricing and cost-note support",
+    ],
+    process: [
+      { title: "Track", body: "Pipeline built from donor portals, networks and market intelligence." },
+      { title: "Position", body: "Capture plan and partners secured ahead of the call." },
+      { title: "Write", body: "Technical and cost proposals built to the scoring criteria." },
+      { title: "Convert", body: "Debriefs and lessons that sharpen the next bid." },
+    ],
+    faqs: [
+      { q: "Do you write full proposals or support ours?", a: "Both. We lead end-to-end bids or plug into an in-house team for technical writing, costing or partner coordination." },
+      { q: "Which donors do you have experience with?", a: "We track and bid into USAID, FCDO, EU, UN agencies, foundations and corporate CSR funds." },
+    ],
+  },
 ];
 
 export const getService = (slug: string) => services.find((s) => s.slug === slug);

@@ -18,7 +18,7 @@ type Props = { services: { slug: string; title: string }[]; industryCount: numbe
 export function Footer({ services, industryCount, socials }: Props) {
   const year = new Date().getFullYear();
   return (
-    <footer className="theme-dark relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]">
+    <footer className="theme-dark grain relative overflow-hidden bg-[var(--surface)] text-[var(--fg)]">
       <div className="container-site pt-20 pb-10 md:pt-28">
         <div className="grid gap-12 md:grid-cols-12">
           <div className="md:col-span-5">
@@ -35,7 +35,7 @@ export function Footer({ services, industryCount, socials }: Props) {
             <h2 className="eyebrow mb-5 font-sans text-[var(--fg-muted)]">Services</h2>
             <ul className="space-y-2.5 text-[0.9375rem]">
               {services.map((s) => (
-                <li key={s.slug}><Link href={`/services/${s.slug}`} className="transition-colors hover:text-accent-400">{s.title}</Link></li>
+                <li key={s.slug}><Link href={`/services/${s.slug}`} className="link-draw transition-colors hover:text-accent-400">{s.title}</Link></li>
               ))}
             </ul>
           </nav>
@@ -43,9 +43,9 @@ export function Footer({ services, industryCount, socials }: Props) {
             <h2 className="eyebrow mb-5 font-sans text-[var(--fg-muted)]">Company</h2>
             <ul className="space-y-2.5 text-[0.9375rem]">
               {company.map((l) => (
-                <li key={l.href}><Link href={l.href} className="transition-colors hover:text-accent-400">{l.label}</Link></li>
+                <li key={l.href}><Link href={l.href} className="link-draw transition-colors hover:text-accent-400">{l.label}</Link></li>
               ))}
-              <li><Link href="/industries" className="transition-colors hover:text-accent-400">Industries ({industryCount})</Link></li>
+              <li><Link href="/industries" className="link-draw transition-colors hover:text-accent-400">Industries ({industryCount})</Link></li>
             </ul>
           </nav>
           <div className="md:col-span-2">

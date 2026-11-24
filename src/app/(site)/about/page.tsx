@@ -92,7 +92,7 @@ export default async function AboutPage() {
         )}
       </section>
 
-      <section className="theme-forest relative isolate overflow-hidden section bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="values-title">
+      <section className="theme-forest grain relative isolate overflow-hidden section bg-[var(--surface)] text-[var(--fg)]" aria-labelledby="values-title">
         <div aria-hidden className="topo pointer-events-none absolute inset-0 -z-10 text-sand-50 opacity-[0.04]" />
         <div className="container-site grid gap-4 md:grid-cols-2 md:gap-6">
           {[

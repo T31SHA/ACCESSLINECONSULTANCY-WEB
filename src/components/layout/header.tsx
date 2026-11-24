@@ -20,6 +20,7 @@ export type NavService = { slug: string; title: string; short: string; icon: str
 export function Header({ services }: { services: NavService[] }) {
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  const [progress, setProgress] = useState(0);
   const [megaOpen, setMegaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [menuMounted, setMenuMounted] = useState(false);
@@ -29,10 +30,18 @@ export function Header({ services }: { services: NavService[] }) {
   const hoverOpened = useRef(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 8);
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      setProgress(max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
   }, []);
 
   useEffect(() => {
@@ -178,6 +187,13 @@ export function Header({ services }: { services: NavService[] }) {
           </button>
           {menuMounted && <MobileMenu open={mobileOpen} onOpenChange={setMobileOpen} returnFocusRef={menuButtonRef} />}
         </div>
+      </div>
+      {/* Reading-progress hairline: reinforces the instrument/readout motif already used in the hero. */}
+      <div aria-hidden className="absolute inset-x-0 -bottom-px h-px bg-[var(--line)]">
+        <div
+          className="h-full bg-accent-400 motion-reduce:transition-none"
+          style={{ width: `${progress * 100}%`, transition: "width 120ms linear" }}
+        />
       </div>
     </header>
   );
