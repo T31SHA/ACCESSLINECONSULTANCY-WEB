@@ -15,7 +15,7 @@ All photos are free for commercial use under the Pexels or Unsplash licence. Gra
 | service-strategic-planning | `/images/services/service-strategic-planning.webp` | Mikhail Nilov | Pexels License | https://www.pexels.com/photo/men-having-a-meeting-in-a-conference-room-9301763/ |
 | service-capacity-building | `/images/services/service-capacity-building.webp` | Beniam | Pexels License | https://www.pexels.com/photo/diverse-team-engaged-in-business-training-workshop-34046709/ |
 | service-sbcc | `/images/services/service-sbcc.webp` | mk_photoz | Pexels License | https://www.pexels.com/photo/community-engagement-meeting-in-kaduna-nigeria-33107901/ |
-| service-research-market-intelligence | `/images/services/service-research-market-intelligence.webp` | Sora Shimazaki | Pexels License | https://www.pexels.com/photo/black-businesswoman-reporting-financial-results-at-meeting-5668778/ |
+| service-research-market-intelligence | `/images/services/service-research-market-intelligence.webp` | fauxels | Pexels License | https://www.pexels.com/photo/3184635 |
 | service-events-experiential | `/images/services/service-events-experiential.webp` | Ufoma Ojo | Unsplash License | https://unsplash.com/photos/JB1C6JbJkCQ |
 | service-creative-multimedia | `/images/services/service-creative-multimedia.webp` | Japhet Kweba | Pexels License | https://www.pexels.com/photo/professional-cameraman-filming-event-in-tanzania-32926963/ |
 | industry-corporate | `/images/industries/industry-corporate.webp` | Ninthgrid | Pexels License | https://www.pexels.com/photo/business-meeting-in-lagos-office-setting-30688596/ |

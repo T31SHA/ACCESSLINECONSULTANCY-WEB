@@ -61,8 +61,8 @@ export const images = {
   "service-sbcc": { src: "/images/services/service-sbcc.webp", alt: "Community members gathered at an outdoor engagement meeting", width: 2000, height: 1333,
     credit: { photographer: "mk_photoz", licence: "Pexels License", source: "https://www.pexels.com/photo/community-engagement-meeting-in-kaduna-nigeria-33107901/" } },
   // Services: Research & Market Intelligence
-  "service-research-market-intelligence": { src: "/images/services/service-research-market-intelligence.webp", alt: "Analyst presenting research findings and charts to colleagues", width: 2000, height: 3000,
-    credit: { photographer: "Sora Shimazaki", licence: "Pexels License", source: "https://www.pexels.com/photo/black-businesswoman-reporting-financial-results-at-meeting-5668778/" },
+  "service-research-market-intelligence": { src: "/images/services/service-research-market-intelligence.webp", alt: "Laptop and tablet screens showing data dashboards with bar, pie and line charts during a research debrief", width: 2000, height: 3000,
+    credit: { photographer: "fauxels", licence: "Pexels License", source: "https://www.pexels.com/photo/3184635" },
     crop: { src: "/images/services/service-research-market-intelligence.4x3.webp", width: 2000, height: 1500 } },
   // Services: Events & Experiential
   "service-events-experiential": { src: "/images/services/service-events-experiential.webp", alt: "Speaker addressing attendees from the stage at a conference", width: 2000, height: 1332,
